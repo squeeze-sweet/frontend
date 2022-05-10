@@ -12,6 +12,7 @@ export default function Step1() {
   const addFile = useStore(state => state.addFile);
   const uploadFile = useStore(state => state.uploadFile);
 
+  let videoElement: any;
   const saveVideo = (e: any) => {
     console.log('save video');
     console.log('input data:', e.target.files[0]);
@@ -19,7 +20,7 @@ export default function Step1() {
     var file = e.target.files[0];
     var reader = new FileReader();
     reader.onload = (e: any) => {
-      var videoElement = document.createElement('video');
+      videoElement = document.createElement('video');
       videoElement.src = e.target.result;
       var timer = setInterval(() => {
         if (videoElement.readyState === 4) {
@@ -48,8 +49,8 @@ export default function Step1() {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    uploadFile('favourite-meal');
-    // navigate('/step-2');
+    uploadFile({ fileName: 'favouritemeal', fileDuration: videoElement.duration });
+    navigate('/step-2');
   };
 
   return (

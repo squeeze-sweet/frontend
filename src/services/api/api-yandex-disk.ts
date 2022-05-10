@@ -19,7 +19,7 @@ const config = {
 const api: API = {
   getUploadLink: (fileName: string) =>
     axios.get(
-      `https://cloud-api.yandex.net/v1/disk/resources/upload?path=Video%20samples/${fileName}`,
+      `https://cloud-api.yandex.net/v1/disk/resources/upload?path=videosamples%2F${fileName}&overwrite=true`,
       {
         headers: {
           Authorization: `OAuth ${token}`,
@@ -37,7 +37,7 @@ const api: API = {
   },
   getDownloadLink: (fileName: string) =>
     axios.get(
-      `https://cloud-api.yandex.net/v1/disk/resources/download?path=Video%20samples/${fileName}`,
+      `https://cloud-api.yandex.net/v1/disk/resources/download?path=videosamples%2F${fileName}`,
       {
         headers: {
           Authorization: `OAuth ${token}`,

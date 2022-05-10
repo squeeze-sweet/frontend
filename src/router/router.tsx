@@ -4,6 +4,7 @@ import Layout from '../components/layout';
 import Step1 from '../pages/step-1';
 import EmaleChosing from '../pages/emale-chosing';
 import Step2 from '../pages/step-2';
+import Finish from '../pages/finish';
 
 function Router() {
   return (
@@ -13,6 +14,7 @@ function Router() {
           <Route index element={<EmaleChosing />} />
           <Route path='/step-1' element={<Step1 />} />
           <Route path='/step-2' element={<Step2 />} />
+          <Route path='/finish' element={<Finish />} />
         </Route>
       </Routes>
     </BrowserRouter>

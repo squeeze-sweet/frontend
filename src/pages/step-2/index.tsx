@@ -11,7 +11,7 @@ export default function Step2() {
   let navigate = useNavigate();
   const addFile = useStore(state => state.addFile);
   const uploadFile = useStore(state => state.uploadFile);
-
+  let videoElement: any;
   const saveVideo = (e: any) => {
     console.log('save video');
     console.log('input data:', e.target.files[0]);
@@ -19,7 +19,7 @@ export default function Step2() {
     var file = e.target.files[0];
     var reader = new FileReader();
     reader.onload = (e: any) => {
-      var videoElement = document.createElement('video');
+      videoElement = document.createElement('video');
       videoElement.src = e.target.result;
       var timer = setInterval(() => {
         if (videoElement.readyState === 4) {
@@ -48,14 +48,14 @@ export default function Step2() {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    uploadFile('favourite-movie');
-    navigate('/step-3');
+    uploadFile({ fileName: 'favouritemovie', fileDuration: videoElement.duration });
+    navigate('/finish');
   };
 
   return (
     <form onSubmit={handleSubmit} className={styles.container}>
       <Typography>
-        <Title>1. Your favourite movie</Title>
+        <Title>2. Your favourite movie</Title>
       </Typography>
       <Input
         type='file'
