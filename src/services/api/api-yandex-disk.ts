@@ -6,6 +6,7 @@ const token = 'AQAAAABXo1nYAAfi9NW9crs7YE-biO-y3vpjHOg';
 export interface API {
   getUploadLink: (fileName: string) => any;
   uploadFile: (link: string, file: any) => any;
+  getDownloadLink: (fileName: string) => any;
 }
 
 const config = {
@@ -34,6 +35,16 @@ const api: API = {
       },
     });
   },
+  getDownloadLink: (fileName: string) =>
+    axios.get(
+      `https://cloud-api.yandex.net/v1/disk/resources/download?path=Video%20samples/${fileName}`,
+      {
+        headers: {
+          Authorization: `OAuth ${token}`,
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      },
+    ),
 };
 
 export default api;

@@ -1,11 +1,14 @@
+@import 'antd/dist/antd.css';
 @import '/src/styles/variables.scss';
-@import "color-variables";
+@import 'color-variables';
 
 * {
   box-sizing: border-box;
 }
 
-html, body, #root  {
+html,
+body,
+#root {
   font-family: $mainFont;
   margin: 0;
   width: 100%;
@@ -16,7 +19,10 @@ a {
   text-decoration: none;
 }
 
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
   margin: 0;
 }
 

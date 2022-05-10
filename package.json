@@ -4,7 +4,6 @@
   "private": true,
   "dependencies": {
     "@monaco-editor/react": "^4.4.4",
-    "@sima-land/ui-nucleons": "^44.1.0",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.1.1",
     "@testing-library/user-event": "^13.5.0",
@@ -13,6 +12,7 @@
     "@types/react": "^18.0.6",
     "@types/react-dom": "^18.0.2",
     "@types/swagger-ui-react": "^4.1.1",
+    "antd": "^4.20.3",
     "axios": "^0.27.0",
     "classnames": "^2.3.1",
     "js-yaml": "^4.1.0",
