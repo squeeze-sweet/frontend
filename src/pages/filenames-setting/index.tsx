@@ -6,22 +6,22 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export default function FilenamesSetting() {
-  const [filenames, setFilenames] = useState(['Your favourite meal']);
+  const [localFilenames, setLocalFilenames] = useState(['Your favourite meal']);
+  let navigate = useNavigate();
+  const setFilenames = useStore(state => state.setFilenames);
 
   const handleCheck = (e: any) => {
-    if (filenames.includes(e.target.value)) {
-      setFilenames(filenames.filter(filename => filename !== e.target.value));
+    if (localFilenames.includes(e.target.value)) {
+      setLocalFilenames(localFilenames.filter(filename => filename !== e.target.value));
     } else {
-      setFilenames([...filenames, e.target.value]);
+      setLocalFilenames([...localFilenames, e.target.value]);
     }
   };
 
-  let navigate = useNavigate();
-  //const setFileNames = useStore(state => state.setFileNames);
-
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    console.log(filenames);
+    setFilenames(localFilenames);
+    navigate('../step-1', { replace: true });
   };
 
   return (

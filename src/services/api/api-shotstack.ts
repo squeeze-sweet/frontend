@@ -8,38 +8,45 @@ export interface API {
   getVideoStatus: (id: any) => any;
 }
 
+const sum = (array: any, maxIndex: any) => {
+  let sum = 0;
+  if (maxIndex === 0) return 0;
+  for (let index = 0; index < maxIndex; index++) {
+    sum += array[index];
+  }
+  return sum;
+};
+
+const sum2 = (array: any, maxIndex: any) => {
+  let sum = 0;
+  if (maxIndex === 0) return array[0];
+  for (let index = 0; index < maxIndex + 1; index++) {
+    sum += array[index];
+  }
+  return sum;
+};
+
 const api: API = {
-  render: (hrefs: any, durations: any) =>
-    axios.post(
+  render: (hrefs: any, durations: any) => {
+    const data = hrefs.map((href: any, index: any) => {
+      return {
+        clips: [
+          {
+            asset: {
+              type: 'video',
+              src: href,
+            },
+            start: sum(durations, index),
+            length: sum2(durations, index),
+          },
+        ],
+      };
+    });
+    return axios.post(
       `https://api.shotstack.io/stage/render`,
       {
         timeline: {
-          tracks: [
-            {
-              clips: [
-                {
-                  asset: {
-                    type: 'video',
-                    src: hrefs[0],
-                  },
-                  start: 0,
-                  length: durations[0],
-                },
-              ],
-            },
-            {
-              clips: [
-                {
-                  asset: {
-                    type: 'video',
-                    src: hrefs[1],
-                  },
-                  start: durations[0],
-                  length: durations[0] + durations[1],
-                },
-              ],
-            },
-          ],
+          tracks: data,
         },
         output: {
           format: 'mp4',
@@ -53,15 +60,15 @@ const api: API = {
           'Content-Type': 'application/json; charset=UTF-8',
         },
       },
-    ),
-  getVideoStatus: (id: string) => {
+    );
+  },
+  getVideoStatus: (id: string) =>
     axios.get(`https://api.shotstack.io/stage/render/${id}`, {
       headers: {
         'x-api-key': `sOP6UCkvBw5VXAJrljLFz94Zndc1rQlz7faDa6I3`,
         'Content-Type': 'application/json; charset=UTF-8',
       },
-    });
-  },
+    }),
 };
 
 export default api;

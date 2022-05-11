@@ -13,16 +13,18 @@ type File = {
 };
 interface Store {
   email: string;
+  filenames: any[];
 
   filesInfo: any[];
   status: STATUSES;
   links: string[];
-  downloadLinks: string[];
+  downloadLinks: any[];
   file: any;
   files: any[];
   finishUrl: string;
   finishId: string;
   setEmail: (file: any) => void;
+  setFilenames: (filenames: any) => void;
   addFile: (file: any) => void;
   uploadFile: ({ fileName, fileDuration }: any) => void;
   getDownloadLinks: () => void;
@@ -32,6 +34,7 @@ interface Store {
 export const useStore = create<Store>()(
   devtools((set, get) => ({
     email: '',
+    filenames: [],
     filesInfo: [],
     status: STATUSES.initial,
     links: [],
@@ -43,6 +46,10 @@ export const useStore = create<Store>()(
 
     setEmail: (email: any) => {
       set({ email: email });
+    },
+
+    setFilenames: (filenames: any) => {
+      set({ filenames: filenames });
     },
 
     addFile: (file: any) => {
@@ -76,32 +83,45 @@ export const useStore = create<Store>()(
     getDownloadLinks: async () => {
       set({ status: STATUSES.fetching });
       try {
+        const promises: any = [];
+
+        get().filesInfo.map(fileInfo => {
+          promises.push(yandexDiskApi.getDownloadLink(fileInfo.fileName));
+        });
+
+        const responses = await Promise.all(promises);
+        responses.map(response => {
+          set({
+            downloadLinks: [
+              ...get().downloadLinks,
+              response.data.href,
+            ] /*[firstResponse.data.href, secondResponse.data.href]*/,
+          });
+          console.log('response.data.href;', response.data.href);
+        });
+        /*
         const [firstResponse, secondResponse] = await Promise.all([
           await yandexDiskApi.getDownloadLink(get().filesInfo[0].fileName),
           await yandexDiskApi.getDownloadLink(get().filesInfo[1].fileName),
         ]);
         console.log('firstResponse', firstResponse);
         console.log('secondResponse', secondResponse);
-        set({
-          downloadLinks: [firstResponse.data.href, secondResponse.data.href],
-        });
-        const response = await shotStackApi.render(get().downloadLinks, [
-          get().filesInfo[0].fileDuration,
-          get().filesInfo[1].fileDuration,
-        ]);
-        console.log('response!!!!', response);
+*/
+        const filesDurations = get().filesInfo.map(fileInfo => Math.floor(fileInfo.fileDuration));
+        console.log('filesDurations', filesDurations);
+        const response = await shotStackApi.render(get().downloadLinks, filesDurations);
         set({ finishId: response.data.response.id });
-        set({ status: STATUSES.success });
+        //set({ status: STATUSES.success });
       } catch (error: unknown) {
         set({ status: STATUSES.failure });
         console.log('uploadFileError');
       }
     },
     getFinalLink: async () => {
-      set({ status: STATUSES.fetching });
+      //set({ status: STATUSES.fetching });
       const response = await shotStackApi.getVideoStatus(get().finishId);
-      console.log('response!!!!', response);
-      set({ finishId: response.data.response.url });
+      //console.log('response!!!!', resultResponse);
+      set({ finishUrl: response.data.response.url });
       set({ status: STATUSES.success });
     },
   })),

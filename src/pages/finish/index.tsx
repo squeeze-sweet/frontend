@@ -2,6 +2,7 @@ import { Typography, Input, Button } from 'antd';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useStore } from '../../store';
+import shotStackApi from '../../services/api/api-shotstack';
 import styles from './step-2.module.scss';
 
 const { Title } = Typography;
@@ -15,7 +16,7 @@ export default function Finish() {
   if (finishId) {
     setTimeout(() => {
       getFinalLink();
-    }, 7000);
+    }, 13000);
   }
 
   useEffect(() => {
@@ -29,15 +30,9 @@ export default function Finish() {
   return (
     <section className={styles.container}>
       <Typography>
-        <Title>1. You'r video is here!</Title>
+        <Title>{!Boolean(finishUrl) ? "You're video is almost here"! : 'Done!'} </Title>
       </Typography>
-      {
-        <video
-          src='https://shotstack-api-stage-output.s3-ap-southeast-2.amazonaws.com/l3nql2zmm6/f6346480-a47e-40c3-8e48-911d0412a311.mp4'
-          poster='poster.jpg'
-          controls
-        ></video>
-      }
+      {finishUrl && <video src={`${finishUrl}`} poster='poster.jpg' controls></video>}
     </section>
   );
 }
