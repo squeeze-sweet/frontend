@@ -6,15 +6,28 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
+const validateEmail = (email: string) => {
+  return email.match(
+    /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+  );
+};
+
 export default function EmaleChosing() {
   const [localEmail, setLocalEmail] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
+
   let navigate = useNavigate();
   const setEmail = useStore(state => state.setEmail);
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    console.log('handleSubmit', localEmail);
-    navigate('/step-1');
+    if (!validateEmail(localEmail)) {
+      setErrorMsg('e-mail format is invalid!');
+    } else {
+      setErrorMsg('');
+      setEmail(localEmail);
+    }
+    navigate('/filenames-setting');
   };
 
   const handleEmailChange = (e: any) => {
@@ -27,15 +40,18 @@ export default function EmaleChosing() {
       <Typography>
         <Title>Welcome!</Title>
       </Typography>
-
       <Input
+        status={errorMsg ? 'error' : ''}
         placeholder='Please type your e-mail!'
         onChange={handleEmailChange}
         className={styles.input}
       />
-      <Button htmlType='submit' type='primary' size='large'>
-        Далее
-      </Button>
+      <div>
+        <Button htmlType='submit' type='primary' size='large' disabled={!Boolean(localEmail)}>
+          Далее
+        </Button>
+        {errorMsg && <p className={styles.error}>{errorMsg}</p>}
+      </div>
     </form>
   );
 }

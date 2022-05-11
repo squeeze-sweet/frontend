@@ -13,6 +13,7 @@ type File = {
 };
 interface Store {
   email: string;
+
   filesInfo: any[];
   status: STATUSES;
   links: string[];
