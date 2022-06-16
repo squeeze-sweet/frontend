@@ -1,6 +1,7 @@
 @import 'antd/dist/antd.css';
 @import '/src/styles/variables.scss';
 @import 'color-variables';
+@import '../assets/fonts/fonts.css';
 
 * {
   box-sizing: border-box;
@@ -63,4 +64,13 @@ span.url {
 
 ::-webkit-scrollbar-corner {
   background: $main-blue;
+}
+
+h1 {
+  font-family: 'Inter';
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 48px;
+  letter-spacing: 0em;
+  text-align: center;
 }

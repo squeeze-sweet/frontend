@@ -11,10 +11,18 @@ type File = {
   src: string;
   duration: number;
 };
+
+type UserInfo = {
+  name: string;
+  jobTitle: string;
+  email: string;
+} | null;
+
 interface Store {
+  userInfo: UserInfo;
+  setUserInfo: (userInfo: UserInfo) => void;
   email: string;
   filenames: any[];
-
   filesInfo: any[];
   status: STATUSES;
   links: string[];
@@ -33,6 +41,9 @@ interface Store {
 
 export const useStore = create<Store>()(
   devtools((set, get) => ({
+    userInfo: null,
+    setUserInfo: userInfo => set({ userInfo: userInfo }),
+
     email: '',
     filenames: [],
     filesInfo: [],

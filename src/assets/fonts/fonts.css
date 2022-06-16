@@ -1,0 +1,19 @@
+@font-face {
+  font-family: 'Inter';
+  src: url('Inter-Bold.eot') format('eot'), url('Inter-Bold.svg') format('svg'),
+    url('Inter-Bold.otf') format('otf'), url('Inter-Bold.ttf') format('ttf'),
+    url('Inter-Bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('Inter-Medium.eot') format('eot'), url('Inter-Medium.svg') format('svg'),
+    url('Inter-Medium.otf') format('otf'), url('Inter-Medium.ttf') format('ttf'),
+    url('Inter-Medium.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
