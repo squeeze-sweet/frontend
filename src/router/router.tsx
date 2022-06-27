@@ -7,6 +7,7 @@ import Finish from '../pages/finish';
 import FilenamesSetting from '../pages/filenames-setting';
 import Step from '../pages/step';
 import UserInfo from '../pages/user-info';
+import { GeneralInfo } from '../pages/general-info';
 
 function Router() {
   return (
@@ -14,6 +15,7 @@ function Router() {
       <Routes>
         <Route path='/' element={<Layout />}>
           <Route index element={<EmaleChosing />} />
+          <Route path='general-info' element={<GeneralInfo />} />
           <Route path='/filenames-setting' element={<FilenamesSetting />} />
           <Route path='step-:id' element={<Step />} />
           <Route path='/step-1' element={<Step1 />} />

@@ -23,7 +23,7 @@ export default function EmaleChosing() {
       setErrorMsg('');
       setEmail(localEmail);
     }
-    navigate('/filenames-setting');
+    navigate('/general-info');
   };
 
   const handleEmailChange = (e: any) => {
