@@ -1,16 +1,25 @@
-import { ReactElement } from 'react';
-import styles from './button.module.scss';
+import styles from './input.module.scss';
 
 type Props = {
-  onClick?: () => void;
-  htmlType?: 'button' | 'reset' | 'submit';
-  disabled?: boolean;
-  children: string;
+  onChange?: (e: any) => void;
+  id: string;
+  placeholder: string;
+  label: string;
+  error?: string;
 };
-export const Button = ({ htmlType = 'button', disabled = false, onClick, children }: Props) => {
+
+export const Input = ({ onChange, id, placeholder, label, error }: Props) => {
   return (
-    <button type={htmlType} disabled={disabled} onClick={onClick} className={styles.button}>
-      {children}
-    </button>
+    <label className={styles.container}>
+      {label}
+      <input
+        id={id}
+        type='text'
+        className={styles.input}
+        onChange={onChange}
+        placeholder={placeholder}
+      />
+      <p className={styles.error}>{error}</p>
+    </label>
   );
 };

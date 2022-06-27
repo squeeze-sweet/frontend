@@ -1,17 +1,11 @@
 import { useStore } from '../../store';
-import { Typography, Input } from 'antd';
 import { Button } from '../../components/ui-elements/button';
-const { Title } = Typography;
 import styles from './emale-chosing.module.scss';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-
-const validateEmail = (email: string) => {
-  return email.match(
-    /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-  );
-};
+import { Input } from '../../components/ui-elements/input';
+import { validateEmail } from './helpers';
 
 export default function EmaleChosing() {
   const [localEmail, setLocalEmail] = useState('');
@@ -21,7 +15,6 @@ export default function EmaleChosing() {
   const setEmail = useStore(state => state.setEmail);
 
   const handleSubmit = (e: any) => {
-    console.log('1');
     e.preventDefault();
     if (!validateEmail(localEmail)) {
       setErrorMsg('e-mail format is invalid!');
@@ -42,13 +35,13 @@ export default function EmaleChosing() {
     <form onSubmit={handleSubmit} className={styles.container}>
       <h1>Welcome!</h1>
       <Input
-        status={errorMsg ? 'error' : ''}
-        placeholder='Please type your e-mail!'
+        id='email'
+        placeholder="please type you'r email here"
+        label='email'
         onChange={handleEmailChange}
-        className={styles.input}
+        error={errorMsg}
       />
-      <Button htmlType='submit' /* disabled={!Boolean(localEmail)} */>Continue</Button>
-      {errorMsg && <p className={styles.error}>{errorMsg}</p>}
+      <Button htmlType='submit'>Continue</Button>
     </form>
   );
 }

@@ -1,4 +1,3 @@
-import { ReactElement } from 'react';
 import styles from './button.module.scss';
 
 type Props = {
@@ -9,7 +8,12 @@ type Props = {
 };
 export const Button = ({ htmlType = 'button', disabled = false, onClick, children }: Props) => {
   return (
-    <button type={htmlType} disabled={disabled} onClick={onClick} className={styles.button}>
+    <button
+      type={htmlType}
+      disabled={disabled}
+      onClick={onClick}
+      className={`${styles.button} + ${disabled && styles.disabled}`}
+    >
       {children}
     </button>
   );
