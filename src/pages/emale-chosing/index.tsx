@@ -1,5 +1,6 @@
 import { useStore } from '../../store';
-import { Typography, Input, Button } from 'antd';
+import { Typography, Input } from 'antd';
+import { Button } from '../../components/ui-elements/button';
 const { Title } = Typography;
 import styles from './emale-chosing.module.scss';
 import { useState } from 'react';
@@ -20,9 +21,11 @@ export default function EmaleChosing() {
   const setEmail = useStore(state => state.setEmail);
 
   const handleSubmit = (e: any) => {
+    console.log('1');
     e.preventDefault();
     if (!validateEmail(localEmail)) {
       setErrorMsg('e-mail format is invalid!');
+      return;
     } else {
       setErrorMsg('');
       setEmail(localEmail);
@@ -37,21 +40,15 @@ export default function EmaleChosing() {
 
   return (
     <form onSubmit={handleSubmit} className={styles.container}>
-      <Typography>
-        <Title>Welcome!</Title>
-      </Typography>
+      <h1>Welcome!</h1>
       <Input
         status={errorMsg ? 'error' : ''}
         placeholder='Please type your e-mail!'
         onChange={handleEmailChange}
         className={styles.input}
       />
-      <div>
-        <Button htmlType='submit' type='primary' size='large' disabled={!Boolean(localEmail)}>
-          Далее
-        </Button>
-        {errorMsg && <p className={styles.error}>{errorMsg}</p>}
-      </div>
+      <Button htmlType='submit' /* disabled={!Boolean(localEmail)} */>Continue</Button>
+      {errorMsg && <p className={styles.error}>{errorMsg}</p>}
     </form>
   );
 }
