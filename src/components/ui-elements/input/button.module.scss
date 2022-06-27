@@ -1,0 +1,14 @@
+@import '/src/styles/variables.scss';
+
+.button {
+  color: $button-white-text;
+  background-color: $button-black;
+  text-align: center;
+  cursor: pointer;
+  font-family: 'Inter';
+  font-size: 16px;
+  line-height: 19px;
+  letter-spacing: 0em;
+  padding: 16px 0;
+  width: 100%;
+}

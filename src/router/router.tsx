@@ -13,7 +13,7 @@ function Router() {
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<Layout />}>
-          <Route index element={<UserInfo />} />
+          <Route index element={<EmaleChosing />} />
           <Route path='/filenames-setting' element={<FilenamesSetting />} />
           <Route path='step-:id' element={<Step />} />
           <Route path='/step-1' element={<Step1 />} />
