@@ -1,4 +1,5 @@
 {
+  "parser": "babel-eslint",
   "rules": {
     "require-jsdoc" : 0,
     "react/jsx-filename-extension": [

@@ -1,11 +1,10 @@
 import { useStore } from '../../store';
-import { Button } from '../../components/ui-elements/button';
-import styles from './emale-chosing.module.scss';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { Input } from '../../components/ui-elements/input';
 import { validateEmail } from './helpers';
+import LayoutPage from '../../components/templates/form-page';
+import styles from './emale-chosing.module.scss';
 
 export default function EmaleChosing() {
   const [localEmail, setLocalEmail] = useState('');
@@ -32,8 +31,7 @@ export default function EmaleChosing() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className={styles.container}>
-      <h1>Welcome!</h1>
+    <LayoutPage handleSubmit={handleSubmit} heading='Who are you?' buttonText='Continue'>
       <Input
         id='email'
         placeholder="please type you'r email here"
@@ -41,7 +39,6 @@ export default function EmaleChosing() {
         onChange={handleEmailChange}
         error={errorMsg}
       />
-      <Button htmlType='submit'>Continue</Button>
-    </form>
+    </LayoutPage>
   );
 }
