@@ -13,15 +13,18 @@ type File = {
 };
 
 type UserInfo = {
-  name: string;
+  firstName: string;
+  lastName: string;
   jobTitle: string;
-  email: string;
 } | null;
 
 interface Store {
+  email: string | null;
+  setEmail: (email: string) => void;
+
   userInfo: UserInfo;
   setUserInfo: (userInfo: UserInfo) => void;
-  email: string;
+
   filenames: any[];
   filesInfo: any[];
   status: STATUSES;
@@ -31,7 +34,7 @@ interface Store {
   files: any[];
   finishUrl: string;
   finishId: string;
-  setEmail: (file: any) => void;
+
   setFilenames: (filenames: any) => void;
   addFile: (file: any) => void;
   uploadFile: ({ fileName, fileDuration }: any) => void;
@@ -41,10 +44,14 @@ interface Store {
 
 export const useStore = create<Store>()(
   devtools((set, get) => ({
+    email: '',
+    setEmail: email => {
+      set({ email: email });
+    },
+
     userInfo: null,
     setUserInfo: userInfo => set({ userInfo: userInfo }),
 
-    email: '',
     filenames: [],
     filesInfo: [],
     status: STATUSES.initial,
@@ -54,10 +61,6 @@ export const useStore = create<Store>()(
     finishId: '',
     finishUrl: '',
     file: null,
-
-    setEmail: (email: any) => {
-      set({ email: email });
-    },
 
     setFilenames: (filenames: any) => {
       set({ filenames: filenames });

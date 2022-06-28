@@ -1,15 +1,14 @@
-import { useStore } from '../../store';
-import { ChangeEvent, EventHandler, FormEvent, useState } from 'react';
+import { ChangeEvent, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useStore } from '../../store';
 import { Input } from '../../components/ui-elements/input';
 import { validateEmail } from './helpers';
 import LayoutPage from '../../components/templates/form-page';
 
 export default function EmaleChosing() {
   const [errorMsg, setErrorMsg] = useState('');
-
-  let navigate = useNavigate();
   const setEmail = useStore(state => state.setEmail);
+  let navigate = useNavigate();
 
   const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     const localEmail = e.target['email'].value;
@@ -17,7 +16,6 @@ export default function EmaleChosing() {
       setErrorMsg('e-mail format is invalid!');
       return;
     } else {
-      setErrorMsg('');
       setEmail(localEmail);
     }
     navigate('/general-info');

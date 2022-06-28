@@ -1,5 +1,5 @@
 import { useStore } from '../../store';
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Input } from '../../components/ui-elements/input';
 import LayoutPage from '../../components/templates/form-page';
@@ -9,6 +9,7 @@ type FormErrors = { firstName: string; lastName: string; jobTitle: string };
 
 export const GeneralInfo = () => {
   const [errors, setErrors] = useState<FormErrors>({ firstName: '', lastName: '', jobTitle: '' });
+  const setUserInfo = useStore(state => state.setUserInfo);
   let navigate = useNavigate();
 
   const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
@@ -32,9 +33,9 @@ export const GeneralInfo = () => {
       }
       return;
     } else {
-      console.log({ firstName, lastName, jobTitle });
+      setUserInfo({ firstName, lastName, jobTitle });
+      navigate('/');
     }
-    /*     navigate('/general-info'); */
   };
 
   return (
