@@ -3,13 +3,18 @@ import { Button } from '../../../components/ui-elements/button';
 import styles from './page.module.scss';
 
 type Props = {
-  handleSubmit: (e: FormEvent) => void;
+  onSubmit: (e: React.ChangeEvent<HTMLFormElement>) => void;
   heading: string;
   buttonText: string;
   children: ReactElement;
 };
 
-export default function FormPage({ handleSubmit, heading, buttonText, children }: Props) {
+export default function FormPage({ onSubmit, heading, buttonText, children }: Props) {
+  const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    onSubmit(e);
+  };
+
   return (
     <form onSubmit={handleSubmit} className={styles.container}>
       <h1>{heading}</h1>

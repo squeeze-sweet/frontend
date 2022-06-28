@@ -1,20 +1,18 @@
 import { useStore } from '../../store';
-import { useState } from 'react';
+import { ChangeEvent, EventHandler, FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Input } from '../../components/ui-elements/input';
 import { validateEmail } from './helpers';
 import LayoutPage from '../../components/templates/form-page';
-import styles from './emale-chosing.module.scss';
 
 export default function EmaleChosing() {
-  const [localEmail, setLocalEmail] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
 
   let navigate = useNavigate();
   const setEmail = useStore(state => state.setEmail);
 
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
+  const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
+    const localEmail = e.target['email'].value;
     if (!validateEmail(localEmail)) {
       setErrorMsg('e-mail format is invalid!');
       return;
@@ -25,13 +23,17 @@ export default function EmaleChosing() {
     navigate('/general-info');
   };
 
-  const handleEmailChange = (e: any) => {
-    console.log(e.target.value);
-    setLocalEmail(e.target.value);
+  const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const localEmail = e.target.value;
+    if (errorMsg) {
+      if (validateEmail(localEmail)) {
+        setErrorMsg('');
+      }
+    }
   };
 
   return (
-    <LayoutPage handleSubmit={handleSubmit} heading='Who are you?' buttonText='Continue'>
+    <LayoutPage onSubmit={handleSubmit} heading='Welcome!' buttonText='Continue'>
       <Input
         id='email'
         placeholder="please type you'r email here"

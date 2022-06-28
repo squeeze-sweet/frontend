@@ -1,65 +1,64 @@
 import { useStore } from '../../store';
-import { Button } from '../../components/ui-elements/button';
-import styles from './general-info.module.scss';
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { ChangeEvent, FormEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Input } from '../../components/ui-elements/input';
+import LayoutPage from '../../components/templates/form-page';
+import styles from './general-info.module.scss';
 
 type FormErrors = { firstName: string; lastName: string; jobTitle: string };
 
 export const GeneralInfo = () => {
-  const [localEmail, setLocalEmail] = useState('');
   const [errors, setErrors] = useState<FormErrors>({ firstName: '', lastName: '', jobTitle: '' });
-
   let navigate = useNavigate();
-  const setEmail = useStore(state => state.setEmail);
 
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-    /*     if (!validateEmail(localEmail)) {
-      setErrorMsg('e-mail format is invalid!');
+  const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
+    const {
+      'first-name': firstNameInput,
+      'last-name': lastNameInput,
+      'job-title': jobTitleInput,
+    } = e.target;
+    const firstName = firstNameInput.value;
+    const lastName = lastNameInput.value;
+    const jobTitle = jobTitleInput.value;
+
+    let newErrorValue = { firstName: '', lastName: '', jobTitle: '' };
+
+    if (!firstName || !lastName || !jobTitle) {
+      if (!firstName) newErrorValue = { ...newErrorValue, firstName: "can't be empty" };
+      if (!lastName) newErrorValue = { ...newErrorValue, lastName: "can't be empty" };
+      if (!jobTitle) newErrorValue = { ...newErrorValue, jobTitle: "can't be empty" };
+      if (JSON.stringify(errors) !== JSON.stringify(newErrorValue)) {
+        setErrors(newErrorValue);
+      }
       return;
     } else {
-      setErrorMsg('');
-      setEmail(localEmail);
-    } */
-    navigate('/general-info');
-  };
-
-  const handleEmailChange = (e: any) => {
-    console.log(e.target.value);
-    setLocalEmail(e.target.value);
+      console.log({ firstName, lastName, jobTitle });
+    }
+    /*     navigate('/general-info'); */
   };
 
   return (
-    <form onSubmit={handleSubmit} className={styles.container}>
-      <h1>Welcome!</h1>
+    <LayoutPage onSubmit={handleSubmit} heading='Who are you?' buttonText='Continue'>
       <div className={styles.inputs}>
         <Input
           id='first-name'
           placeholder="please type you'r first name"
           label='first-name'
-          onChange={handleEmailChange}
           error={errors.firstName}
         />
         <Input
           id='last-name'
           placeholder="please type you'r last name"
           label='last-name'
-          onChange={handleEmailChange}
           error={errors.lastName}
         />
         <Input
           id='job-title'
           placeholder="please type you'r job title"
           label='job-title'
-          onChange={handleEmailChange}
           error={errors.jobTitle}
         />
       </div>
-
-      <Button htmlType='submit'>Continue</Button>
-    </form>
+    </LayoutPage>
   );
 };

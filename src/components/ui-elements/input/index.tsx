@@ -1,7 +1,8 @@
+import { ChangeEvent } from 'react';
 import styles from './input.module.scss';
 
 type Props = {
-  onChange?: (e: any) => void;
+  onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
   id: string;
   placeholder: string;
   label: string;
