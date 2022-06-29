@@ -34,7 +34,7 @@ export const GeneralInfo = () => {
       return;
     } else {
       setUserInfo({ firstName, lastName, jobTitle });
-      navigate('/');
+      navigate('/filenames-setting');
     }
   };
 

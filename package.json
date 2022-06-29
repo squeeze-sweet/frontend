@@ -39,12 +39,8 @@
   "eslintConfig": {
     "extends": [
       "react-app",
-      "react-app/jest",
-      "./node_modules/@sima-land/linters/eslint/index.js"
+      "react-app/jest"
     ]
-  },
-  "stylelint": {
-    "extends": "@sima-land/linters/stylelint"
   },
   "browserslist": {
     "production": [
