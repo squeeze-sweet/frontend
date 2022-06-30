@@ -1,0 +1,23 @@
+@import '/src/styles/variables.scss';
+@import '/src/styles/mixins.scss';
+
+.container {
+  width: 100%;
+  display: flex;
+}
+
+.checkbox {
+  display: none;
+}
+
+.label {
+  padding: 16px 18px;
+  width: 100%;
+  background-color: $checkbox-background-gray;
+  text-align: left;
+  @include checkbox-text;
+}
+
+.checkbox:checked ~ .label{
+  background-color: $checkbox-checked-blue;
+}
