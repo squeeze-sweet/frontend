@@ -6,8 +6,10 @@ import styles from './step.module.scss';
 
 const { Title } = Typography;
 export default function Step() {
-  let { id } = useParams();
   const filenames = useStore(state => state.filenames);
+  const [videoPreviewSrc, setVideoPreviewSrc] = useState<string | null>(null);
+  let { id } = useParams();
+
   let navigate = useNavigate();
 
   const inputRef = useRef<any>(null);
@@ -22,8 +24,11 @@ export default function Step() {
   }, [id]);
 
   let videoElement: any;
+
   const saveVideo = (e: any) => {
     var file = e.target.files[0];
+    console.log(URL.createObjectURL(file));
+    return;
     var reader = new FileReader();
     reader.onload = (e: any) => {
       videoElement = document.createElement('video');
@@ -68,9 +73,7 @@ export default function Step() {
   return (
     <form onSubmit={handleSubmit} className={styles.container}>
       <Typography>
-        <Title>
-          {id}. {filenames[Number(id) - 1]}
-        </Title>
+        <Title>{filenames[Number(id) - 1]}</Title>
       </Typography>
 
       <input

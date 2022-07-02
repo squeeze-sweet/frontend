@@ -21,8 +21,13 @@ export default function FilenamesSetting() {
 
   const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    questions.map((_, index) => console.log(e.target[String(index)].checked));
-    setFilenames(localFilenames);
+
+    setFilenames(
+      questions
+        .filter((_, index: number) => e.target[String(index)].checked)
+        .map((question: string, index: number) => `${index + 1}. ${question}`),
+    );
+
     navigate('../step-1', { replace: true });
   };
 

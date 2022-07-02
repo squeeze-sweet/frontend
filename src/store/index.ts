@@ -53,6 +53,10 @@ export const useStore = create<Store>()(
     setUserInfo: userInfo => set({ userInfo: userInfo }),
 
     filenames: [],
+    setFilenames: (filenames: any) => {
+      set({ filenames: filenames });
+    },
+
     filesInfo: [],
     status: STATUSES.initial,
     links: [],
@@ -61,10 +65,6 @@ export const useStore = create<Store>()(
     finishId: '',
     finishUrl: '',
     file: null,
-
-    setFilenames: (filenames: any) => {
-      set({ filenames: filenames });
-    },
 
     addFile: (file: any) => {
       console.log('добавляется в стор:', file);
