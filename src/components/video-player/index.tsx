@@ -7,9 +7,11 @@ import styles from './video-player.module.scss';
 
 type Props = {
   videoPreviewSrc: string;
+  videoDuration: number;
+  setVideoDuration: (videoDuration: number) => void;
 };
 
-export default function VideoPlayer({ videoPreviewSrc }: Props) {
+export default function VideoPlayer({ videoPreviewSrc, videoDuration, setVideoDuration }: Props) {
   const [startTime, setStartTime] = useState(0);
   const [finishTime, setFinishTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -24,7 +26,7 @@ export default function VideoPlayer({ videoPreviewSrc }: Props) {
 
     async function handleGettingDuration(element: HTMLVideoElement) {
       element.onloadedmetadata = function () {
-        setDuration(element.duration);
+        setVideoDuration(element.duration);
         setFinishTime(startTime + element.duration);
       };
     }
@@ -61,12 +63,12 @@ export default function VideoPlayer({ videoPreviewSrc }: Props) {
         onTimeUpdate={handleTimeUpdate}
         controls
       ></video>
-      {duration && (
+      {videoDuration && (
         <div className={styles['slider-container']}>
           <input
             type='range'
             min='0'
-            max={duration}
+            max={videoDuration}
             className={`${styles['slider']} ${styles['slider-start']}`}
             id='myRange'
             onChange={handleStartTimeChanging}
@@ -75,7 +77,7 @@ export default function VideoPlayer({ videoPreviewSrc }: Props) {
           <input
             type='range'
             min='0'
-            max={duration}
+            max={videoDuration}
             className={`${styles['slider']} ${styles['slider-finish']}`}
             id='myRange'
             onChange={handleFinishTimeChanging}

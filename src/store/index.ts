@@ -72,11 +72,11 @@ export const useStore = create<Store>()(
     finishId: '',
     finishUrl: '',
 
-    uploadFile: async ({ fileName /*,  fileDuration */ }: any) => {
+    uploadFile: async ({ fileName, fileDuration }: any) => {
       set({ status: STATUSES.fetching });
       try {
         const response = await yandexDiskApi.getUploadLink(fileName);
-        /*         set({ filesInfo: [...get().filesInfo, { fileName, fileDuration }] }); */
+        set({ filesInfo: [...get().filesInfo, { fileName, fileDuration }] });
         set({ links: [...get().links, response.data.href] });
         try {
           console.log('первый запрос');

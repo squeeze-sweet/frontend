@@ -6,10 +6,11 @@ import VideoPlayer from '../../components/video-player';
 import { useStore } from '../../store';
 import styles from './step.module.scss';
 
-const { Title } = Typography;
 export default function Step() {
   const filenames = useStore(state => state.filenames);
   const [videoPreviewSrc, setVideoPreviewSrc] = useState<string | null>(null);
+  const [videoDuration, setVideoDuration] = useState(0);
+
   let { id } = useParams();
 
   let navigate = useNavigate();
@@ -24,8 +25,6 @@ export default function Step() {
       inputRef.current.value = '';
     }
   }, [id]);
-
-  let videoElement: any;
 
   const saveVideo = (e: any) => {
     var file = e.target.files[0];
@@ -47,7 +46,7 @@ export default function Step() {
   const handleSubmit = (e: any) => {
     e.preventDefault();
     if (id) {
-      uploadFile({ fileName: filenames[Number(id)] /*,  fileDuration: videoElement.duration  */ });
+      uploadFile({ fileName: filenames[Number(id)], fileDuration: videoDuration });
       if (Number(id) < filenames.length) {
         navigate(`/step-${Number(id) + 1}`);
       } else {
@@ -68,7 +67,13 @@ export default function Step() {
           className={styles.input}
         ></input>
 
-        {videoPreviewSrc && <VideoPlayer videoPreviewSrc={videoPreviewSrc} />}
+        {videoPreviewSrc && (
+          <VideoPlayer
+            videoPreviewSrc={videoPreviewSrc}
+            videoDuration={videoDuration}
+            setVideoDuration={setVideoDuration}
+          />
+        )}
       </>
     </LayoutPage>
   );
