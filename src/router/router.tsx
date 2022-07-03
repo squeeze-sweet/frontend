@@ -18,8 +18,6 @@ function Router() {
           <Route path='general-info' element={<GeneralInfo />} />
           <Route path='/filenames-setting' element={<FilenamesSetting />} />
           <Route path='step-:id' element={<Step />} />
-          <Route path='/step-1' element={<Step1 />} />
-          <Route path='/step-2' element={<Step2 />} />
           <Route path='/finish' element={<Finish />} />
         </Route>
       </Routes>

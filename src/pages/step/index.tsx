@@ -1,6 +1,8 @@
 import { Typography, Input, Button } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import LayoutPage from '../../components/templates/form-page';
+import VideoPlayer from '../../components/video-player';
 import { useStore } from '../../store';
 import styles from './step.module.scss';
 
@@ -28,24 +30,8 @@ export default function Step() {
   const saveVideo = (e: any) => {
     var file = e.target.files[0];
     console.log(URL.createObjectURL(file));
-    return;
-    var reader = new FileReader();
-    reader.onload = (e: any) => {
-      videoElement = document.createElement('video');
-      videoElement.src = e.target.result;
-      var timer = setInterval(() => {
-        if (videoElement.readyState === 4) {
-          if (videoElement.duration) {
-            console.log('videoElement duration', videoElement.duration); //video duration
-          }
-          clearInterval(timer);
-        }
-      }, 500);
-    };
-    reader.readAsDataURL(file);
-
-    var reader = new FileReader();
-
+    setVideoPreviewSrc(URL.createObjectURL(file));
+    const reader = new FileReader();
     reader.readAsArrayBuffer(file);
     reader.onload = function (e: any) {
       // binary data
@@ -61,7 +47,7 @@ export default function Step() {
   const handleSubmit = (e: any) => {
     e.preventDefault();
     if (id) {
-      uploadFile({ fileName: filenames[Number(id)], fileDuration: videoElement.duration });
+      uploadFile({ fileName: filenames[Number(id)] /*,  fileDuration: videoElement.duration  */ });
       if (Number(id) < filenames.length) {
         navigate(`/step-${Number(id) + 1}`);
       } else {
@@ -71,23 +57,19 @@ export default function Step() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className={styles.container}>
-      <Typography>
-        <Title>{filenames[Number(id) - 1]}</Title>
-      </Typography>
+    <LayoutPage onSubmit={handleSubmit} heading={filenames[Number(id) - 1]} buttonText='Continue'>
+      <>
+        <input
+          ref={inputRef}
+          id='video-input'
+          type='file'
+          accept='video/*'
+          onChange={saveVideo}
+          className={styles.input}
+        ></input>
 
-      <input
-        ref={inputRef}
-        id='video-input'
-        type='file'
-        accept='video/*'
-        onChange={saveVideo}
-        className={styles.input}
-      ></input>
-
-      <Button htmlType='submit' type='primary' size='large'>
-        Далее
-      </Button>
-    </form>
+        {videoPreviewSrc && <VideoPlayer videoPreviewSrc={videoPreviewSrc} />}
+      </>
+    </LayoutPage>
   );
 }

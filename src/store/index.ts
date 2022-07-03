@@ -57,13 +57,6 @@ export const useStore = create<Store>()(
       set({ filenames: filenames });
     },
 
-    filesInfo: [],
-    status: STATUSES.initial,
-    links: [],
-    downloadLinks: [],
-    files: [],
-    finishId: '',
-    finishUrl: '',
     file: null,
 
     addFile: (file: any) => {
@@ -71,11 +64,19 @@ export const useStore = create<Store>()(
       set({ file: file });
     },
 
-    uploadFile: async ({ fileName, fileDuration }: any) => {
+    filesInfo: [],
+    status: STATUSES.initial,
+    links: [],
+    downloadLinks: [],
+    files: [],
+    finishId: '',
+    finishUrl: '',
+
+    uploadFile: async ({ fileName /*,  fileDuration */ }: any) => {
       set({ status: STATUSES.fetching });
       try {
         const response = await yandexDiskApi.getUploadLink(fileName);
-        set({ filesInfo: [...get().filesInfo, { fileName, fileDuration }] });
+        /*         set({ filesInfo: [...get().filesInfo, { fileName, fileDuration }] }); */
         set({ links: [...get().links, response.data.href] });
         try {
           console.log('первый запрос');

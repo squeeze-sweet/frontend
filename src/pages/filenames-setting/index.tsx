@@ -1,8 +1,6 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LayoutPage from '../../components/templates/form-page';
 import { useStore } from '../../store';
-import { Typography, Checkbox as AntCheckbox } from 'antd';
 import { Checkbox } from '../../components/ui-elements/checkbox';
 import styles from './filenames-setting.module.scss';
 
@@ -15,7 +13,6 @@ const questions = [
 ];
 
 export default function FilenamesSetting() {
-  const [localFilenames, setLocalFilenames] = useState(['Your favourite meal']);
   let navigate = useNavigate();
   const setFilenames = useStore(state => state.setFilenames);
 
