@@ -9,16 +9,9 @@ export interface API {
   getDownloadLink: (fileName: string) => any;
 }
 
-const config = {
-  headers: {
-    Authorization: `OAuth ${token}`,
-    'Content-Type': 'video/mp4; charset=UTF-8',
-  },
-};
-
 const api: API = {
-  getUploadLink: (fileName: string) =>
-    axios.get(
+  getUploadLink: async (fileName: string) =>
+    await axios.get(
       `https://cloud-api.yandex.net/v1/disk/resources/upload?path=videosamples%2F${fileName}&overwrite=true`,
       {
         headers: {
@@ -27,16 +20,15 @@ const api: API = {
         },
       },
     ),
-  uploadFile: (link: string, file: any) => {
-    axios.put(`${link}`, file, {
+  uploadFile: async (link: string, file: any) => {
+    await axios.put(`${link}`, file, {
       headers: {
-        //Authorization: `OAuth ${token}`,
         'Content-Type': 'application/binary; charset=UTF-8',
       },
     });
   },
-  getDownloadLink: (fileName: string) =>
-    axios.get(
+  getDownloadLink: async (fileName: string) =>
+    await axios.get(
       `https://cloud-api.yandex.net/v1/disk/resources/download?path=videosamples%2F${fileName}`,
       {
         headers: {
@@ -48,3 +40,20 @@ const api: API = {
 };
 
 export default api;
+
+export const uploadVideo = async (fileName: string, fileData: any) => {
+  const {
+    data: { href },
+  } = await api.getUploadLink(fileName);
+  await api.uploadFile(href, fileData);
+  await api.getDownloadLink(fileName);
+};
+
+/*      set({ filesInfo: [...get().filesInfo, { fileName, fileDuration }] });
+        set({ links: [...get().links, response.data.href] });
+        try {
+          console.log('первый запрос');
+          const links = get().links;
+          const response1 = await yandexDiskApi.uploadFile(links[links.length - 1], get().file);
+          //const response2 = await yandexDiskApi.getDownloadLink(fileName);
+          //console.log('ссылка на скачивание', response2.data.href); */
