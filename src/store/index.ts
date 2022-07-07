@@ -26,18 +26,20 @@ interface Store {
   setUserInfo: (userInfo: UserInfo) => void;
 
   filenames: any[];
+  setFilenames: (filenames: any) => void;
+
   filesInfo: any[];
+  uploadFile: ({ fileName, fileDuration }: any) => void;
+
   status: STATUSES;
+  setStatus: (status: STATUSES) => void;
+
   links: string[];
   downloadLinks: any[];
-  file: any;
   files: any[];
   finishUrl: string;
   finishId: string;
 
-  setFilenames: (filenames: any) => void;
-  addFile: (file: any) => void;
-  uploadFile: ({ fileName, fileDuration }: any) => void;
   getDownloadLinks: () => void;
   getFinalLink: () => void;
 }
@@ -50,6 +52,7 @@ export const useStore = create<Store>()(
     },
 
     userInfo: null,
+
     setUserInfo: userInfo => set({ userInfo: userInfo }),
 
     filenames: [],
@@ -57,40 +60,34 @@ export const useStore = create<Store>()(
       set({ filenames: filenames });
     },
 
-    file: null,
-
-    addFile: (file: any) => {
-      console.log('добавляется в стор:', file);
-      set({ file: file });
-    },
-
     filesInfo: [],
-    status: STATUSES.initial,
-    links: [],
-    downloadLinks: [],
-    files: [],
-    finishId: '',
-    finishUrl: '',
 
     uploadFile: async ({ fileName, fileData, videoDuration, startTime, finishTime }: any) => {
       set({ status: STATUSES.fetching });
       try {
-        const downloadLink = uploadVideo(fileName, fileData);
-        console.log(
-          'videoDuration:',
-          videoDuration,
-          'startTime:',
-          startTime,
-          'finishTime:',
-          finishTime,
-        );
-
+        const downloadLink = await uploadVideo(fileName, fileData);
+        set({
+          filesInfo: [
+            ...get().filesInfo,
+            { fileName, downloadLink, videoDuration, startTime, finishTime },
+          ],
+        });
         set({ status: STATUSES.success });
       } catch (error: unknown) {
         set({ status: STATUSES.failure });
         console.log('upload error', error);
       }
     },
+
+    status: STATUSES.initial,
+
+    setStatus: status => set({ status: status }),
+
+    links: [],
+    downloadLinks: [],
+    files: [],
+    finishId: '',
+    finishUrl: '',
 
     /*
         \"clips": [

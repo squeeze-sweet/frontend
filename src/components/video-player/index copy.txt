@@ -1,5 +1,7 @@
-import { ReactEventHandler, useEffect, useRef, useState } from 'react';
+import { Typography, Input, Button } from 'antd';
+import { ReactEventHandler, useCallback, useEffect, useRef, useState } from 'react';
 import Slider from 'rc-slider';
+import 'rc-slider/assets/index.css';
 import styles from './video-player.module.scss';
 
 type Props = {
@@ -52,12 +54,19 @@ export default function VideoPlayer({
       }
     }
   };
-
-  const handleTimeChange = ([startTime, finishTime]: any) => {
-    console.log(startTime, finishTime);
-
-    setFinishTime(finishTime);
-    setStartTime(startTime);
+  const handleStartTimeChanging: ReactEventHandler<HTMLInputElement> = e => {
+    console.log('StartTimeChanging');
+    if (e.currentTarget.value)
+      if (startTime < finishTime - 2) {
+        setStartTime(Number(e.currentTarget.value));
+      } else {
+        setStartTime(Number(e.currentTarget.value) - 1);
+      }
+  };
+  const handleFinishTimeChanging: ReactEventHandler<HTMLInputElement> = e => {
+    if (startTime < finishTime - 1) {
+      setFinishTime(Number(e.currentTarget.value));
+    }
   };
 
   return (
@@ -71,16 +80,30 @@ export default function VideoPlayer({
         controls
       ></video>
       {videoDuration && (
-        <div className={styles.slider}>
-          <Slider
-            range
+        <div className={styles['slider-container']}>
+          <input
+            type='range'
+            min='0'
             max={videoDuration}
-            allowCross={false}
-            defaultValue={[startTime, finishTime]}
-            onChange={handleTimeChange}
+            className={`${styles['slider']} ${styles['slider-start']}`}
+            id='myRange'
+            onChange={handleStartTimeChanging}
+            value={String(startTime)}
+          />
+          <input
+            type='range'
+            min='0'
+            max={videoDuration}
+            className={`${styles['slider']} ${styles['slider-finish']}`}
+            id='myRange'
+            onChange={handleFinishTimeChanging}
+            value={String(finishTime)}
           />
         </div>
       )}
+      <div className={styles.slider}>
+        <Slider range allowCross={false} defaultValue={[0, 20]} onChange={console.log} reverse />
+      </div>
     </section>
   );
 }
