@@ -9,12 +9,21 @@ type Props = {
   videoPreviewSrc: string;
   videoDuration: number;
   setVideoDuration: (videoDuration: number) => void;
+  startTime: number;
+  setStartTime: (setStartTime: number) => void;
+  finishTime: number;
+  setFinishTime: (setFinishTime: number) => void;
 };
 
-export default function VideoPlayer({ videoPreviewSrc, videoDuration, setVideoDuration }: Props) {
-  const [startTime, setStartTime] = useState(0);
-  const [finishTime, setFinishTime] = useState(0);
-  const [duration, setDuration] = useState(0);
+export default function VideoPlayer({
+  videoPreviewSrc,
+  videoDuration,
+  setVideoDuration,
+  startTime,
+  setStartTime,
+  finishTime,
+  setFinishTime,
+}: Props) {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {

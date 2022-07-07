@@ -1,7 +1,7 @@
 import create from 'zustand';
 import { devtools } from 'zustand/middleware';
 import API from '../services/api/api';
-import yandexDiskApi from '../services/api/api-yandex-disk';
+import yandexDiskApi, { uploadVideo } from '../services/api/api-yandex-disk';
 import shotStackApi from '../services/api/api-shotstack';
 import docsApi from '../services/api/api-docs';
 import { STATUSES } from '../services/types';
@@ -72,29 +72,40 @@ export const useStore = create<Store>()(
     finishId: '',
     finishUrl: '',
 
-    uploadFile: async ({ fileName, fileDuration }: any) => {
+    uploadFile: async ({ fileName, fileData, videoDuration, startTime, finishTime }: any) => {
       set({ status: STATUSES.fetching });
       try {
-        const response = await yandexDiskApi.getUploadLink(fileName);
-        set({ filesInfo: [...get().filesInfo, { fileName, fileDuration }] });
-        set({ links: [...get().links, response.data.href] });
-        try {
-          console.log('первый запрос');
-          const links = get().links;
-          const response1 = await yandexDiskApi.uploadFile(links[links.length - 1], get().file);
-          //const response2 = await yandexDiskApi.getDownloadLink(fileName);
-          //console.log('ссылка на скачивание', response2.data.href);
-          set({ status: STATUSES.success });
-        } catch (error: unknown) {
-          set({ status: STATUSES.failure });
-          console.log('uploadFileError');
-        }
+        const downloadLink = uploadVideo(fileName, fileData);
+        console.log(
+          'videoDuration:',
+          videoDuration,
+          'startTime:',
+          startTime,
+          'finishTime:',
+          finishTime,
+        );
+
+        set({ status: STATUSES.success });
       } catch (error: unknown) {
         set({ status: STATUSES.failure });
-        console.log('getUploadLinkError');
+        console.log('upload error', error);
       }
     },
 
+    /*
+        \"clips": [
+          {
+            "asset": {
+              "type": "video",
+              "src": "https://downloader.disk.yandex.ru/disk/4e4afbd0271bace8ae90bc8d584b3563815c4268b2006c6735acf16c4aeb8e0c/62c54a17/8_WUTPzIXosyqU0TknxfgtTKot0z8-Zv2wNO95T6Fmc3jDFqcElgtBt7YJEGl3dzNp6tN0gKYVimiVspuWOL-w%3D%3D?uid=1470323160&filename=videoplayback.mp4&disposition=attachment&hash=&limit=0&content_type=video%2Fmp4&owner_uid=1470323160&fsize=45921&hid=dfb1c2488611f27cb7a4aba2ff2efb22&media_type=video&tknv=v2&etag=f15f80b5729df453bc4b06b7d1f608ac"
+              "trim": startTime,
+            },
+            "start": 0,
+            "length": videoLength-videoStartTime
+          }
+        ]
+      },
+    */
     getDownloadLinks: async () => {
       set({ status: STATUSES.fetching });
       try {

@@ -43,10 +43,13 @@ export default api;
 
 export const uploadVideo = async (fileName: string, fileData: any) => {
   const {
-    data: { href },
+    data: { href: uploadLink },
   } = await api.getUploadLink(fileName);
-  await api.uploadFile(href, fileData);
-  await api.getDownloadLink(fileName);
+  await api.uploadFile(uploadLink, fileData);
+  const {
+    data: { href: downloadLink },
+  } = await api.getDownloadLink(fileName);
+  return downloadLink;
 };
 
 /*      set({ filesInfo: [...get().filesInfo, { fileName, fileDuration }] });

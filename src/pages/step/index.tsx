@@ -11,6 +11,8 @@ export default function Step() {
   const filenames = useStore(state => state.filenames);
   const [videoPreviewSrc, setVideoPreviewSrc] = useState<string | null>(null);
   const [videoDuration, setVideoDuration] = useState(0);
+  const [startTime, setStartTime] = useState(0);
+  const [finishTime, setFinishTime] = useState(0);
 
   const fileData = useRef<any>(null);
 
@@ -50,8 +52,16 @@ export default function Step() {
   const handleSubmit = (e: any) => {
     e.preventDefault();
     if (id) {
-      uploadVideo(filenames[Number(id) - 1], fileData.current); /* 
+      uploadFile({
+        fileName: filenames[Number(id) - 1],
+        fileData: fileData.current,
+        videoDuration,
+        startTime,
+        finishTime,
+      });
+      /* 
       uploadFile({ fileName: filenames[Number(id)], fileDuration: videoDuration });
+
       if (Number(id) < filenames.length) {
         navigate(`/step-${Number(id) + 1}`);
       } else {
@@ -77,6 +87,10 @@ export default function Step() {
             videoPreviewSrc={videoPreviewSrc}
             videoDuration={videoDuration}
             setVideoDuration={setVideoDuration}
+            startTime={startTime}
+            setStartTime={setStartTime}
+            finishTime={finishTime}
+            setFinishTime={setFinishTime}
           />
         )}
       </>
