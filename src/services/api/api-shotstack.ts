@@ -4,7 +4,7 @@ import axios, { AxiosResponse } from 'axios';
 const xApiKey = 'sOP6UCkvBw5VXAJrljLFz94Zndc1rQlz7faDa6I3';
 
 export interface API {
-  render: (hrefs: any, durations: any) => any;
+  render: (data: any) => any;
   getVideoStatus: (id: any) => any;
 }
 
@@ -27,40 +27,14 @@ const sum2 = (array: any, maxIndex: any) => {
 };
 
 const api: API = {
-  render: (hrefs: any, durations: any) => {
-    const data = hrefs.map((href: any, index: any) => {
-      return {
-        clips: [
-          {
-            asset: {
-              type: 'video',
-              src: href,
-            },
-            start: sum(durations, index),
-            length: sum2(durations, index),
-          },
-        ],
-      };
+  render: data => {
+    return axios.post(`https://api.shotstack.io/stage/render`, data, {
+      timeout: 5000,
+      headers: {
+        'x-api-key': `sOP6UCkvBw5VXAJrljLFz94Zndc1rQlz7faDa6I3`,
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
     });
-    return axios.post(
-      `https://api.shotstack.io/stage/render`,
-      {
-        timeline: {
-          tracks: data,
-        },
-        output: {
-          format: 'mp4',
-          resolution: 'sd',
-        },
-      },
-      {
-        timeout: 5000,
-        headers: {
-          'x-api-key': `sOP6UCkvBw5VXAJrljLFz94Zndc1rQlz7faDa6I3`,
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-      },
-    );
   },
   getVideoStatus: (id: string) =>
     axios.get(`https://api.shotstack.io/stage/render/${id}`, {

@@ -33,6 +33,8 @@ export default function Step() {
   }, [id]);
 
   useEffect(() => {
+    setStartTime(0);
+    setFinishTime(0);
     setStatus(STATUSES.initial);
   }, []);
 

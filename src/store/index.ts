@@ -34,15 +34,26 @@ interface Store {
   status: STATUSES;
   setStatus: (status: STATUSES) => void;
 
+  finishUrl: string;
+  createVideo: () => void;
+
   links: string[];
   downloadLinks: any[];
   files: any[];
-  finishUrl: string;
+
   finishId: string;
 
-  getDownloadLinks: () => void;
   getFinalLink: () => void;
 }
+
+const sum = (array: any, maxIndex: any) => {
+  let sum = 0;
+  if (maxIndex === 0) return 0;
+  for (let index = 0; index < maxIndex; index++) {
+    sum += array[index];
+  }
+  return sum;
+};
 
 export const useStore = create<Store>()(
   devtools((set, get) => ({
@@ -83,6 +94,74 @@ export const useStore = create<Store>()(
 
     setStatus: status => set({ status: status }),
 
+    createVideo: async () => {
+      set({ status: STATUSES.fetching });
+      try {
+        const fragmentsData = get().filesInfo;
+        console.log(fragmentsData);
+
+        const fragmentsDurations = fragmentsData.map(
+          ({ startTime, finishTime }: any) => finishTime - startTime,
+        );
+        /*         console.log('fragmentsDurations', fragmentsDurations); */
+
+        const clips = fragmentsData.map(
+          ({ fileName, downloadLink, startTime, finishTime }: any, index: any) => {
+            return {
+              asset: {
+                type: 'video',
+                src: downloadLink,
+                trim: startTime,
+              },
+              start: sum(fragmentsDurations, index) + 3 * (index + 1),
+              length: finishTime - startTime,
+              transition: {
+                in: 'fade',
+                out: 'fade',
+              },
+            };
+          },
+        );
+
+        /*               {
+                asset: {
+                  type: 'html',
+                  html: "<p class='name'>" + fileName + '</p>',
+                  css: "p { font-family: 'Montserrat ExtraBold'; color: #ffffff; font-size: 40px; }",
+                },
+                transition: {
+                  in: 'slideLeft',
+                  out: 'slideRight',
+                },
+                start: sum(fragmentsDurations, index) + Math.floor((index + 1) / 2) * 3,
+                length: 3,
+              }, */
+
+        const requestData = {
+          timeline: {
+            tracks: [
+              {
+                clips: clips,
+              },
+            ],
+          },
+          output: {
+            format: 'mp4',
+            resolution: 'sd',
+          },
+        };
+        console.log('clips', clips);
+        console.log('requestData', JSON.stringify(requestData));
+
+        shotStackApi.render(requestData);
+
+        set({ status: STATUSES.success });
+      } catch (error: unknown) {
+        set({ status: STATUSES.failure });
+        console.log('creating video error', error);
+      }
+    },
+
     links: [],
     downloadLinks: [],
     files: [],
@@ -103,43 +182,7 @@ export const useStore = create<Store>()(
         ]
       },
     */
-    getDownloadLinks: async () => {
-      set({ status: STATUSES.fetching });
-      try {
-        const promises: any = [];
 
-        get().filesInfo.map(fileInfo => {
-          promises.push(yandexDiskApi.getDownloadLink(fileInfo.fileName));
-        });
-
-        const responses = await Promise.all(promises);
-        responses.map(response => {
-          set({
-            downloadLinks: [
-              ...get().downloadLinks,
-              response.data.href,
-            ] /*[firstResponse.data.href, secondResponse.data.href]*/,
-          });
-          console.log('response.data.href;', response.data.href);
-        });
-        /*
-        const [firstResponse, secondResponse] = await Promise.all([
-          await yandexDiskApi.getDownloadLink(get().filesInfo[0].fileName),
-          await yandexDiskApi.getDownloadLink(get().filesInfo[1].fileName),
-        ]);
-        console.log('firstResponse', firstResponse);
-        console.log('secondResponse', secondResponse);
-*/
-        const filesDurations = get().filesInfo.map(fileInfo => Math.floor(fileInfo.fileDuration));
-        console.log('filesDurations', filesDurations);
-        const response = await shotStackApi.render(get().downloadLinks, filesDurations);
-        set({ finishId: response.data.response.id });
-        //set({ status: STATUSES.success });
-      } catch (error: unknown) {
-        set({ status: STATUSES.failure });
-        console.log('uploadFileError');
-      }
-    },
     getFinalLink: async () => {
       //set({ status: STATUSES.fetching });
       const response = await shotStackApi.getVideoStatus(get().finishId);
