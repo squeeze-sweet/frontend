@@ -10,6 +10,8 @@ type FormErrors = { firstName: string; lastName: string; jobTitle: string };
 export const GeneralInfo = () => {
   const [errors, setErrors] = useState<FormErrors>({ firstName: '', lastName: '', jobTitle: '' });
   const setUserInfo = useStore(state => state.setUserInfo);
+  const addClipNameAndTitle = useStore(state => state.addClipNameAndTitle);
+
   let navigate = useNavigate();
 
   const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
@@ -34,6 +36,7 @@ export const GeneralInfo = () => {
       return;
     } else {
       setUserInfo({ firstName, lastName, jobTitle });
+      addClipNameAndTitle(`${firstName} ${lastName}`, jobTitle);
       navigate('/filenames-setting');
     }
   };

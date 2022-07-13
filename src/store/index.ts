@@ -5,6 +5,13 @@ import yandexDiskApi, { uploadVideo } from '../services/api/api-yandex-disk';
 import shotStackApi from '../services/api/api-shotstack';
 import docsApi from '../services/api/api-docs';
 import { STATUSES } from '../services/types';
+import {
+  makeAudioToVideo,
+  makeClipJsonForTitlePage,
+  makePremadeVideoClip,
+  makeVideoClip,
+} from './helpers';
+import { PREMADE_VIDEO_DURATION, TITLE_VIDEO_DURATION, VIDEO_TITLEDURATION } from './constants';
 
 type File = {
   data: string;
@@ -35,8 +42,12 @@ interface Store {
   setStatus: (status: STATUSES) => void;
 
   finishUrl: string;
-  createVideo: () => void;
 
+  createVideo: () => void;
+  tracks: any;
+  currentDuration: number;
+  addClipNameAndTitle: (name: string, title: string) => void;
+  addVideo: (name: string, title: string) => void;
   links: string[];
   downloadLinks: any[];
   files: any[];
@@ -83,6 +94,32 @@ export const useStore = create<Store>()(
             { fileName, downloadLink, videoDuration, startTime, finishTime },
           ],
         });
+        set(state => ({
+          tracks: {
+            ...state.tracks,
+            mainClips: [
+              ...state.tracks.mainClips,
+              ...makeVideoClip({
+                currentDuration: get().currentDuration,
+                fileName,
+                downloadLink,
+                startTime,
+                finishTime,
+              }),
+            ],
+            audiosClips: [
+              ...state.tracks.audiosClips,
+              makeAudioToVideo({
+                currentDuration: get().currentDuration,
+                downloadLink,
+                startTime,
+                finishTime,
+              }),
+            ],
+          },
+          currentDuration: state.currentDuration + finishTime - startTime + VIDEO_TITLEDURATION,
+        }));
+
         set({ status: STATUSES.success });
       } catch (error: unknown) {
         set({ status: STATUSES.failure });
@@ -94,6 +131,68 @@ export const useStore = create<Store>()(
 
     setStatus: status => set({ status: status }),
 
+    currentDuration: PREMADE_VIDEO_DURATION,
+
+    tracks: {
+      mainClips: [makePremadeVideoClip()],
+      audiosClips: [],
+      audioTrackClips: [],
+    },
+
+    addClipNameAndTitle: (name, title) => {
+      set(state => ({
+        tracks: {
+          ...state.tracks,
+          mainClips: [
+            ...state.tracks.mainClips,
+            makeClipJsonForTitlePage(name, title, get().currentDuration),
+          ],
+        },
+        currentDuration: state.currentDuration + TITLE_VIDEO_DURATION,
+      }));
+    },
+
+    addVideo: (name, title) => {
+      set(state => ({
+        tracks: {
+          ...state.tracks,
+          mainClips: [
+            ...state.tracks.mainClips,
+            makeClipJsonForTitlePage(name, title, get().currentDuration),
+          ],
+        },
+        currentDuration: state.currentDuration + TITLE_VIDEO_DURATION,
+      }));
+    },
+
+    createVideo: async () => {
+      set({ status: STATUSES.fetching });
+      try {
+        const requestData = {
+          timeline: {
+            tracks: [
+              {
+                clips: get().tracks.mainClips,
+              },
+              {
+                clips: get().tracks.audiosClips,
+              },
+            ],
+          },
+          output: {
+            format: 'mp4',
+            resolution: 'sd',
+          },
+        };
+        console.log('requestData', JSON.stringify(requestData));
+        shotStackApi.render(requestData);
+        set({ status: STATUSES.success });
+      } catch (error: unknown) {
+        set({ status: STATUSES.failure });
+        console.log('creating video error', error);
+      }
+    },
+    /* 
     createVideo: async () => {
       set({ status: STATUSES.fetching });
       try {
@@ -103,8 +202,6 @@ export const useStore = create<Store>()(
         const fragmentsDurations = fragmentsData.map(
           ({ startTime, finishTime }: any) => finishTime - startTime,
         );
-        /*         console.log('fragmentsDurations', fragmentsDurations); */
-
         const clips = fragmentsData.map(
           ({ fileName, downloadLink, startTime, finishTime }: any, index: any) => {
             return {
@@ -123,20 +220,6 @@ export const useStore = create<Store>()(
           },
         );
 
-        /*               {
-                asset: {
-                  type: 'html',
-                  html: "<p class='name'>" + fileName + '</p>',
-                  css: "p { font-family: 'Montserrat ExtraBold'; color: #ffffff; font-size: 40px; }",
-                },
-                transition: {
-                  in: 'slideLeft',
-                  out: 'slideRight',
-                },
-                start: sum(fragmentsDurations, index) + Math.floor((index + 1) / 2) * 3,
-                length: 3,
-              }, */
-
         const requestData = {
           timeline: {
             tracks: [
@@ -152,15 +235,13 @@ export const useStore = create<Store>()(
         };
         console.log('clips', clips);
         console.log('requestData', JSON.stringify(requestData));
-
         shotStackApi.render(requestData);
-
         set({ status: STATUSES.success });
       } catch (error: unknown) {
         set({ status: STATUSES.failure });
         console.log('creating video error', error);
       }
-    },
+    }, */
 
     links: [],
     downloadLinks: [],

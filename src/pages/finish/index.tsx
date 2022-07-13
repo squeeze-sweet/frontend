@@ -9,12 +9,16 @@ export default function Finish() {
   const createVideo = useStore(state => state.createVideo);
   const finishUrl = useStore(state => state.finishUrl);
 
-  useEffect(() => {
+  /*   useEffect(() => {
     createVideo();
-  }, []);
+  }, []); */
 
+  const handleClick = () => {
+    createVideo();
+  };
   return (
     <section className={styles.container}>
+      <button onClick={handleClick}>fawfafawfawf</button>
       <Typography>
         <Title>{!Boolean(finishUrl) ? "You're video is almost here"! : 'Done!'} </Title>
       </Typography>
