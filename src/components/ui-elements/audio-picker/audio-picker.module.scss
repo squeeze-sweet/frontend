@@ -1,0 +1,30 @@
+@import '/src/styles/variables.scss';
+
+.button {
+  background-color: $background-white;
+  cursor: pointer;
+  display: flex;
+  gap: 23px;
+}
+
+
+.icon-container {
+  position: relative;
+  width: 58px;
+  height: 58px;
+  background: $audio-picker-background-gray;
+  border-radius: 29px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon {
+  width: 0;
+  height: 0;
+  position: absolute;
+  left: 20px;
+  border-top: 13px solid transparent;
+  border-left: 23px solid black;
+  border-bottom: 13px solid transparent;
+}

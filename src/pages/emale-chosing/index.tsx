@@ -4,6 +4,7 @@ import { useStore } from '../../store';
 import { Input } from '../../components/ui-elements/input';
 import { validateEmail } from './helpers';
 import LayoutPage from '../../components/templates/form-page';
+import { AudioPicker } from '../../components/ui-elements/audio-picker';
 
 export default function EmaleChosing() {
   const [errorMsg, setErrorMsg] = useState('');
@@ -32,13 +33,16 @@ export default function EmaleChosing() {
 
   return (
     <LayoutPage onSubmit={handleSubmit} heading='Welcome!' buttonText='Continue'>
-      <Input
-        id='email'
-        placeholder="please type you'r email here"
-        label='email'
-        onChange={handleEmailChange}
-        error={errorMsg}
-      />
+      <>
+        <Input
+          id='email'
+          placeholder="please type you'r email here"
+          label='email'
+          onChange={handleEmailChange}
+          error={errorMsg}
+        />{' '}
+        <AudioPicker text='Calm' />
+      </>
     </LayoutPage>
   );
 }
