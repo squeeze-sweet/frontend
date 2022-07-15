@@ -10,8 +10,6 @@ import styles from './step.module.scss';
 
 export default function Step() {
   const filenames = useStore(state => state.filenames);
-  const updateStepsData = useStore(state => state.updateStepsData);
-
   const { status, setStatus } = useStore(state => state);
 
   const [videoPreviewSrc, setVideoPreviewSrc] = useState<string | null>(null);
@@ -40,7 +38,7 @@ export default function Step() {
     setStatus(STATUSES.initial);
   }, []);
 
-  /*   useEffect(() => {
+  useEffect(() => {
     if (status === STATUSES.success) {
       if (Number(id) < filenames.length) {
         navigate(`/step-${Number(id) + 1}`);
@@ -50,7 +48,7 @@ export default function Step() {
       }
     }
   }, [status]);
- */
+
   const handleSubmit = (e: any) => {
     e.preventDefault();
     if (id) {
@@ -60,14 +58,6 @@ export default function Step() {
         videoDuration,
         startTime,
         finishTime,
-      });
-
-      updateStepsData({
-        fragmentName: filenames[Number(id) - 1],
-        fragmentData: fileData.current,
-        fragmentStartTime: startTime,
-        fragmentFinishTime: finishTime,
-        videoPreviewSrc: videoPreviewSrc,
       });
       /* 
       uploadFile({ fileName: filenames[Number(id)], fileDuration: videoDuration });

@@ -5,11 +5,17 @@ import { Input } from '../../components/ui-elements/input';
 import { validateEmail } from './helpers';
 import LayoutPage from '../../components/templates/form-page';
 import { AudioPicker } from '../../components/ui-elements/audio-picker';
+import { downloadconfigFile } from '../../services/api/api-yandex-disk';
 
 export default function EmaleChosing() {
   const [errorMsg, setErrorMsg] = useState('');
   const setEmail = useStore(state => state.setEmail);
+  const initStepsData = useStore(state => state.initStepsData);
   let navigate = useNavigate();
+
+  useEffect(() => {
+    initStepsData();
+  }, []);
 
   const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     const localEmail = e.target['email'].value;
@@ -40,8 +46,8 @@ export default function EmaleChosing() {
           label='email'
           onChange={handleEmailChange}
           error={errorMsg}
-        />{' '}
-        <AudioPicker text='Calm' />
+        />
+        {/* <AudioPicker text='Calm' /> */}
       </>
     </LayoutPage>
   );

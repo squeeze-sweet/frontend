@@ -7,6 +7,7 @@ export interface API {
   getUploadLink: (fileName: string) => any;
   uploadFile: (link: string, file: any) => any;
   getDownloadLink: (fileName: string) => any;
+  downloadFile: (link: string) => any;
 }
 
 const api: API = {
@@ -37,9 +38,26 @@ const api: API = {
         },
       },
     ),
+  downloadFile: async (link: string) =>
+    await axios.get(link, {
+      headers: {
+        Authorization: `OAuth ${token}`,
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    }),
 };
 
 export default api;
+
+export const downloadconfigFile = async () => {
+  const {
+    data: { href: href },
+  } = await api.getDownloadLink('config.json');
+  const {
+    data: { questions: questions },
+  } = await api.downloadFile(href);
+  return questions;
+};
 
 export const uploadVideo = async (fileName: string, fileData: any) => {
   const {

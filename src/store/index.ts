@@ -1,7 +1,7 @@
 import create from 'zustand';
 import { devtools } from 'zustand/middleware';
 import API from '../services/api/api';
-import yandexDiskApi, { uploadVideo } from '../services/api/api-yandex-disk';
+import yandexDiskApi, { downloadconfigFile, uploadVideo } from '../services/api/api-yandex-disk';
 import shotStackApi from '../services/api/api-shotstack';
 import docsApi from '../services/api/api-docs';
 import { STATUSES } from '../services/types';
@@ -12,6 +12,7 @@ import {
   makeVideoClip,
 } from './helpers';
 import { PREMADE_VIDEO_DURATION, TITLE_VIDEO_DURATION, VIDEO_TITLEDURATION } from './constants';
+import { StepData } from '../utils/types';
 
 type File = {
   data: string;
@@ -31,6 +32,22 @@ interface Store {
 
   userInfo: UserInfo;
   setUserInfo: (userInfo: UserInfo) => void;
+
+  stepsData: StepData[];
+  initStepsData: () => void;
+
+  updateStepsData: ({
+    fragmentName,
+    fragmentData,
+    fragmentStartTime,
+    fragmentFinishTime,
+    videoPreviewSrc,
+  }: any) => void;
+
+  setStepsData: (stepsData: StepData[]) => void;
+
+  questions: { number: number; text: string }[];
+  setQuestions: () => void;
 
   filenames: any[];
   setFilenames: (filenames: any) => void;
@@ -76,6 +93,59 @@ export const useStore = create<Store>()(
     userInfo: null,
 
     setUserInfo: userInfo => set({ userInfo: userInfo }),
+
+    questions: [],
+
+    setQuestions: async () => {
+      const questions: string[] = await downloadconfigFile();
+      set({
+        questions: questions.map((question: string, index: number) => ({
+          number: index,
+          text: question,
+        })),
+      });
+    },
+
+    stepsData: [],
+
+    initStepsData: async () => {
+      const questions: string[] = await downloadconfigFile();
+      const stepsData: any = {};
+      questions.forEach(
+        (question: string) =>
+          (stepsData[question] = {
+            fragmentData: '',
+            fragmentStartTime: 0,
+            fragmentFinishTime: 0,
+            videoPreviewSrc: '',
+          }),
+      );
+      set({
+        stepsData: stepsData,
+      });
+    },
+
+    updateStepsData: ({
+      fragmentName,
+      fragmentData,
+      fragmentStartTime,
+      fragmentFinishTime,
+      videoPreviewSrc,
+    }: any) => {
+      set(state => ({
+        stepsData: {
+          ...state.stepsData,
+          'Introduce yourself': {
+            fragmentData: fragmentData,
+            fragmentStartTime: fragmentStartTime,
+            fragmentFinishTime: fragmentFinishTime,
+            videoPreviewSrc: videoPreviewSrc,
+          },
+        },
+      }));
+    },
+
+    setStepsData: stepsData => {},
 
     filenames: [],
     setFilenames: (filenames: any) => {
