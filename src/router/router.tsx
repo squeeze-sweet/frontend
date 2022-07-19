@@ -5,6 +5,7 @@ import Finish from '../pages/finish';
 import FilenamesSetting from '../pages/filenames-setting';
 import Step from '../pages/step';
 import { GeneralInfo } from '../pages/general-info';
+import { Recorder } from '../pages/recorder';
 
 function Router() {
   return (
@@ -15,6 +16,8 @@ function Router() {
           <Route path='general-info' element={<GeneralInfo />} />
           <Route path='/filenames-setting' element={<FilenamesSetting />} />
           <Route path='step-:id' element={<Step />} />
+          <Route path='recorder' element={<Recorder />} />
+          
           <Route path='/finish' element={<Finish />} />
         </Route>
       </Routes>
