@@ -1,12 +1,7 @@
-import { Typography, Input, Button } from 'antd';
-import { useEffect, useRef, useState, useCallback } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useRef, useState, useCallback } from 'react';
+
 import Webcam from 'react-webcam';
-import LayoutPage from '../../components/templates/form-page';
-import VideoPlayer from '../../components/video-player';
-import { uploadVideo } from '../../services/api/api-yandex-disk';
-import { STATUSES } from '../../services/types';
-import { useStore } from '../../store';
+import { VideoButton } from '../../components/ui-elements/video-button';
 
 import styles from './recorder.module.scss';
 
@@ -15,29 +10,41 @@ export const Recorder = () => {
   const mediaRecorderRef = useRef<any>(null);
   const [capturing, setCapturing] = useState<any>(false);
   const [recordedChunks, setRecordedChunks] = useState<any>([]);
-  const [url, setUrl] = useState<any>(null)
+  const [count, setCount] = useState<any>(0);
+  const [url, setUrl] = useState<any>(null);
 
   const handleStartCaptureClick = useCallback(() => {
-    setCapturing(true);
+      setCount(3);
+      setTimeout(() => {
+        setCount(2);
+        setTimeout(() => {
+          setCount(1);
+          setTimeout(() => {
+            setCount(0);
+          }, 1000);
+        }, 1000);
+      }, 1000);
 
-      mediaRecorderRef.current = new MediaRecorder(webcamRef?.current?.stream, {
-        mimeType: "video/webm"
-      });
-
-    mediaRecorderRef.current.addEventListener(
-      "dataavailable",
-      handleDataAvailable
-    );
-    mediaRecorderRef.current.start();
+    setTimeout(() => {
+      startCapturing();
+    }, 3000);
   }, [webcamRef, setCapturing, mediaRecorderRef]);
 
+  const startCapturing = () => {
+    setCapturing(true);
+    mediaRecorderRef.current = new MediaRecorder(webcamRef?.current?.stream, {
+      mimeType: 'video/webm',
+    });
+    mediaRecorderRef.current.addEventListener('dataavailable', handleDataAvailable);
+    mediaRecorderRef.current.start();
+  };
   const handleDataAvailable = useCallback(
     ({ data }: any) => {
       if (data.size > 0) {
         setRecordedChunks((prev: any) => prev.concat(data));
       }
     },
-    [setRecordedChunks]
+    [setRecordedChunks],
   );
 
   const handleStopCaptureClick = useCallback(() => {
@@ -46,25 +53,23 @@ export const Recorder = () => {
   }, [mediaRecorderRef, webcamRef, setCapturing]);
 
   const handleDownload = useCallback(() => {
-    
     if (recordedChunks.length) {
       const blob = new Blob(recordedChunks, {
-        type: "video/webm"
+        type: 'video/webm',
       });
       const url = URL.createObjectURL(blob);
       const reader = new FileReader();
       reader.readAsArrayBuffer(blob);
       reader.onload = function (e: any) {
         console.log('file', e.target.result);
-        
       };
-      console.log('blob',blob);
-      console.log('url',url);
-      const a = document.createElement("a");
+      console.log('blob', blob);
+      console.log('url', url);
+      const a = document.createElement('a');
       document.body.appendChild(a);
-/*       a.style = "display: none"; */
+      /*       a.style = "display: none"; */
       a.href = url;
-      a.download = "react-webcam-stream-capture.webm";
+      a.download = 'react-webcam-stream-capture.webm';
       a.click();
       window.URL.revokeObjectURL(url);
       setRecordedChunks([]);
@@ -72,23 +77,24 @@ export const Recorder = () => {
   }, [recordedChunks]);
 
   return (
-    <LayoutPage onSubmit={()=>{}} heading='Название' buttonText='Continue'>
-      <>
-
-      <Webcam audio={false} ref={webcamRef} className={styles.webcam}/>
-      {capturing ? (
-        <button onClick={handleStopCaptureClick}>Stop Capture</button>
-      ) : (
-        <button onClick={handleStartCaptureClick}>Start Capture</button>
-      )}
-      {recordedChunks.length > 0 && (
-        <button onClick={handleDownload}>Download</button>
-      )}
-      </>
-    </LayoutPage>
+    <>
+      <h1>Inctoduce yourself</h1>
+      <p>tell your name and your current title</p>
+      
+        <div className={styles.recorder}>
+          <Webcam audio={true} muted ref={webcamRef} className={styles.webcam} />
+          {Boolean(count) && <p className={styles.counter}>{count}</p>}
+          <VideoButton
+            onClick={capturing ? handleStopCaptureClick : handleStartCaptureClick}
+            isCapturing={capturing}
+            className={styles['record-button']}
+          />
+        </div>
+        {recordedChunks.length > 0 && <button onClick={handleDownload}>Download</button>}
+      
+    </>
   );
 };
-
 
 // https://www.npmjs.com/package/react-webcam
 

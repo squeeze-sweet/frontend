@@ -1,13 +1,24 @@
 @import '/src/styles/mixins.scss';
 
-.container {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 50px;
+.recorder {
+  width: 560px;
+  margin: auto;
+  position: relative;
+}
+
+.record-button {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+}
+
+.counter {
+  top: 50%;
+  left: 50%;
+  position: absolute;
+  margin: auto;
+  color: white;
+  font-size: 40px;
 }
 
 .form {

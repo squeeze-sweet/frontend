@@ -46,6 +46,10 @@ interface Store {
 
   setStepsData: (stepsData: StepData[]) => void;
 
+  currentStepData: any;
+
+/*   setCurrentStepData: (stepsData: any) => void;  */
+
   questions: { number: number; text: string }[];
   setQuestions: () => void;
 
@@ -107,6 +111,15 @@ export const useStore = create<Store>()(
     },
 
     stepsData: [],
+
+  currentStepData: {
+      fragmentData: '',
+      fragmentStartTime: 0,
+      fragmentFinishTime: 0,
+      videoPreviewSrc: '',
+  },
+
+  setCurrantStepData: (stepData: any) => set(({ currentStepData: stepData })),
 
     initStepsData: async () => {
       const questions: string[] = await downloadconfigFile();
