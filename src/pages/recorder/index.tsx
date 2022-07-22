@@ -14,16 +14,16 @@ export const Recorder = () => {
   const [url, setUrl] = useState<any>(null);
 
   const handleStartCaptureClick = useCallback(() => {
-      setCount(3);
+    setCount(3);
+    setTimeout(() => {
+      setCount(2);
       setTimeout(() => {
-        setCount(2);
+        setCount(1);
         setTimeout(() => {
-          setCount(1);
-          setTimeout(() => {
-            setCount(0);
-          }, 1000);
+          setCount(0);
         }, 1000);
       }, 1000);
+    }, 1000);
 
     setTimeout(() => {
       startCapturing();
@@ -60,11 +60,7 @@ export const Recorder = () => {
       const url = URL.createObjectURL(blob);
       const reader = new FileReader();
       reader.readAsArrayBuffer(blob);
-      reader.onload = function (e: any) {
-        console.log('file', e.target.result);
-      };
-      console.log('blob', blob);
-      console.log('url', url);
+      reader.onload = function (e: any) {};
       const a = document.createElement('a');
       document.body.appendChild(a);
       /*       a.style = "display: none"; */
@@ -80,18 +76,17 @@ export const Recorder = () => {
     <>
       <h1>Inctoduce yourself</h1>
       <p>tell your name and your current title</p>
-      
-        <div className={styles.recorder}>
-          <Webcam audio={true} muted ref={webcamRef} className={styles.webcam} />
-          {Boolean(count) && <p className={styles.counter}>{count}</p>}
-          <VideoButton
-            onClick={capturing ? handleStopCaptureClick : handleStartCaptureClick}
-            isCapturing={capturing}
-            className={styles['record-button']}
-          />
-        </div>
-        {recordedChunks.length > 0 && <button onClick={handleDownload}>Download</button>}
-      
+
+      <div className={styles.recorder}>
+        <Webcam audio={true} muted ref={webcamRef} className={styles.webcam} />
+        {Boolean(count) && <p className={styles.counter}>{count}</p>}
+        <VideoButton
+          onClick={capturing ? handleStopCaptureClick : handleStartCaptureClick}
+          isCapturing={capturing}
+          className={styles['record-button']}
+        />
+      </div>
+      {recordedChunks.length > 0 && <button onClick={handleDownload}>Download</button>}
     </>
   );
 };

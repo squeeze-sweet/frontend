@@ -1,8 +1,15 @@
 @import '/src/styles/variables.scss';
 
-.button {
+.input {
+  display: none;
+}
+
+.label {
   color: $button-white-text;
   background-color: $button-black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
   cursor: pointer;
   font-family: 'Inter';
@@ -12,9 +19,4 @@
   padding: 16px;
   width: 100%;
   border: none;
-}
-
-.disabled {
-  background-color: $button-disabled-gray;
-  cursor: auto;
 }

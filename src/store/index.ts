@@ -27,34 +27,30 @@ type UserInfo = {
 } | null;
 
 interface Store {
+  currentStepData: any;
+  setCurrentStepData: any /* (stepsData: any) => void */;
+  switchCurrentStep: any /* (fragmentName: any) => void */;
+
   email: string | null;
   setEmail: (email: string) => void;
 
   userInfo: UserInfo;
   setUserInfo: (userInfo: UserInfo) => void;
 
-  stepsData: StepData[];
+  stepsData: any;
   initStepsData: () => void;
 
-  updateStepsData: ({
-    fragmentName,
-    fragmentData,
-    fragmentStartTime,
-    fragmentFinishTime,
-    videoPreviewSrc,
-  }: any) => void;
+  updateStepsData: (fragmentName: any, data: any) => void;
 
   setStepsData: (stepsData: StepData[]) => void;
-
-  currentStepData: any;
-
-/*   setCurrentStepData: (stepsData: any) => void;  */
 
   questions: { number: number; text: string }[];
   setQuestions: () => void;
 
   filenames: any[];
   setFilenames: (filenames: any) => void;
+  currentFragmentName: string;
+  setCurrentFragmentName: (currentFragmentName: any) => void;
 
   filesInfo: any[];
   uploadFile: ({ fileName, fileDuration }: any) => void;
@@ -110,16 +106,25 @@ export const useStore = create<Store>()(
       });
     },
 
-    stepsData: [],
+    stepsData: {},
 
-  currentStepData: {
+    currentStepData: {
       fragmentData: '',
       fragmentStartTime: 0,
       fragmentFinishTime: 0,
       videoPreviewSrc: '',
-  },
+    },
 
-  setCurrantStepData: (stepData: any) => set(({ currentStepData: stepData })),
+    setCurrentStepData: (stepData: any) => set({ currentStepData: stepData }),
+
+    switchCurrentStep: (fragmentName: any) => {
+      console.log('switchCurrentStep', get().stepsData[fragmentName]);
+      set(
+        state => ({ currentStepData: { ...state.stepsData[fragmentName] } }),
+        false,
+        'switchCurrentStep',
+      );
+    },
 
     initStepsData: async () => {
       const questions: string[] = await downloadconfigFile();
@@ -138,22 +143,11 @@ export const useStore = create<Store>()(
       });
     },
 
-    updateStepsData: ({
-      fragmentName,
-      fragmentData,
-      fragmentStartTime,
-      fragmentFinishTime,
-      videoPreviewSrc,
-    }: any) => {
+    updateStepsData: (fragmentName, data) => {
       set(state => ({
         stepsData: {
           ...state.stepsData,
-          'Introduce yourself': {
-            fragmentData: fragmentData,
-            fragmentStartTime: fragmentStartTime,
-            fragmentFinishTime: fragmentFinishTime,
-            videoPreviewSrc: videoPreviewSrc,
-          },
+          [fragmentName]: data,
         },
       }));
     },
@@ -163,7 +157,13 @@ export const useStore = create<Store>()(
     filenames: [],
     setFilenames: (filenames: any) => {
       set({ filenames: filenames });
+      set({ currentFragmentName: filenames[0] });
     },
+
+    currentFragmentName: '',
+
+    setCurrentFragmentName: (currentFragmentName: any) =>
+      set({ currentFragmentName: currentFragmentName }, false, 'setCurrentFragmentName'),
 
     filesInfo: [],
 

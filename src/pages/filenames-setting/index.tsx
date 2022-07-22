@@ -22,10 +22,10 @@ export default function FilenamesSetting() {
     setFilenames(
       questions
         .filter((_, index: number) => e.target[String(index)].checked)
-        .map((question: string, index: number) => `${index + 1}. ${question}`),
+        .map((question: string, index: number) => question),
     );
 
-    navigate('../step-1', { replace: true });
+    navigate('../upload');
   };
 
   return (

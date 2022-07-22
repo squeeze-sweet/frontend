@@ -4,8 +4,6 @@ import styles from './video-player.module.scss';
 
 type Props = {
   videoPreviewSrc: string;
-  videoDuration: number;
-  setVideoDuration: (videoDuration: number) => void;
   startTime: number;
   setStartTime: (setStartTime: number) => void;
   finishTime: number;
@@ -14,29 +12,30 @@ type Props = {
 
 export default function VideoPlayer({
   videoPreviewSrc,
-  videoDuration,
-  setVideoDuration,
   startTime,
   setStartTime,
   finishTime,
   setFinishTime,
 }: Props) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoDuration, setVideoDuration] = useState(0);
+  console.log('inside editor videoDuration', videoDuration);
 
   useEffect(() => {
     if (videoRef.current) {
-      handleGettingDuration(videoRef.current);
-      setFinishTime(startTime + videoRef.current.duration);
-      videoRef.current.currentTime = startTime;
+      if (!videoDuration) handleGettingDuration(videoRef.current);
+      if (!finishTime) {
+        setFinishTime(startTime + videoRef.current.duration);
+        videoRef.current.currentTime = startTime;
+      }
     }
-
     async function handleGettingDuration(element: HTMLVideoElement) {
       element.onloadedmetadata = function () {
         setVideoDuration(element.duration);
         setFinishTime(startTime + element.duration);
       };
     }
-  }, [videoRef.current]);
+  }, []);
 
   useEffect(() => {
     if (videoRef.current) {
@@ -45,7 +44,7 @@ export default function VideoPlayer({
   }, [startTime, finishTime]);
 
   const handleTimeUpdate: ReactEventHandler<HTMLVideoElement> = e => {
-    if (e.target) {
+    if (e.currentTarget) {
       if (e.currentTarget.currentTime < startTime || e.currentTarget.currentTime > finishTime) {
         e.currentTarget.pause();
         e.currentTarget.currentTime = startTime;
@@ -53,11 +52,9 @@ export default function VideoPlayer({
     }
   };
 
-  const handleTimeChange = ([startTime, finishTime]: any) => {
-    console.log(startTime, finishTime);
-
-    setFinishTime(finishTime);
-    setStartTime(startTime);
+  const handleTimeChange = ([inputStartTime, inputFinishTime]: any) => {
+    if (finishTime !== inputFinishTime) setFinishTime(inputFinishTime);
+    if (startTime !== inputStartTime) setStartTime(inputStartTime);
   };
 
   return (

@@ -110,8 +110,6 @@ export default function Step() {
         {videoPreviewSrc && (
           <VideoPlayer
             videoPreviewSrc={videoPreviewSrc}
-            videoDuration={videoDuration}
-            setVideoDuration={setVideoDuration}
             startTime={startTime}
             setStartTime={setStartTime}
             finishTime={finishTime}
