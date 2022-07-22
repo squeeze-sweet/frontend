@@ -17,6 +17,36 @@ export default function Navigation() {
     setCurrentFragmentName(filename);
     switchCurrentStep(filename);
   };
+
+  const handleFinish: any = () => {
+    let isValid = true;
+    filenames.map((filename: string) => {
+      if (
+        !(
+          Boolean(stepsData[filename].fragmentData) &&
+          Boolean(stepsData[filename].fragmentFinishTime) &&
+          Boolean(stepsData[filename].videoPreviewSrc)
+        )
+      ) {
+        console.log(
+          'условие',
+          Boolean(stepsData[filename].fragmentData) &&
+            Boolean(stepsData[filename].fragmentFinishTime) &&
+            Boolean(stepsData[filename].videoPreviewSrc),
+        );
+
+        isValid = false;
+      }
+      console.log(
+        'validation',
+        Boolean(stepsData[filename].fragmentData),
+        Boolean(stepsData[filename].fragmentFinishTime),
+        Boolean(stepsData[filename].videoPreviewSrc),
+      );
+    });
+    console.log('isValid', isValid);
+  };
+
   return (
     <section className={styles.container}>
       {filenames.map((filename: string, index: number) => (
@@ -32,6 +62,9 @@ export default function Navigation() {
           </p>
         </>
       ))}
+      <p className={cn(styles.link)} onClick={handleFinish}>
+        Finish
+      </p>
     </section>
   );
 }

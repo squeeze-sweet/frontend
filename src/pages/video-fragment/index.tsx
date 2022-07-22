@@ -26,7 +26,8 @@ export default function VideoFragment() {
   };
 
   const setFinishTime = (time: number) => {
-    console.log('setFinishTime', time);
+    console.log('!!!!!!!!!setFinishTime');
+
     setCurrentStepData({ ...currentStepData, fragmentFinishTime: time });
   };
 

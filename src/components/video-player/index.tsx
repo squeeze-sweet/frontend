@@ -1,6 +1,7 @@
 import { ReactEventHandler, useEffect, useRef, useState } from 'react';
 import Slider from 'rc-slider';
 import styles from './video-player.module.scss';
+import { useStore } from '../../store';
 
 type Props = {
   videoPreviewSrc: string;
@@ -17,9 +18,13 @@ export default function VideoPlayer({
   finishTime,
   setFinishTime,
 }: Props) {
+  const { currentStepData } = useStore(state => ({
+    currentStepData: state.currentStepData,
+    setCurrentStepData: state.setCurrentStepData,
+  }));
+
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoDuration, setVideoDuration] = useState(0);
-  console.log('inside editor videoDuration', videoDuration);
 
   useEffect(() => {
     if (videoRef.current) {
@@ -31,6 +36,7 @@ export default function VideoPlayer({
     async function handleGettingDuration(element: HTMLVideoElement) {
       element.onloadedmetadata = function () {
         setVideoDuration(element.duration);
+        setFinishTime(element.duration);
       };
     }
   }, []);
@@ -71,7 +77,7 @@ export default function VideoPlayer({
             range
             max={videoDuration}
             allowCross={false}
-            defaultValue={[startTime, videoDuration]}
+            value={[startTime, finishTime ? finishTime : videoDuration]}
             onChange={handleTimeChange}
           />
         </div>
