@@ -32,7 +32,6 @@ export default function VideoFragment() {
 
   const handleSaveData = () => {
     console.log('dawdwad');
-
     updateStepsData(currentFragmentName, currentStepData);
   };
 

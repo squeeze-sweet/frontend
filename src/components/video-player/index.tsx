@@ -25,14 +25,12 @@ export default function VideoPlayer({
     if (videoRef.current) {
       if (!videoDuration) handleGettingDuration(videoRef.current);
       if (!finishTime) {
-        setFinishTime(startTime + videoRef.current.duration);
         videoRef.current.currentTime = startTime;
       }
     }
     async function handleGettingDuration(element: HTMLVideoElement) {
       element.onloadedmetadata = function () {
         setVideoDuration(element.duration);
-        setFinishTime(startTime + element.duration);
       };
     }
   }, []);
@@ -73,7 +71,7 @@ export default function VideoPlayer({
             range
             max={videoDuration}
             allowCross={false}
-            defaultValue={[startTime, finishTime]}
+            defaultValue={[startTime, videoDuration]}
             onChange={handleTimeChange}
           />
         </div>

@@ -115,7 +115,8 @@ export const useStore = create<Store>()(
       videoPreviewSrc: '',
     },
 
-    setCurrentStepData: (stepData: any) => set({ currentStepData: stepData }),
+    setCurrentStepData: (stepData: any) =>
+      set({ currentStepData: stepData }, false, 'setCurrentStepData'),
 
     switchCurrentStep: (fragmentName: any) => {
       console.log('switchCurrentStep', get().stepsData[fragmentName]);
