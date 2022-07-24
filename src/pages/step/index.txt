@@ -82,7 +82,6 @@ export default function Step() {
 
   const saveVideo = (e: any) => {
     var file = e.target.files[0];
-    console.log(URL.createObjectURL(file));
     setVideoPreviewSrc(URL.createObjectURL(file));
     const reader = new FileReader();
     reader.readAsArrayBuffer(file);

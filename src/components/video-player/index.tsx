@@ -29,17 +29,15 @@ export default function VideoPlayer({
   useEffect(() => {
     if (videoRef.current) {
       if (!videoDuration) handleGettingDuration(videoRef.current);
-      if (!finishTime) {
-        videoRef.current.currentTime = startTime;
-      }
+      videoRef.current.currentTime = startTime;
     }
+    
     async function handleGettingDuration(element: HTMLVideoElement) {
       element.onloadedmetadata = function () {
         setVideoDuration(element.duration);
-        setFinishTime(element.duration);
       };
     }
-  }, []);
+  }, [videoRef.current]);
 
   useEffect(() => {
     if (videoRef.current) {

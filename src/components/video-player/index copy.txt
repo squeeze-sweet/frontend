@@ -55,7 +55,6 @@ export default function VideoPlayer({
     }
   };
   const handleStartTimeChanging: ReactEventHandler<HTMLInputElement> = e => {
-    console.log('StartTimeChanging');
     if (e.currentTarget.value)
       if (startTime < finishTime - 2) {
         setStartTime(Number(e.currentTarget.value));

@@ -1,8 +1,8 @@
 import create from 'zustand';
-import { devtools } from 'zustand/middleware';
+import { devtools, persist } from 'zustand/middleware';
 import API from '../services/api/api';
 import yandexDiskApi, { downloadconfigFile, uploadVideo } from '../services/api/api-yandex-disk';
-import shotStackApi from '../services/api/api-shotstack';
+import shotStackApi, { uploadOnShotStack } from '../services/api/api-shotstack';
 import docsApi from '../services/api/api-docs';
 import { STATUSES } from '../services/types';
 import {
@@ -61,6 +61,7 @@ interface Store {
   finishUrl: string;
 
   createVideo: () => void;
+  uploadVideo: () => void;
   tracks: any;
   currentDuration: number;
   addClipNameAndTitle: (name: string, title: string) => void;
@@ -84,256 +85,295 @@ const sum = (array: any, maxIndex: any) => {
 };
 
 export const useStore = create<Store>()(
-  devtools((set, get) => ({
-    email: '',
-    setEmail: email => {
-      set({ email: email });
-    },
+  persist(
+    devtools((set, get) => ({
+      email: '',
+      setEmail: email => {
+        set({ email: email });
+      },
 
-    userInfo: null,
+      userInfo: null,
 
-    setUserInfo: userInfo => set({ userInfo: userInfo }),
+      setUserInfo: userInfo => set({ userInfo: userInfo }),
 
-    questions: [],
+      questions: [],
 
-    setQuestions: async () => {
-      const questions: string[] = await downloadconfigFile();
-      set({
-        questions: questions.map((question: string, index: number) => ({
-          number: index,
-          text: question,
-        })),
-      });
-    },
-
-    stepsData: {},
-
-    currentStepData: {
-      fragmentData: '',
-      fragmentStartTime: 0,
-      fragmentFinishTime: 0,
-      videoPreviewSrc: '',
-    },
-
-    setCurrentStepData: (stepData: any) =>
-      set({ currentStepData: stepData }, false, 'setCurrentStepData'),
-
-    switchCurrentStep: (fragmentName: any) => {
-      console.log('switchCurrentStep', get().stepsData[fragmentName]);
-      set(
-        state => ({ currentStepData: { ...state.stepsData[fragmentName] } }),
-        false,
-        'switchCurrentStep',
-      );
-    },
-
-    initStepsData: async () => {
-      const questions: string[] = await downloadconfigFile();
-      const stepsData: any = {};
-      questions.forEach(
-        (question: string) =>
-          (stepsData[question] = {
-            fragmentData: '',
-            fragmentStartTime: 0,
-            fragmentFinishTime: 0,
-            videoPreviewSrc: '',
-          }),
-      );
-      set({
-        stepsData: stepsData,
-      });
-    },
-
-    updateStepsData: (fragmentName, data) => {
-      set(state => ({
-        stepsData: {
-          ...state.stepsData,
-          [fragmentName]: data,
-        },
-      }));
-    },
-
-    setStepsData: stepsData => {},
-
-    filenames: [],
-    setFilenames: (filenames: any) => {
-      set({ filenames: filenames });
-      set({ currentFragmentName: filenames[0] });
-    },
-
-    currentFragmentName: '',
-
-    setCurrentFragmentName: (currentFragmentName: any) =>
-      set({ currentFragmentName: currentFragmentName }, false, 'setCurrentFragmentName'),
-
-    filesInfo: [],
-
-    uploadFile: async ({ fileName, fileData, videoDuration, startTime, finishTime }: any) => {
-      set({ status: STATUSES.fetching });
-      try {
-        const downloadLink = await uploadVideo(fileName, fileData);
+      setQuestions: async () => {
+        const questions: string[] = await downloadconfigFile();
         set({
-          filesInfo: [
-            ...get().filesInfo,
-            { fileName, downloadLink, videoDuration, startTime, finishTime },
-          ],
+          questions: questions.map((question: string, index: number) => ({
+            number: index,
+            text: question,
+          })),
         });
+      },
+
+      stepsData: {},
+
+      currentStepData: {
+        fragmentData: '',
+        fragmentStartTime: 0,
+        fragmentFinishTime: 0,
+        videoPreviewSrc: '',
+      },
+
+      setCurrentStepData: (stepData: any) =>
+        set({ currentStepData: stepData }, false, 'setCurrentStepData'),
+
+      switchCurrentStep: (fragmentName: any) => {
+        set(
+          state => ({ currentStepData: { ...state.stepsData[fragmentName] } }),
+          false,
+          'switchCurrentStep',
+        );
+      },
+
+      initStepsData: async () => {
+        const questions: string[] = await downloadconfigFile();
+        const stepsData: any = {};
+        questions.forEach(
+          (question: string) =>
+            (stepsData[question] = {
+              fragmentData: '',
+              fragmentStartTime: 0,
+              fragmentFinishTime: 0,
+              videoPreviewSrc: '',
+            }),
+        );
+        set({
+          stepsData: stepsData,
+        });
+      },
+
+      updateStepsData: (fragmentName, data) => {
+        set(state => ({
+          stepsData: {
+            ...state.stepsData,
+            [fragmentName]: data,
+          },
+        }));
+      },
+
+      setStepsData: stepsData => {},
+
+      filenames: [],
+      setFilenames: (filenames: any) => {
+        set({ filenames: filenames });
+        set({ currentFragmentName: filenames[0] });
+      },
+
+      currentFragmentName: '',
+
+      setCurrentFragmentName: (currentFragmentName: any) =>
+        set({ currentFragmentName: currentFragmentName }, false, 'setCurrentFragmentName'),
+
+      filesInfo: [],
+
+      uploadFile: async ({ fileName, fileData, videoDuration, startTime, finishTime }: any) => {
+        set({ status: STATUSES.fetching });
+        try {
+          const downloadLink = await uploadVideo(fileName, fileData);
+          set({
+            filesInfo: [
+              ...get().filesInfo,
+              { fileName, downloadLink, videoDuration, startTime, finishTime },
+            ],
+          });
+          set(state => ({
+            tracks: {
+              ...state.tracks,
+              mainClips: [
+                ...state.tracks.mainClips,
+                ...makeVideoClip({
+                  currentDuration: get().currentDuration,
+                  fileName,
+                  downloadLink,
+                  startTime,
+                  finishTime,
+                }),
+              ],
+              audiosClips: [
+                ...state.tracks.audiosClips,
+                makeAudioToVideo({
+                  currentDuration: get().currentDuration,
+                  downloadLink,
+                  startTime,
+                  finishTime,
+                }),
+              ],
+            },
+            currentDuration: state.currentDuration + finishTime - startTime + VIDEO_TITLEDURATION,
+          }));
+
+          set({ status: STATUSES.success });
+        } catch (error: unknown) {
+          set({ status: STATUSES.failure });
+          console.log('upload error', error);
+        }
+      },
+
+      status: STATUSES.initial,
+
+      setStatus: status => set({ status: status }),
+
+      currentDuration: PREMADE_VIDEO_DURATION,
+
+      tracks: {
+        mainClips: [makePremadeVideoClip()],
+        audiosClips: [],
+        audioTrackClips: [],
+      },
+
+      addClipNameAndTitle: (name, title) => {
         set(state => ({
           tracks: {
             ...state.tracks,
             mainClips: [
               ...state.tracks.mainClips,
-              ...makeVideoClip({
-                currentDuration: get().currentDuration,
-                fileName,
-                downloadLink,
-                startTime,
-                finishTime,
-              }),
-            ],
-            audiosClips: [
-              ...state.tracks.audiosClips,
-              makeAudioToVideo({
-                currentDuration: get().currentDuration,
-                downloadLink,
-                startTime,
-                finishTime,
-              }),
+              makeClipJsonForTitlePage(name, title, get().currentDuration),
             ],
           },
-          currentDuration: state.currentDuration + finishTime - startTime + VIDEO_TITLEDURATION,
+          currentDuration: state.currentDuration + TITLE_VIDEO_DURATION,
         }));
+      },
 
-        set({ status: STATUSES.success });
-      } catch (error: unknown) {
-        set({ status: STATUSES.failure });
-        console.log('upload error', error);
-      }
-    },
-
-    status: STATUSES.initial,
-
-    setStatus: status => set({ status: status }),
-
-    currentDuration: PREMADE_VIDEO_DURATION,
-
-    tracks: {
-      mainClips: [makePremadeVideoClip()],
-      audiosClips: [],
-      audioTrackClips: [],
-    },
-
-    addClipNameAndTitle: (name, title) => {
-      set(state => ({
-        tracks: {
-          ...state.tracks,
-          mainClips: [
-            ...state.tracks.mainClips,
-            makeClipJsonForTitlePage(name, title, get().currentDuration),
-          ],
-        },
-        currentDuration: state.currentDuration + TITLE_VIDEO_DURATION,
-      }));
-    },
-
-    addVideo: (name, title) => {
-      set(state => ({
-        tracks: {
-          ...state.tracks,
-          mainClips: [
-            ...state.tracks.mainClips,
-            makeClipJsonForTitlePage(name, title, get().currentDuration),
-          ],
-        },
-        currentDuration: state.currentDuration + TITLE_VIDEO_DURATION,
-      }));
-    },
-
-    createVideo: async () => {
-      set({ status: STATUSES.fetching });
-      try {
-        const requestData = {
-          timeline: {
-            tracks: [
-              {
-                clips: get().tracks.mainClips,
-              },
-              {
-                clips: get().tracks.audiosClips,
-              },
+      addVideo: (name, title) => {
+        set(state => ({
+          tracks: {
+            ...state.tracks,
+            mainClips: [
+              ...state.tracks.mainClips,
+              makeClipJsonForTitlePage(name, title, get().currentDuration),
             ],
           },
-          output: {
-            format: 'mp4',
-            resolution: 'sd',
-          },
+          currentDuration: state.currentDuration + TITLE_VIDEO_DURATION,
+        }));
+      },
+
+      createVideo: async () => {
+        set({ status: STATUSES.fetching });
+        const uploadAndSaveUrl = async (name: string, data: any) => {
+          const downloadLink = await uploadVideo(name, data);
+          console.log('downloadLink', downloadLink);
+          /*         return { filename: name, downloadLink: downloadLink }; */
+          set(
+            {
+              stepsData: {
+                ...get().stepsData,
+                [name]: {
+                  ...get().stepsData[name],
+                  downloadLink: downloadLink,
+                },
+              },
+            },
+            false,
+            'uploadAndSaveUrl',
+          );
         };
-        console.log('requestData', JSON.stringify(requestData));
-        shotStackApi.render(requestData);
-        set({ status: STATUSES.success });
-      } catch (error: unknown) {
-        set({ status: STATUSES.failure });
-        console.log('creating video error', error);
-      }
-    },
-    /* 
-    createVideo: async () => {
-      set({ status: STATUSES.fetching });
-      try {
-        const fragmentsData = get().filesInfo;
-        console.log(fragmentsData);
 
-        const fragmentsDurations = fragmentsData.map(
-          ({ startTime, finishTime }: any) => finishTime - startTime,
-        );
-        const clips = fragmentsData.map(
-          ({ fileName, downloadLink, startTime, finishTime }: any, index: any) => {
-            return {
-              asset: {
-                type: 'video',
-                src: downloadLink,
-                trim: startTime,
-              },
-              start: sum(fragmentsDurations, index) + 3 * (index + 1),
-              length: finishTime - startTime,
-              transition: {
-                in: 'fade',
-                out: 'fade',
-              },
-            };
-          },
-        );
+        try {
+          const fileNames = get().filenames;
+          const mainTrackData = get().stepsData;
 
-        const requestData = {
-          timeline: {
-            tracks: [
-              {
-                clips: clips,
-              },
-            ],
-          },
-          output: {
-            format: 'mp4',
-            resolution: 'sd',
-          },
-        };
-        console.log('clips', clips);
-        console.log('requestData', JSON.stringify(requestData));
-        shotStackApi.render(requestData);
-        set({ status: STATUSES.success });
-      } catch (error: unknown) {
-        set({ status: STATUSES.failure });
-        console.log('creating video error', error);
-      }
-    }, */
+          fileNames.forEach((fileName: string) => {
+            uploadAndSaveUrl(fileName, mainTrackData[fileName].fragmentData);
+          });
+          //-----------------------------------
+          /*         shotStackApi.render(requestData);  */
+          set({ status: STATUSES.success });
+        } catch (error: unknown) {
+          set({ status: STATUSES.failure });
+          console.log('creating video error', error);
+        }
+      },
 
-    links: [],
-    downloadLinks: [],
-    files: [],
-    finishId: '',
-    finishUrl: '',
+      uploadVideo: async () => {
+        set({ status: STATUSES.fetching });
+        try {
+          
+          const fileNames = get().filenames;
+          const mainTrackData = get().stepsData;
 
-    /*
+
+          //-----------------------------
+          let mainClips: any[] = [];
+          let audiosClips: any[] = [];
+          let currentDuration = TITLE_VIDEO_DURATION;
+
+          mainClips = [
+            makeClipJsonForTitlePage(get().userInfo?.firstName+' '+get().userInfo?.lastName, get().userInfo?.jobTitle as any, 0),
+          ];
+
+          fileNames.forEach((fileName: string) => {
+            mainClips= [
+                  ...mainClips,
+                  ...makeVideoClip({
+                    currentDuration: currentDuration,
+                    fileName,
+                    downloadLink: mainTrackData[fileName].downloadLink,
+                    startTime: mainTrackData[fileName].fragmentStartTime,
+                    finishTime: mainTrackData[fileName].fragmentFinishTime,
+                  }),
+                ];
+                audiosClips = [
+                  ...audiosClips,
+                  makeAudioToVideo({
+                    currentDuration: currentDuration,
+                    downloadLink: mainTrackData[fileName].downloadLink,
+                    startTime: mainTrackData[fileName].fragmentStartTime,
+                    finishTime: mainTrackData[fileName].fragmentFinishTime,
+                  }),
+                ];              
+              currentDuration +=
+                mainTrackData[fileName].fragmentFinishTime -
+                mainTrackData[fileName].fragmentStartTime +
+                VIDEO_TITLEDURATION;
+            })
+          
+
+          //-----------------------------------
+          //set data for SHOTSTACK
+          //-----------------------------------
+
+          //-----------------------------------
+/*           uploadOnShotStack(requestData) */
+
+          const requestData = {
+            timeline: {
+              tracks: [
+                {
+                  clips: mainClips,
+                },     
+                {
+                  clips: audiosClips,
+              }, 
+              ],
+            },
+            output: {
+              format: 'mp4',
+              resolution: 'sd',
+            },
+          };
+
+          console.log('requestData',requestData);
+          
+/*            uploadOnShotStack(requestData)  */
+/*           shotStackApi.render(requestData); */
+
+          set({ status: STATUSES.success });
+        } catch (error: unknown) {
+          set({ status: STATUSES.failure });
+          console.log('creating video error', error);
+        }
+      },
+
+      links: [],
+      downloadLinks: [],
+      files: [],
+      finishId: '',
+      finishUrl: '',
+
+      /*
         \"clips": [
           {
             "asset": {
@@ -348,14 +388,15 @@ export const useStore = create<Store>()(
       },
     */
 
-    getFinalLink: async () => {
-      //set({ status: STATUSES.fetching });
-      const response = await shotStackApi.getVideoStatus(get().finishId);
-      //console.log('response!!!!', resultResponse);
-      set({ finishUrl: response.data.response.url });
-      set({ status: STATUSES.success });
-    },
-  })),
+      getFinalLink: async () => {
+        //set({ status: STATUSES.fetching });
+        const response = await shotStackApi.getVideoStatus(get().finishId);
+        //console.log('response!!!!', resultResponse);
+        set({ finishUrl: response.data.response.url });
+        set({ status: STATUSES.success });
+      },
+    })),
+  ),
 );
 
 /*

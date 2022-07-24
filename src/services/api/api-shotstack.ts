@@ -46,3 +46,16 @@ const api: API = {
 };
 
 export default api;
+
+export const uploadOnShotStack = async (requestData:  any) => {
+  const {
+    data: { response: {id} },
+  } = await api.render(requestData);
+
+  setTimeout(async () => {
+     await api.getVideoStatus(id);
+  }, 30000);
+  
+
+
+}

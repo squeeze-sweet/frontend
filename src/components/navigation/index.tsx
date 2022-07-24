@@ -2,8 +2,10 @@ import { useStore } from '../../store';
 import cn from 'classnames';
 import checkIcon from '../../assets/icons/check.svg';
 import styles from './navigation.module.scss';
+import { useNavigate } from 'react-router-dom';
 
 export default function Navigation() {
+  const navitage = useNavigate();
   const { filenames, currentFragmentName, setCurrentFragmentName, switchCurrentStep, stepsData } =
     useStore(state => ({
       filenames: state.filenames,
@@ -20,7 +22,7 @@ export default function Navigation() {
 
   const handleFinish: any = () => {
     let isValid = true;
-    filenames.map((filename: string) => {
+    filenames.forEach((filename: string) => {
       if (
         !(
           Boolean(stepsData[filename].fragmentData) &&
@@ -28,29 +30,20 @@ export default function Navigation() {
           Boolean(stepsData[filename].videoPreviewSrc)
         )
       ) {
-        console.log(
-          'условие',
-          Boolean(stepsData[filename].fragmentData) &&
-            Boolean(stepsData[filename].fragmentFinishTime) &&
-            Boolean(stepsData[filename].videoPreviewSrc),
-        );
-
         isValid = false;
       }
-      console.log(
-        'validation',
-        Boolean(stepsData[filename].fragmentData),
-        Boolean(stepsData[filename].fragmentFinishTime),
-        Boolean(stepsData[filename].videoPreviewSrc),
-      );
     });
-    console.log('isValid', isValid);
+    console.log(isValid);
+    
+    if (isValid) {
+      navitage('../finish')
+    }
   };
 
   return (
     <section className={styles.container}>
       {filenames.map((filename: string, index: number) => (
-        <>
+        <div key = {index} >
           <p
             className={cn(styles.link, { [styles.active]: currentFragmentName === filename })}
             onClick={() => {
@@ -60,11 +53,12 @@ export default function Navigation() {
             {`${index + 1}. ${filename}`}
             {stepsData[`${filename}`].videoPreviewSrc && <img src={checkIcon} />}
           </p>
-        </>
+        </div>
       ))}
       <p className={cn(styles.link)} onClick={handleFinish}>
         Finish
       </p>
+
     </section>
   );
 }

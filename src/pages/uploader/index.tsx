@@ -16,7 +16,6 @@ export default function Uploader({ children }: Props) {
   const inputRef = useRef<any>(null);
 
   const clearValue = () => {
-    console.log('click');
     setCurrentStepData({
       ...currentStepData,
       videoPreviewSrc: '',

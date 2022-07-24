@@ -30,7 +30,6 @@ export default function UserInfo() {
   };
 
   const handleEmailChange = (e: any) => {
-    console.log(e.target.value);
     setLocalEmail(e.target.value);
   };
 

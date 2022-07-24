@@ -55,7 +55,7 @@ export const makeVideoClip = ({
         out: 'fade',
       },
       start: currentDuration,
-      length: PREMADE_VIDEO_DURATION,
+      length: VIDEO_TITLEDURATION,
     },
     {
       asset: {

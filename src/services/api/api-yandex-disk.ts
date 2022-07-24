@@ -70,11 +70,3 @@ export const uploadVideo = async (fileName: string, fileData: any) => {
   return downloadLink;
 };
 
-/*      set({ filesInfo: [...get().filesInfo, { fileName, fileDuration }] });
-        set({ links: [...get().links, response.data.href] });
-        try {
-          console.log('первый запрос');
-          const links = get().links;
-          const response1 = await yandexDiskApi.uploadFile(links[links.length - 1], get().file);
-          //const response2 = await yandexDiskApi.getDownloadLink(fileName);
-          //console.log('ссылка на скачивание', response2.data.href); */
