@@ -24,14 +24,14 @@ type UserInfo = {
   firstName: string;
   lastName: string;
   jobTitle: string;
-} | null;
+};
 
 interface Store {
   currentStepData: any;
   setCurrentStepData: any /* (stepsData: any) => void */;
   switchCurrentStep: any /* (fragmentName: any) => void */;
 
-  email: string | null;
+  email: string;
   setEmail: (email: string) => void;
 
   userInfo: UserInfo;
@@ -92,7 +92,11 @@ export const useStore = create<Store>()(
         set({ email: email });
       },
 
-      userInfo: null,
+      userInfo: {
+        firstName: '',
+        lastName: '',
+        jobTitle: '',
+      },
 
       setUserInfo: userInfo => set({ userInfo: userInfo }),
 
@@ -290,10 +294,8 @@ export const useStore = create<Store>()(
       uploadVideo: async () => {
         set({ status: STATUSES.fetching });
         try {
-          
           const fileNames = get().filenames;
           const mainTrackData = get().stepsData;
-
 
           //-----------------------------
           let mainClips: any[] = [];
@@ -301,52 +303,55 @@ export const useStore = create<Store>()(
           let currentDuration = TITLE_VIDEO_DURATION;
 
           mainClips = [
-            makeClipJsonForTitlePage(get().userInfo?.firstName+' '+get().userInfo?.lastName, get().userInfo?.jobTitle as any, 0),
+            makeClipJsonForTitlePage(
+              get().userInfo?.firstName + ' ' + get().userInfo?.lastName,
+              get().userInfo?.jobTitle as any,
+              0,
+            ),
           ];
 
           fileNames.forEach((fileName: string) => {
-            mainClips= [
-                  ...mainClips,
-                  ...makeVideoClip({
-                    currentDuration: currentDuration,
-                    fileName,
-                    downloadLink: mainTrackData[fileName].downloadLink,
-                    startTime: mainTrackData[fileName].fragmentStartTime,
-                    finishTime: mainTrackData[fileName].fragmentFinishTime,
-                  }),
-                ];
-                audiosClips = [
-                  ...audiosClips,
-                  makeAudioToVideo({
-                    currentDuration: currentDuration,
-                    downloadLink: mainTrackData[fileName].downloadLink,
-                    startTime: mainTrackData[fileName].fragmentStartTime,
-                    finishTime: mainTrackData[fileName].fragmentFinishTime,
-                  }),
-                ];              
-              currentDuration +=
-                mainTrackData[fileName].fragmentFinishTime -
-                mainTrackData[fileName].fragmentStartTime +
-                VIDEO_TITLEDURATION;
-            })
-          
+            mainClips = [
+              ...mainClips,
+              ...makeVideoClip({
+                currentDuration: currentDuration,
+                fileName,
+                downloadLink: mainTrackData[fileName].downloadLink,
+                startTime: mainTrackData[fileName].fragmentStartTime,
+                finishTime: mainTrackData[fileName].fragmentFinishTime,
+              }),
+            ];
+            audiosClips = [
+              ...audiosClips,
+              makeAudioToVideo({
+                currentDuration: currentDuration,
+                downloadLink: mainTrackData[fileName].downloadLink,
+                startTime: mainTrackData[fileName].fragmentStartTime,
+                finishTime: mainTrackData[fileName].fragmentFinishTime,
+              }),
+            ];
+            currentDuration +=
+              mainTrackData[fileName].fragmentFinishTime -
+              mainTrackData[fileName].fragmentStartTime +
+              VIDEO_TITLEDURATION;
+          });
 
           //-----------------------------------
           //set data for SHOTSTACK
           //-----------------------------------
 
           //-----------------------------------
-/*           uploadOnShotStack(requestData) */
+          /*           uploadOnShotStack(requestData) */
 
           const requestData = {
             timeline: {
               tracks: [
                 {
                   clips: mainClips,
-                },     
+                },
                 {
                   clips: audiosClips,
-              }, 
+                },
               ],
             },
             output: {
@@ -355,10 +360,10 @@ export const useStore = create<Store>()(
             },
           };
 
-          console.log('requestData',requestData);
-          
-/*            uploadOnShotStack(requestData)  */
-/*           shotStackApi.render(requestData); */
+          console.log('requestData', requestData);
+
+          /*            uploadOnShotStack(requestData)  */
+          /*           shotStackApi.render(requestData); */
 
           set({ status: STATUSES.success });
         } catch (error: unknown) {

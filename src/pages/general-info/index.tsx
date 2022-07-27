@@ -7,9 +7,11 @@ import styles from './general-info.module.scss';
 
 type FormErrors = { firstName: string; lastName: string; jobTitle: string };
 
-export const GeneralInfo = () => {
+export const GeneralInfo = ({ onSubmit }: any) => {
   const [errors, setErrors] = useState<FormErrors>({ firstName: '', lastName: '', jobTitle: '' });
   const setUserInfo = useStore(state => state.setUserInfo);
+  const { firstName, lastName, jobTitle } = useStore(state => state.userInfo);
+
   const addClipNameAndTitle = useStore(state => state.addClipNameAndTitle);
 
   let navigate = useNavigate();
@@ -37,29 +39,32 @@ export const GeneralInfo = () => {
     } else {
       setUserInfo({ firstName, lastName, jobTitle });
       addClipNameAndTitle(`${firstName} ${lastName}`, jobTitle);
-      navigate('/filenames-setting');
+      onSubmit();
     }
   };
 
   return (
-    <LayoutPage onSubmit={handleSubmit} heading='Who are you?' buttonText='Continue'>
+    <LayoutPage onSubmit={handleSubmit} buttonText='Continue'>
       <div className={styles.inputs}>
         <Input
           id='first-name'
           placeholder="please type you'r first name"
           label='first-name'
+          defaultValue={firstName}
           error={errors.firstName}
         />
         <Input
           id='last-name'
           placeholder="please type you'r last name"
           label='last-name'
+          defaultValue={lastName}
           error={errors.lastName}
         />
         <Input
           id='job-title'
           placeholder="please type you'r job title"
           label='job-title'
+          defaultValue={jobTitle}
           error={errors.jobTitle}
         />
       </div>

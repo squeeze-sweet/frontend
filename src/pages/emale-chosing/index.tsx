@@ -7,9 +7,10 @@ import LayoutPage from '../../components/templates/form-page';
 import { AudioPicker } from '../../components/ui-elements/audio-picker';
 import { downloadconfigFile } from '../../services/api/api-yandex-disk';
 
-export default function EmaleChosing() {
+export default function EmaleChosing({ onSubmit }: any) {
   const [errorMsg, setErrorMsg] = useState('');
   const setEmail = useStore(state => state.setEmail);
+  const email = useStore(state => state.email);
   const initStepsData = useStore(state => state.initStepsData);
   let navigate = useNavigate();
 
@@ -25,7 +26,7 @@ export default function EmaleChosing() {
     } else {
       setEmail(localEmail);
     }
-    navigate('/general-info');
+    onSubmit();
   };
 
   const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -38,9 +39,10 @@ export default function EmaleChosing() {
   };
 
   return (
-    <LayoutPage onSubmit={handleSubmit} heading='Welcome!' buttonText='Continue'>
+    <LayoutPage onSubmit={handleSubmit} buttonText='Continue'>
       <>
         <Input
+          defaultValue={email}
           id='email'
           placeholder="please type you'r email here"
           label='email'
