@@ -26,7 +26,7 @@ export default function IntroduceYourself() {
       setCurrentStep(currentStep + 1);
     } else {
       setCurrentStep(0);
-      navigate('/filenames-setting');
+      navigate('/select-questions');
     }
   };
 

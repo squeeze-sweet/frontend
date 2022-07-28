@@ -34,16 +34,16 @@ export default function Navigation() {
       }
     });
     console.log(isValid);
-    
+
     if (isValid) {
-      navitage('../finish')
+      navitage('../finish');
     }
   };
 
   return (
     <section className={styles.container}>
       {filenames.map((filename: string, index: number) => (
-        <div key = {index} >
+        <div key={index}>
           <p
             className={cn(styles.link, { [styles.active]: currentFragmentName === filename })}
             onClick={() => {
@@ -55,10 +55,6 @@ export default function Navigation() {
           </p>
         </div>
       ))}
-      <p className={cn(styles.link)} onClick={handleFinish}>
-        Finish
-      </p>
-
     </section>
   );
 }

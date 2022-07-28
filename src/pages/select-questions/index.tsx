@@ -12,8 +12,9 @@ const questions = [
   'Your spare time hobby',
 ];
 
-export default function FilenamesSetting() {
+export default function SelectQuestions() {
   let navigate = useNavigate();
+  const filenames = useStore(state => state.filenames);
   const setFilenames = useStore(state => state.setFilenames);
 
   const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
@@ -25,7 +26,7 @@ export default function FilenamesSetting() {
         .map((question: string, index: number) => question),
     );
 
-    navigate('../upload');
+    navigate('../upload-and-edit');
   };
 
   return (
@@ -35,7 +36,9 @@ export default function FilenamesSetting() {
           <Checkbox
             id={String(index)}
             label={`${index}. ${question}`}
-            isDefaultChecked={index === 0}
+            isDefaultChecked={
+              index === 0 || filenames.find((filename: string) => filename === question)
+            }
             isDisabled={index === 0}
             key={index}
           />
