@@ -8,6 +8,7 @@ import { STATUSES } from '../services/types';
 import {
   makeAudioToVideo,
   makeClipJsonForTitlePage,
+  makeMusic,
   makePremadeVideoClip,
   makeVideoClip,
 } from './helpers';
@@ -334,10 +335,24 @@ export const useStore = create<Store>()(
               }),
             ];
             currentDuration +=
-              mainTrackData[fileName].fragmentFinishTime -
-              mainTrackData[fileName].fragmentStartTime +
+              Number(
+                get().stepsData[get().filenames[get().filenames.length - 1]].fragmentFinishTime,
+              ) -
+              Number(
+                get().stepsData[get().filenames[get().filenames.length - 1]].fragmentStartTime,
+              ) +
               VIDEO_TITLEDURATION;
           });
+
+          const finalLength =
+            currentDuration; /*  + mainClips[0].fragmentFinishTime - mainClips[0].fragmentStartTime */
+
+          const musicClips = [
+            makeMusic({
+              downloadLink: get().musicLink,
+              finishTime: finalLength,
+            }),
+          ];
 
           //-----------------------------------
           //set data for SHOTSTACK
@@ -355,6 +370,9 @@ export const useStore = create<Store>()(
                 {
                   clips: audiosClips,
                 },
+                {
+                  clips: musicClips,
+                },
               ],
             },
             output: {
@@ -365,7 +383,7 @@ export const useStore = create<Store>()(
 
           console.log('requestData', requestData);
 
-          /*            uploadOnShotStack(requestData)  */
+          uploadOnShotStack(requestData);
           /*           shotStackApi.render(requestData); */
 
           set({ status: STATUSES.success });
@@ -417,7 +435,7 @@ export const useStore = create<Store>()(
                 currentDuration: 0,
                 downloadLink: response.data.href,
                 startTime: 0,
-                finishTime: 20,
+                finishTime: 0,
               }),
             ],
           },

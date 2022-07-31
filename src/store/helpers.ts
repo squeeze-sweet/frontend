@@ -84,3 +84,14 @@ export const makeAudioToVideo = ({ currentDuration, downloadLink, startTime, fin
     length: finishTime - startTime,
   };
 };
+
+export const makeMusic = ({ downloadLink, finishTime }: any) => {
+  return {
+    asset: {
+      type: 'audio',
+      src: downloadLink,
+    },
+    start: 0,
+    length: finishTime,
+  };
+};
