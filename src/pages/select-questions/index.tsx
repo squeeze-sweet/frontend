@@ -30,20 +30,30 @@ export default function SelectQuestions() {
   };
 
   return (
-    <LayoutPage onSubmit={handleSubmit} heading='Select 2 questions' buttonText='Continue'>
-      <div className={styles.checkboxes}>
-        {questions.map((question, index) => (
-          <Checkbox
-            id={String(index)}
-            label={`${index}. ${question}`}
-            isDefaultChecked={
-              index === 0 || filenames.find((filename: string) => filename === question)
-            }
-            isDisabled={index === 0}
-            key={index}
-          />
-        ))}
+    <section className={styles['page-container']}>
+      <div className={styles['header-container']}>
+        <div className={styles.text}>
+          <h1>Select the questions</h1>
+          <p className={styles.description}>
+            answer them in videos in next step. ideal length is 10-20 sec per question.
+          </p>
+        </div>
       </div>
-    </LayoutPage>
+      <div className={styles['content-container']}>
+        <div className={styles.checkboxes}>
+          {questions.map((question, index) => (
+            <Checkbox
+              id={String(index)}
+              label={`${question}`}
+              isDefaultChecked={
+                index === 0 || filenames.find((filename: string) => filename === question)
+              }
+              isDisabled={index === 0}
+              key={index}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }

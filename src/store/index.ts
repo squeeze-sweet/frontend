@@ -55,6 +55,9 @@ interface Store {
   filesInfo: any[];
   uploadFile: ({ fileName, fileDuration }: any) => void;
 
+  musicLink: string;
+  getMusicLink: (fileName: any) => void;
+
   status: STATUSES;
   setStatus: (status: STATUSES) => void;
 
@@ -398,6 +401,30 @@ export const useStore = create<Store>()(
         const response = await shotStackApi.getVideoStatus(get().finishId);
         //console.log('response!!!!', resultResponse);
         set({ finishUrl: response.data.response.url });
+        set({ status: STATUSES.success });
+      },
+
+      musicLink: '',
+
+      getMusicLink: async fileName => {
+        set({ status: STATUSES.fetching });
+        const response = await yandexDiskApi.getDownloadLink(`${fileName}.mp3`);
+        set(state => ({
+          tracks: {
+            ...state.tracks,
+            audioTrackClips: [
+              makeAudioToVideo({
+                currentDuration: 0,
+                downloadLink: response.data.href,
+                startTime: 0,
+                finishTime: 20,
+              }),
+            ],
+          },
+          currentDuration: 0,
+        }));
+
+        set({ musicLink: response.data.href });
         set({ status: STATUSES.success });
       },
     })),

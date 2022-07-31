@@ -38,7 +38,7 @@ export default function IntroduceYourself() {
     },
     {
       heading: 'and what’s your name?',
-      text: '',
+      text: 'please tyle general info about you',
       component: <GeneralInfo onSubmit={handleChangeStep} />,
     },
   ];
@@ -48,6 +48,7 @@ export default function IntroduceYourself() {
       <div className={styles['header-container']}>
         <div className={styles.text}>
           <h1>{stepsData[currentStep].heading}</h1>
+          <p className={styles.description}>{stepsData[currentStep].text}</p>
         </div>
       </div>
       <div className={styles['content-container']}>{stepsData[currentStep].component}</div>

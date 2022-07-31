@@ -4,6 +4,7 @@ import EmaleChosing from '../pages/emale-chosing';
 import IntroduceYourself from '../pages/introduce-yourself';
 import Finish from '../pages/finish';
 import SelectQuestions from '../pages/select-questions';
+import AddMusic from '../pages/add-music';
 
 import { GeneralInfo } from '../pages/general-info';
 import { Recorder } from '../pages/recorder';
@@ -23,6 +24,10 @@ export const routes = [
     name: 'Upload and edit',
   },
   {
+    path: 'add-music',
+    name: 'Add music',
+  },
+  {
     path: 'ready',
     name: 'Ready',
   },
@@ -36,6 +41,7 @@ function Router() {
           <Route path='introduce-yourself' element={<IntroduceYourself />} />
           <Route path='select-questions' element={<SelectQuestions />} />
           <Route path='upload-and-edit' element={<UploadAndEdit />} />
+          <Route path='add-music' element={<AddMusic />} />
           <Route path='/ready' element={<Finish />} />
           {/*           <Route path='step-:id' element={<Step />} /> */}
 

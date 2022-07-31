@@ -1,27 +1,27 @@
 .outlet {
   position: relative;
   width: 100%;
-  height: 100%;
+  height: calc(100% - 76px);
 }
 
-.breadcrumbs{
+.breadcrumbs {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.link{
+.link {
   padding: 27px 20px;
   cursor: pointer;
 }
 
 .active {
-  color: #28AD13;
+  color: #28ad13;
 }
 
 .line {
   height: 1px;
-  background-color: #858C92;
+  background-color: #858c92;
   min-width: 20px;
   max-width: 80px;
   flex-grow: 1;
