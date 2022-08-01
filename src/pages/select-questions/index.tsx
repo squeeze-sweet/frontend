@@ -40,19 +40,21 @@ export default function SelectQuestions() {
         </div>
       </div>
       <div className={styles['content-container']}>
-        <div className={styles.checkboxes}>
-          {questions.map((question, index) => (
-            <Checkbox
-              id={String(index)}
-              label={`${question}`}
-              isDefaultChecked={
-                index === 0 || filenames.find((filename: string) => filename === question)
-              }
-              isDisabled={index === 0}
-              key={index}
-            />
-          ))}
-        </div>
+        <LayoutPage buttonText='Submit' onSubmit={handleSubmit} className={styles.layout}>
+          <div className={styles.checkboxes}>
+            {questions.map((question, index) => (
+              <Checkbox
+                id={String(index)}
+                label={`${question}`}
+                isDefaultChecked={
+                  index === 0 || filenames.find((filename: string) => filename === question)
+                }
+                isDisabled={index === 0}
+                key={index}
+              />
+            ))}
+          </div>
+        </LayoutPage>
       </div>
     </section>
   );

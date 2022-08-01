@@ -93,7 +93,7 @@ export const useStore = create<Store>()(
     devtools((set, get) => ({
       email: '',
       setEmail: email => {
-        set({ email: email });
+        set({ email: email }, false, 'setEmail');
       },
 
       userInfo: {
@@ -102,18 +102,22 @@ export const useStore = create<Store>()(
         jobTitle: '',
       },
 
-      setUserInfo: userInfo => set({ userInfo: userInfo }),
+      setUserInfo: userInfo => set({ userInfo: userInfo }, false, 'setUserInfo'),
 
       questions: [],
 
       setQuestions: async () => {
         const questions: string[] = await downloadconfigFile();
-        set({
-          questions: questions.map((question: string, index: number) => ({
-            number: index,
-            text: question,
-          })),
-        });
+        set(
+          {
+            questions: questions.map((question: string, index: number) => ({
+              number: index,
+              text: question,
+            })),
+          },
+          false,
+          'selectQuestions',
+        );
       },
 
       stepsData: {},

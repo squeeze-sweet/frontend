@@ -18,11 +18,6 @@ export default function VideoPlayer({
   finishTime,
   setFinishTime,
 }: Props) {
-  const { currentStepData } = useStore(state => ({
-    currentStepData: state.currentStepData,
-    setCurrentStepData: state.setCurrentStepData,
-  }));
-
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoDuration, setVideoDuration] = useState(0);
 
@@ -31,10 +26,11 @@ export default function VideoPlayer({
       if (!videoDuration) handleGettingDuration(videoRef.current);
       videoRef.current.currentTime = startTime;
     }
-    
+
     async function handleGettingDuration(element: HTMLVideoElement) {
       element.onloadedmetadata = function () {
         setVideoDuration(element.duration);
+        setFinishTime(element.duration);
       };
     }
   }, [videoRef.current]);
