@@ -46,9 +46,6 @@ interface Store {
 
   setStepsData: (stepsData: StepData[]) => void;
 
-  questions: { number: number; text: string }[];
-  setQuestions: () => void;
-
   filenames: any[];
   setFilenames: (filenames: any) => void;
   currentFragmentName: string;
@@ -104,22 +101,6 @@ export const useStore = create<Store>()(
       },
 
       setUserInfo: userInfo => set({ userInfo: userInfo }, false, 'setUserInfo'),
-
-      questions: [],
-
-      setQuestions: async () => {
-        const questions: string[] = await downloadconfigFile();
-        set(
-          {
-            questions: questions.map((question: string, index: number) => ({
-              number: index,
-              text: question,
-            })),
-          },
-          false,
-          'selectQuestions',
-        );
-      },
 
       stepsData: {},
 

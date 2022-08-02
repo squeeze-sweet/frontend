@@ -7,10 +7,11 @@ import { Button } from '../../components/ui-elements/button';
 
 const questions = [
   'Introduce yourself',
-  'Your favourite meal',
+  'How did you get your last promotion?',
   'Your favourite movie',
-  'Your fav. spot to eat',
   'Your spare time hobby',
+  'Your fav. spot to eat',
+  'What’s that film that you always recommend your feinds and why?',
 ];
 
 export default function SelectQuestions() {
