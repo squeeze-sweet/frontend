@@ -7,6 +7,14 @@ import LayoutPage from '../../components/templates/form-page';
 import { AudioPicker } from '../../components/ui-elements/audio-picker';
 import { downloadconfigFile } from '../../services/api/api-yandex-disk';
 
+import { google } from 'googleapis';
+
+const CLIENT_ID = '31526199535-efjns9n6lp21ltba1n60f7essskosg5e.apps.googleusercontent.com';
+const CLIENT_SECRET = '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';
+const REDIRECT_URI = 'https://developers.google.com/oauthplayground/';
+const REFRESH_TOKEN =
+  '1//04xn8jhKinRivCgYIARAAGAQSNwF-L9IrLY51-qe0RuzFDGRCNebzIXBsHg5uhWQLxKB79RkK0dqX34T92Tx0vyc7AGZRfpOwOKY';
+
 export default function EmaleChosing({ onSubmit }: any) {
   const [errorMsg, setErrorMsg] = useState('');
   const setEmail = useStore(state => state.setEmail);
