@@ -14,6 +14,7 @@ import {
 } from './helpers';
 import { PREMADE_VIDEO_DURATION, TITLE_VIDEO_DURATION, VIDEO_TITLEDURATION } from './constants';
 import { StepData } from '../utils/types';
+import { isEmptyObject } from '../utils/helpers';
 
 type File = {
   data: string;
@@ -143,18 +144,24 @@ export const useStore = create<Store>()(
       initStepsData: async () => {
         const questions: string[] = await downloadconfigFile();
         const stepsData: any = {};
-        questions.forEach(
-          (question: string) =>
-            (stepsData[question] = {
-              fragmentData: '',
-              fragmentStartTime: 0,
-              fragmentFinishTime: 0,
-              videoPreviewSrc: '',
-            }),
-        );
-        set({
-          stepsData: stepsData,
-        });
+        if (isEmptyObject(get().stepsData)) {
+          questions.forEach(
+            (question: string) =>
+              (stepsData[question] = {
+                fragmentData: '',
+                fragmentStartTime: 0,
+                fragmentFinishTime: 0,
+                videoPreviewSrc: '',
+              }),
+          );
+          set(
+            {
+              stepsData: stepsData,
+            },
+            false,
+            'init steps data',
+          );
+        }
       },
 
       updateStepsData: (fragmentName, data) => {
@@ -164,12 +171,6 @@ export const useStore = create<Store>()(
               ...state.stepsData,
               [fragmentName]: data,
             },
-            /*             currentStepData: {
-              fragmentData: '',
-              fragmentStartTime: 0,
-              fragmentFinishTime: 0,
-              videoPreviewSrc: '',
-            }, */
           }),
           false,
           'update steps data',
