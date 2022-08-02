@@ -3,6 +3,7 @@ import LayoutPage from '../../components/templates/form-page';
 import { useStore } from '../../store';
 import Radio from '../../components/ui-elements/radio';
 import styles from './filenames-setting.module.scss';
+import { Button } from '../../components/ui-elements/button';
 
 const musics = ['Energetic', 'Calm', 'Uplifting'];
 
@@ -15,12 +16,15 @@ export default function AddMusic() {
   };
 
   return (
-    <LayoutPage onSubmit={handleSubmit} buttonText='Continue'>
+    <form onSubmit={handleSubmit} className={styles.form}>
       <div className={styles.checkboxes}>
         {musics.map((musicName, index) => (
           <Radio id={String(index)} label={`${musicName}`} key={index} value={musicName} />
         ))}
       </div>
-    </LayoutPage>
+      <div className={styles.footer}>
+        <Button htmlType='submit'>Next</Button>
+      </div>
+    </form>
   );
 }

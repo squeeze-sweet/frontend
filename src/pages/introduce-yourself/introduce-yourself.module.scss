@@ -32,6 +32,9 @@
 }
 
 .content-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 50%;
   flex-grow: 1;
   background-color: white;
@@ -54,3 +57,8 @@
     max-width: 360px;
   }
 }
+
+.container {
+  
+}
+

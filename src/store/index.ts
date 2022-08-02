@@ -158,12 +158,22 @@ export const useStore = create<Store>()(
       },
 
       updateStepsData: (fragmentName, data) => {
-        set(state => ({
-          stepsData: {
-            ...state.stepsData,
-            [fragmentName]: data,
-          },
-        }));
+        set(
+          state => ({
+            stepsData: {
+              ...state.stepsData,
+              [fragmentName]: data,
+            },
+            /*             currentStepData: {
+              fragmentData: '',
+              fragmentStartTime: 0,
+              fragmentFinishTime: 0,
+              videoPreviewSrc: '',
+            }, */
+          }),
+          false,
+          'update steps data',
+        );
       },
 
       setStepsData: stepsData => {},

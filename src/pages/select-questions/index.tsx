@@ -3,6 +3,7 @@ import LayoutPage from '../../components/templates/form-page';
 import { useStore } from '../../store';
 import { Checkbox } from '../../components/ui-elements/checkbox';
 import styles from './filenames-setting.module.scss';
+import { Button } from '../../components/ui-elements/button';
 
 const questions = [
   'Introduce yourself',
@@ -39,23 +40,25 @@ export default function SelectQuestions() {
           </p>
         </div>
       </div>
-      <div className={styles['content-container']}>
-        <LayoutPage buttonText='Submit' onSubmit={handleSubmit} className={styles.layout}>
-          <div className={styles.checkboxes}>
-            {questions.map((question, index) => (
-              <Checkbox
-                id={String(index)}
-                label={`${question}`}
-                isDefaultChecked={
-                  index === 0 || filenames.find((filename: string) => filename === question)
-                }
-                isDisabled={index === 0}
-                key={index}
-              />
-            ))}
-          </div>
-        </LayoutPage>
-      </div>
+
+      <form onSubmit={handleSubmit} className={styles['content-container']}>
+        <div className={styles.checkboxes}>
+          {questions.map((question, index) => (
+            <Checkbox
+              id={String(index)}
+              label={`${question}`}
+              isDefaultChecked={
+                index === 0 || filenames.find((filename: string) => filename === question)
+              }
+              isDisabled={index === 0}
+              key={index}
+            />
+          ))}
+        </div>
+        <div className={styles.footer}>
+          <Button htmlType='submit'>Next</Button>
+        </div>
+      </form>
     </section>
   );
 }

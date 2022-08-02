@@ -11,26 +11,31 @@ export default function UploadAndEdit() {
   const {
     currentFragmentName,
     currentStepData,
+
     currentStepData: { fragmentStartTime, fragmentFinishTime, videoPreviewSrc },
     setCurrentStepData,
     updateStepsData,
   } = useStore(state => ({
     currentFragmentName: state.currentFragmentName,
     currentStepData: state.currentStepData,
+
     setCurrentStepData: state.setCurrentStepData,
     updateStepsData: state.updateStepsData,
   }));
+
+  console.log('filename on re-render', currentFragmentName);
+  console.log('currentStepData on re-render', currentStepData);
 
   const setStartTime = (time: number) => {
     setCurrentStepData({ ...currentStepData, fragmentStartTime: time });
   };
 
   const setFinishTime = (time: number) => {
+    console.log('setting finish time of', currentFragmentName);
     setCurrentStepData({ ...currentStepData, fragmentFinishTime: time });
   };
 
   const handleSaveData = () => {
-    console.log('dawdwad');
     updateStepsData(currentFragmentName, currentStepData);
   };
 
