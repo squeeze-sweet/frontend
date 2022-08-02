@@ -31,7 +31,7 @@ export default function VideoPlayer({
       element.onloadedmetadata = function () {
         if (videoPreviewSrc) {
           setVideoDuration(element.duration);
-          setFinishTime(element.duration);
+          !finishTime && setFinishTime(element.duration);
         }
       };
     }
