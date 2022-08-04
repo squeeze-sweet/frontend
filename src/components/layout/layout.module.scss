@@ -1,5 +1,6 @@
 .outlet {
   position: relative;
+  overflow: hidden;
   width: 100%;
   height: calc(100% - 76px);
 }
@@ -25,4 +26,10 @@
   min-width: 20px;
   max-width: 80px;
   flex-grow: 1;
+}
+
+.preloader {
+  position: absolute;
+  right: 0;
+  top: 0;
 }

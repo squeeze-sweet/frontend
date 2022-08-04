@@ -92,6 +92,7 @@ export const makeMusic = ({ downloadLink, finishTime }: any) => {
       src: downloadLink,
     },
     start: 0,
+    volume: 0.3,
     length: finishTime,
   };
 };

@@ -33,7 +33,6 @@ export default function Navigation() {
         isValid = false;
       }
     });
-    console.log(isValid);
 
     if (isValid) {
       navitage('../finish');

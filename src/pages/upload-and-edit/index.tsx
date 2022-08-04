@@ -4,7 +4,7 @@ import UploadNavigation from '../../components/navigation';
 import { useStore } from '../../store';
 import styles from './step.module.scss';
 import Uploader from '../uploader';
-import Preview from '../preview';
+/* import Preview from '../preview'; */
 import VideoPlayer from '../../components/video-player';
 
 export default function UploadAndEdit() {
@@ -15,16 +15,20 @@ export default function UploadAndEdit() {
     currentStepData: { fragmentStartTime, fragmentFinishTime, videoPreviewSrc },
     setCurrentStepData,
     updateStepsData,
+    resetStepData,
   } = useStore(state => ({
     currentFragmentName: state.currentFragmentName,
     currentStepData: state.currentStepData,
 
     setCurrentStepData: state.setCurrentStepData,
     updateStepsData: state.updateStepsData,
+    resetStepData: state.resetStepData,
   }));
 
-  console.log('filename on re-render', currentFragmentName);
-  console.log('currentStepData on re-render', currentStepData);
+  const resetVideoPreviewSrs = () => {
+    setCurrentStepData({ ...currentStepData, videoPreviewSrc: '' });
+    resetStepData(currentFragmentName, currentStepData);
+  };
 
   const setStartTime = (time: number) => {
     setCurrentStepData({ ...currentStepData, fragmentStartTime: time });
@@ -48,6 +52,7 @@ export default function UploadAndEdit() {
           {videoPreviewSrc && (
             <VideoPlayer
               videoPreviewSrc={videoPreviewSrc}
+              resetVideoPreviewSrs={resetVideoPreviewSrs}
               startTime={fragmentStartTime}
               setStartTime={setStartTime}
               finishTime={fragmentFinishTime}

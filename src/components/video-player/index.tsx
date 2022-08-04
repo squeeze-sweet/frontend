@@ -5,14 +5,16 @@ import { useStore } from '../../store';
 
 type Props = {
   videoPreviewSrc: string;
+  resetVideoPreviewSrs: () => void;
   startTime: number;
-  setStartTime: (setStartTime: number) => void;
+  setStartTime: (time: number) => void;
   finishTime: number;
-  setFinishTime: (setFinishTime: number) => void;
+  setFinishTime: (time: number) => void;
 };
 
 export default function VideoPlayer({
   videoPreviewSrc,
+  resetVideoPreviewSrs,
   startTime,
   setStartTime,
   finishTime,
@@ -20,6 +22,10 @@ export default function VideoPlayer({
 }: Props) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoDuration, setVideoDuration] = useState(0);
+
+  const handleError = () => {
+    resetVideoPreviewSrs();
+  };
 
   useEffect(() => {
     if (videoRef.current) {
@@ -64,6 +70,7 @@ export default function VideoPlayer({
         ref={videoRef}
         className={styles['video-player']}
         src={videoPreviewSrc}
+        onError={handleError}
         onTimeUpdate={handleTimeUpdate}
         controls
       ></video>

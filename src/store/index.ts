@@ -33,6 +33,9 @@ interface Store {
   setCurrentStepData: any /* (stepsData: any) => void */;
   switchCurrentStep: any /* (fragmentName: any) => void */;
 
+  preloaderText: string;
+  setPreloaderText: (text: string) => void;
+
   email: string;
   setEmail: (email: string) => void;
 
@@ -43,6 +46,7 @@ interface Store {
   initStepsData: () => void;
 
   updateStepsData: (fragmentName: any, data: any) => void;
+  resetStepData: (fragmentName: any, data: any) => void;
 
   setStepsData: (stepsData: StepData[]) => void;
 
@@ -89,6 +93,11 @@ const sum = (array: any, maxIndex: any) => {
 export const useStore = create<Store>()(
   persist(
     devtools((set, get) => ({
+      preloaderText: '',
+
+      setPreloaderText: (text: string) =>
+        set({ preloaderText: text }, false, `setPreloader to ${text}`),
+
       email: '',
       setEmail: email => {
         set({ email: email }, false, 'setEmail');
@@ -155,6 +164,24 @@ export const useStore = create<Store>()(
           }),
           false,
           'update steps data',
+        );
+      },
+
+      resetStepData: (fragmentName, data) => {
+        set(
+          state => ({
+            stepsData: {
+              ...state.stepsData,
+              [fragmentName]: {
+                fragmentData: '',
+                fragmentStartTime: 0,
+                fragmentFinishTime: 0,
+                videoPreviewSrc: '',
+              },
+            },
+          }),
+          false,
+          'reset step data',
         );
       },
 
@@ -258,8 +285,6 @@ export const useStore = create<Store>()(
         set({ status: STATUSES.fetching });
         const uploadAndSaveUrl = async (name: string, data: any) => {
           const downloadLink = await uploadVideo(name, data);
-          console.log('downloadLink', downloadLink);
-          /*         return { filename: name, downloadLink: downloadLink }; */
           set(
             {
               stepsData: {
@@ -278,7 +303,6 @@ export const useStore = create<Store>()(
         try {
           const fileNames = get().filenames;
           const mainTrackData = get().stepsData;
-
           fileNames.forEach((fileName: string) => {
             uploadAndSaveUrl(fileName, mainTrackData[fileName].fragmentData);
           });
@@ -330,18 +354,21 @@ export const useStore = create<Store>()(
                 finishTime: mainTrackData[fileName].fragmentFinishTime,
               }),
             ];
+
             currentDuration +=
-              Number(
-                get().stepsData[get().filenames[get().filenames.length - 1]].fragmentFinishTime,
-              ) -
-              Number(
-                get().stepsData[get().filenames[get().filenames.length - 1]].fragmentStartTime,
-              ) +
+              mainTrackData[fileName].fragmentFinishTime -
+              mainTrackData[fileName].fragmentStartTime +
               VIDEO_TITLEDURATION;
           });
 
           const finalLength =
-            currentDuration; /*  + mainClips[0].fragmentFinishTime - mainClips[0].fragmentStartTime */
+            currentDuration +
+            Number(
+              get().stepsData[get().filenames[get().filenames.length - 1]].fragmentFinishTime,
+            ) -
+            Number(
+              get().stepsData[get().filenames[get().filenames.length - 1]].fragmentStartTime,
+            ); /*  + mainClips[0].fragmentFinishTime - mainClips[0].fragmentStartTime */
 
           const musicClips = [
             makeMusic({
@@ -359,16 +386,21 @@ export const useStore = create<Store>()(
 
           const requestData = {
             timeline: {
+              soundtrack: {
+                src: get().musicLink,
+                effect: 'fadeIn',
+                volume: 0.3,
+              },
               tracks: [
                 {
                   clips: mainClips,
                 },
                 {
                   clips: audiosClips,
-                },
-                {
+                } /* ,
+                musicClips.length && {
                   clips: musicClips,
-                },
+                }, */,
               ],
             },
             output: {
@@ -379,7 +411,24 @@ export const useStore = create<Store>()(
 
           console.log('requestData', requestData);
 
-          uploadOnShotStack(requestData);
+          /* const url = await uploadOnShotStack(requestData); */
+          const {
+            data: {
+              response: { id },
+            },
+          } = await shotStackApi.render(requestData);
+
+          return setTimeout(async () => {
+            const {
+              data: {
+                response: { url },
+              },
+            } = await shotStackApi.getVideoStatus(id);
+            set({ finishUrl: url });
+          }, 30000);
+          /*           console.log('FINISH url', url); */
+
+          /*           set({ finishUrl: response.data.response.url }); */
           /*           shotStackApi.render(requestData); */
 
           set({ status: STATUSES.success });
