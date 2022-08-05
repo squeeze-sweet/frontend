@@ -4,6 +4,7 @@ import { useStore } from '../../store';
 import { Checkbox } from '../../components/ui-elements/checkbox';
 import styles from './filenames-setting.module.scss';
 import { Button } from '../../components/ui-elements/button';
+import { useEffect } from 'react';
 
 const questions = [
   'Introduce yourself',
@@ -11,23 +12,26 @@ const questions = [
   'Your favourite movie',
   'Your spare time hobby',
   'Your fav. spot to eat',
-  'What’s that film that you always recommend your feinds and why?',
+  'What’s that film that you always recommend your freinds and why?',
 ];
 
 export default function SelectQuestions() {
   let navigate = useNavigate();
   const filenames = useStore(state => state.filenames);
   const setFilenames = useStore(state => state.setFilenames);
+  const initStepsData = useStore(state => state.initStepsData);
+
+  useEffect(() => {
+    initStepsData(questions);
+  }, []);
 
   const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     setFilenames(
       questions
         .filter((_, index: number) => e.target[String(index)].checked)
         .map((question: string, index: number) => question),
     );
-
     navigate('../upload-and-edit');
   };
 

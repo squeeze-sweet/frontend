@@ -6,7 +6,6 @@ import styles from './step-2.module.scss';
 
 export default function Finish() {
   const createVideo = useStore(state => state.createVideo);
-  const uploadVideo = useStore(state => state.uploadVideo);
   const finishUrl = useStore(state => state.finishUrl);
   /* 
   const [isAllVideosUploaded, setIsAllVideosUploaded] = useState(false); */
@@ -31,7 +30,7 @@ export default function Finish() {
     createVideo();
   }, []);
 
-  useEffect(() => {
+  /*   useEffect(() => {
     if (checkIsVideosUploaded()) {
       setPreloaderText('Rendering');
       uploadVideo();
@@ -42,7 +41,7 @@ export default function Finish() {
     if (finishUrl) {
       setPreloaderText('');
     }
-  }, [finishUrl]);
+  }, [finishUrl]); */
 
   return (
     <section className={styles.container}>

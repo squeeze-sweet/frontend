@@ -12,12 +12,8 @@ export default function EmaleChosing({ onSubmit }: any) {
   const [errorMsg, setErrorMsg] = useState('');
   const setEmail = useStore(state => state.setEmail);
   const email = useStore(state => state.email);
-  const initStepsData = useStore(state => state.initStepsData);
-  let navigate = useNavigate();
 
-  useEffect(() => {
-    initStepsData();
-  }, []);
+  let navigate = useNavigate();
 
   const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     const localEmail = e.target['email'].value;
