@@ -20,6 +20,8 @@ export default function Uploader({ children }: Props) {
       ...currentStepData,
       videoPreviewSrc: '',
       fragmentData: '',
+      fragmentStartTime: 0,
+      fragmentFinishTime: 0,
     });
     inputRef.current.value = '';
   };

@@ -65,6 +65,9 @@ export const makeVideoClip = ({
       },
       start: currentDuration + VIDEO_TITLEDURATION,
       length: finishTime - startTime,
+      fit: 'none',
+      position: 'center',
+      scale: 0.7,
       transition: {
         in: 'fade',
         out: 'fade',
@@ -93,6 +96,17 @@ export const makeMusic = ({ downloadLink, finishTime }: any) => {
     },
     start: 0,
     volume: 0.3,
+    length: finishTime,
+  };
+};
+
+export const makeBackgroundJson = ({ finishTime }: any) => {
+  return {
+    asset: {
+      type: 'image',
+      src: 'https://downloader.disk.yandex.ru/disk/52a3816db54842f1fb9ec622a9a5b402ec9afcd9b8d693655cd6cc651dd4f9ba/62eda1a7/27dtdWwpiHWAOMwjvJSigCdbkJ2sC_KEk2e_VtbYAOdr6rmRYtpbQYz3IVW_GnQTUp8cZpYb05BdYA_XdsnYOQ%3D%3D?uid=1470323160&filename=%D0%93%D0%BE%D1%80%D1%8B.jpg&disposition=attachment&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=1470323160&fsize=1762478&hid=17e80f91be8985790b9b63a1ab6d29f2&media_type=image&tknv=v2&etag=1392851f0668017168ee4b5a59d66e7b',
+    },
+    start: 0,
     length: finishTime,
   };
 };

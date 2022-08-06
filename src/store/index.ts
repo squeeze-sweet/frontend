@@ -7,6 +7,7 @@ import docsApi from '../services/api/api-docs';
 import { STATUSES } from '../services/types';
 import {
   makeAudioToVideo,
+  makeBackgroundJson,
   makeClipJsonForTitlePage,
   makeMusic,
   makePremadeVideoClip,
@@ -343,9 +344,8 @@ export const useStore = create<Store>()(
           Number(get().stepsData[get().filenames[get().filenames.length - 1]].fragmentFinishTime) -
           Number(get().stepsData[get().filenames[get().filenames.length - 1]].fragmentStartTime);
 
-        const musicClips = [
-          makeMusic({
-            downloadLink: get().musicLink,
+        const imageClip = [
+          makeBackgroundJson({
             finishTime: finalLength,
           }),
         ];
@@ -363,6 +363,9 @@ export const useStore = create<Store>()(
               },
               {
                 clips: audiosClips,
+              },
+              {
+                clips: imageClip,
               },
             ],
           },
