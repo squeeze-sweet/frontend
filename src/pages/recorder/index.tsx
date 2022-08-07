@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback } from 'react';
+import { useRef, useState, useCallback, useEffect } from 'react';
 
 import Webcam from 'react-webcam';
 import { VideoButton } from '../../components/ui-elements/video-button';
@@ -67,7 +67,15 @@ export const Recorder = () => {
     setCapturing(false);
     /* setRecordingCount(0) */
     clearInterval(recordingCounter);
+    console.log("download", recordedChunks.length);
+    
   }, [mediaRecorderRef, webcamRef, setCapturing]);
+
+/*   useEffect(()=>{
+    if (recordedChunks.length && !capturing) {
+    handleDownload()
+    }
+  }, [capturing]) */
 
   const handleDownload = useCallback(() => {
     if (recordedChunks.length) {
@@ -121,7 +129,7 @@ export const Recorder = () => {
         />
       </div>
       {Boolean(recordingCount)&&recordingCount}
-      {recordedChunks.length > 0 && <button onClick={handleDownload}>Download</button>}
+       {recordedChunks.length > 0 && <button onClick={handleDownload}>бля нажми меня чтобы подтвердить, это костыль</button>} 
     </>
   );
 };
