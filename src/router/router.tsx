@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes, Navigate, Outlet } from 'react-router-dom';
+import { HashRouter, Route, Routes, Navigate, Outlet } from 'react-router-dom';
 import Layout from '../components/layout';
 import EmaleChosing from '../pages/emale-chosing';
 import IntroduceYourself from '../pages/introduce-yourself';
@@ -73,7 +73,7 @@ function Router() {
   };
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         <Route path='/' element={<Layout />}>
           <Route index element={<Navigate to='/introduce-yourself' />} />
@@ -112,7 +112,7 @@ function Router() {
           <Route path='recorder' element={<Recorder />} /> */}
         </Route>
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
