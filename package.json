@@ -66,6 +66,7 @@
     "@types/lodash": "^4.14.182",
     "@types/react-router-dom": "^5.3.3",
     "eslint": "^8.13.0",
+    "gh-pages": "^4.0.0",
     "postcss": "^8.4.12",
     "prettier": "^2.6.2",
     "stylelint": "^14.7.1"
