@@ -1,7 +1,10 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import { Typography, Input, Button } from 'antd';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import uloadIcon from '../../assets/icons/upload.svg';
 import { useStore } from '../../store';
+import Dropzone from 'react-dropzone';
 import styles from './step.module.scss';
 
 interface Props {
@@ -15,19 +18,7 @@ export default function Uploader({ children }: Props) {
 
   const inputRef = useRef<any>(null);
 
-  const clearValue = () => {
-    setCurrentStepData({
-      ...currentStepData,
-      videoPreviewSrc: '',
-      fragmentData: '',
-      fragmentStartTime: 0,
-      fragmentFinishTime: 0,
-    });
-    inputRef.current.value = '';
-  };
-
-  const saveVideo = (e: any) => {
-    const file = e.target.files[0];
+  const saveVideo = (file: any) => {
     const videoPreviewSrc = URL.createObjectURL(file);
     const reader = new FileReader();
     reader.readAsArrayBuffer(file);
@@ -43,10 +34,42 @@ export default function Uploader({ children }: Props) {
     };
   };
 
+  const handleDrop = useCallback((acceptedFiles: any) => {
+    saveVideo(acceptedFiles[0]);
+  }, []);
+
+  /*   const { getInputProps, isDragActive, getRootProps } = useDropzone({ onDrop }); */
+
   return (
-    <label className={styles.label}>
+    <Dropzone onDrop={handleDrop}>
+      {({ getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject }) => {
+        const additionalClass = isDragAccept ? 'accept' : isDragReject ? 'reject' : '';
+
+        return (
+          <div
+            {...getRootProps({
+              className: styles.dropzone,
+            })}
+          >
+            <input {...getInputProps()} />
+            <div className={styles.description}>
+              <img src={uloadIcon} alt='upload' />
+              <p>Upload the video</p>
+              <p>Any format, less than 10 mb</p>
+            </div>
+          </div>
+        );
+      }}
+    </Dropzone>
+    /* 
+    <label className={styles.label} {...getRootProps()}>
       {children}
-      <input
+      {isDragActive ? (
+        <p>Drop the files here ...</p>
+      ) : (
+        <p>Drag 'n' drop some files here, or click to select files</p>
+      )}
+            <input
         ref={inputRef}
         id='video-input'
         type='file'
@@ -54,7 +77,9 @@ export default function Uploader({ children }: Props) {
         onClick={clearValue}
         onChange={saveVideo}
         className={styles.input}
-      ></input>
-    </label>
+        
+      ></input> 
+      <input {...getInputProps()} />
+    </label> */
   );
 }

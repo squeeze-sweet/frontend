@@ -4,14 +4,15 @@ import UploadNavigation from '../../components/navigation';
 import { useStore } from '../../store';
 import styles from './step.module.scss';
 import Uploader from '../uploader';
+import { Recorder } from '../recorder';
 /* import Preview from '../preview'; */
 import VideoPlayer from '../../components/video-player';
+import { useState } from 'react';
 
 export default function UploadAndEdit() {
   const {
     currentFragmentName,
     currentStepData,
-
     currentStepData: { fragmentStartTime, fragmentFinishTime, videoPreviewSrc },
     setCurrentStepData,
     updateStepsData,
@@ -19,11 +20,12 @@ export default function UploadAndEdit() {
   } = useStore(state => ({
     currentFragmentName: state.currentFragmentName,
     currentStepData: state.currentStepData,
-
     setCurrentStepData: state.setCurrentStepData,
     updateStepsData: state.updateStepsData,
     resetStepData: state.resetStepData,
   }));
+
+  const [inputType, setInputType] = useState<'upload' | 'record'>('upload');
 
   const resetVideoPreviewSrs = () => {
     setCurrentStepData({ ...currentStepData, videoPreviewSrc: '' });
@@ -35,7 +37,6 @@ export default function UploadAndEdit() {
   };
 
   const setFinishTime = (time: number) => {
-    console.log('setting finish time of', currentFragmentName);
     setCurrentStepData({ ...currentStepData, fragmentFinishTime: time });
   };
 
@@ -43,12 +44,52 @@ export default function UploadAndEdit() {
     updateStepsData(currentFragmentName, currentStepData);
   };
 
+  const clearValue = () => {
+    setCurrentStepData({
+      ...currentStepData,
+      videoPreviewSrc: '',
+      fragmentData: '',
+      fragmentStartTime: 0,
+      fragmentFinishTime: 0,
+    });
+  };
+
+  const isFragmentReady = () => {
+    const { videoPreviewSrc, fragmentData, fragmentFinishTime } = currentStepData;
+    return videoPreviewSrc && fragmentData && fragmentFinishTime;
+  };
+
   return (
     <section className={styles.page}>
       <UploadNavigation />
       <section className={styles.container}>
-        <div className={styles.content}>
+        <div className={styles.header}>
           <h1>{currentFragmentName}</h1>
+          <div className={styles.buttons}>
+            <Button
+              className={styles.button}
+              onClick={() => {
+                setInputType('record');
+                clearValue();
+              }}
+            >
+              {Boolean(videoPreviewSrc) ? 'record another video with webcam' : 'record with webcam'}
+            </Button>
+            <Button
+              className={styles.button}
+              onClick={() => {
+                setInputType('upload');
+                clearValue();
+              }}
+            >
+              {Boolean(videoPreviewSrc) ? 'upload another video from device' : 'upload from device'}
+            </Button>
+          </div>
+        </div>
+        <div className={styles.content}>
+          {inputType === 'upload' && !videoPreviewSrc && <Uploader />}
+          {inputType === 'record' && !videoPreviewSrc && <Recorder />}
+
           {videoPreviewSrc && (
             <VideoPlayer
               videoPreviewSrc={videoPreviewSrc}
@@ -60,14 +101,11 @@ export default function UploadAndEdit() {
             />
           )}
         </div>
-        <div className={styles.buttons}>
-          <Button className={styles.button}>
-            {Boolean(videoPreviewSrc) ? 'record another video with webcam' : 'record with webcam'}
+        <div className={styles.bottomButtons}>
+          <Button className={styles.submit} onClick={clearValue} disabled={!isFragmentReady()}>
+            try again
           </Button>
-          <Uploader>
-            {Boolean(videoPreviewSrc) ? 'upload another video from device' : 'upload from device'}
-          </Uploader>
-          <Button className={styles.button} onClick={handleSaveData}>
+          <Button className={styles.submit} onClick={handleSaveData} disabled={!isFragmentReady()}>
             submit
           </Button>
         </div>

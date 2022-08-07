@@ -7,12 +7,26 @@ import { Button } from '../../components/ui-elements/button';
 import { useEffect } from 'react';
 
 const questions = [
-  'Introduce yourself',
-  'How did you get your last promotion?',
-  'Your favourite movie',
-  'Your spare time hobby',
-  'Your fav. spot to eat',
-  'What’s that film that you always recommend your freinds and why?',
+  {
+    heading: 'Introduce yourself',
+    description: 'tell your name and your current title',
+  },
+  {
+    heading: 'How did you get your last promotion?',
+    description: "Briefly tell about the process and you'r enforsements",
+  },
+  {
+    heading: 'Your favourite movie',
+    description: 'And why is it so good?',
+  },
+  {
+    heading: 'Your spare time hobby',
+    description: 'Or may be want to spare in perspective',
+  },
+  {
+    heading: 'Your fav. spot to eat',
+    description: 'And fav. meal',
+  },
 ];
 
 export default function SelectQuestions() {
@@ -30,7 +44,7 @@ export default function SelectQuestions() {
     setFilenames(
       questions
         .filter((_, index: number) => e.target[String(index)].checked)
-        .map((question: string, index: number) => question),
+        .map(({ heading }: any, index: number) => heading),
     );
     navigate('../upload-and-edit');
   };
@@ -48,12 +62,12 @@ export default function SelectQuestions() {
 
       <form onSubmit={handleSubmit} className={styles['content-container']}>
         <div className={styles.checkboxes}>
-          {questions.map((question, index) => (
+          {questions.map(({ heading }: any, index) => (
             <Checkbox
               id={String(index)}
-              label={`${question}`}
+              label={`${heading}`}
               isDefaultChecked={
-                index === 0 || filenames.find((filename: string) => filename === question)
+                index === 0 || filenames.find((filename: string) => filename === heading)
               }
               isDisabled={index === 0}
               key={index}

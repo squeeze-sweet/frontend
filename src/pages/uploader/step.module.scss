@@ -20,3 +20,18 @@
   width: 100%;
   border: none;
 }
+
+.dropzone {
+  cursor: pointer;
+  width: 550px;
+  max-height: 310px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+  border: 1px dashed #cacaca;
+}
+
+.description {
+  text-align: center;
+}

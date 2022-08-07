@@ -46,7 +46,7 @@ interface Store {
   setUserInfo: (userInfo: UserInfo) => void;
 
   stepsData: any;
-  initStepsData: (questions: string[]) => void;
+  initStepsData: (questions: { heading: string; description: string }[]) => void;
 
   updateStepsData: (fragmentName: any, data: any) => void;
   resetStepData: (fragmentName: any, data: any) => void;
@@ -57,7 +57,8 @@ interface Store {
   setFilenames: (filenames: any) => void;
   currentFragmentName: string;
   setCurrentFragmentName: (currentFragmentName: any) => void;
-
+  currentFragmentDescription: string;
+  setCurrentFragmentDescription: (currentFragmentName: any) => void;
   filesInfo: any[];
   uploadFile: ({ fileName, fileDuration }: any) => void;
 
@@ -135,8 +136,8 @@ export const useStore = create<Store>()(
       const stepsData: any = {};
       if (isEmptyObject(get().stepsData)) {
         questions.forEach(
-          (question: string) =>
-            (stepsData[question] = {
+          ({ heading }) =>
+            (stepsData[heading] = {
               fragmentData: '',
               fragmentStartTime: 0,
               fragmentFinishTime: 0,
@@ -193,9 +194,17 @@ export const useStore = create<Store>()(
     },
 
     currentFragmentName: '',
+    currentFragmentDescription: '',
 
     setCurrentFragmentName: (currentFragmentName: any) =>
       set({ currentFragmentName: currentFragmentName }, false, 'setCurrentFragmentName'),
+
+    setCurrentFragmentDescription: (currentFragmentDescription: any) =>
+      set(
+        { currentFragmentDescription: currentFragmentDescription },
+        false,
+        'setCurrentFragmentDescription',
+      ),
 
     filesInfo: [],
 

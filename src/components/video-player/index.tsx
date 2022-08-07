@@ -65,7 +65,6 @@ export default function VideoPlayer({
 
   return (
     <section className={styles.container}>
-      Preview: confirm that all’s good
       <video
         ref={videoRef}
         className={styles['video-player']}
