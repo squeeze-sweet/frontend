@@ -384,6 +384,8 @@ export const useStore = create<Store>()(
           },
         };
 
+        console.log(requestData);
+        
         const {
           data: {
             response: { id },
@@ -403,7 +405,7 @@ export const useStore = create<Store>()(
           }, 5000);
         };
 
-        QueryUntillData();
+        QueryUntillData(); 
 
         /*           console.log('FINISH url', url); */
 

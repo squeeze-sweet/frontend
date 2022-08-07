@@ -2,6 +2,7 @@ import { useRef, useState, useCallback } from 'react';
 
 import Webcam from 'react-webcam';
 import { VideoButton } from '../../components/ui-elements/video-button';
+import { useStore } from '../../store';
 
 import styles from './recorder.module.scss';
 
@@ -11,8 +12,21 @@ export const Recorder = () => {
   const [capturing, setCapturing] = useState<any>(false);
   const [recordedChunks, setRecordedChunks] = useState<any>([]);
   const [count, setCount] = useState<any>(0);
-  const [url, setUrl] = useState<any>(null);
+  const { currentStepData, setCurrentStepData } = useStore(state => ({
+    currentStepData: state.currentStepData,
+    setCurrentStepData: state.setCurrentStepData,
+  }));
+  const [recordingCount, setRecordingCount] = useState(0)
 
+  var recordingCounter: any;
+  
+  const startCount = () => {
+    recordingCounter = setInterval(()=>{
+      setRecordingCount((recordingCount) => recordingCount + 1)
+    }, 1000)
+  }
+  
+  console.log('recordingCount', recordingCount);
   const handleStartCaptureClick = useCallback(() => {
     setCount(3);
     setTimeout(() => {
@@ -26,6 +40,7 @@ export const Recorder = () => {
     }, 1000);
 
     setTimeout(() => {
+      startCount()
       startCapturing();
     }, 3000);
   }, [webcamRef, setCapturing, mediaRecorderRef]);
@@ -50,6 +65,8 @@ export const Recorder = () => {
   const handleStopCaptureClick = useCallback(() => {
     mediaRecorderRef.current.stop();
     setCapturing(false);
+    /* setRecordingCount(0) */
+    clearInterval(recordingCounter);
   }, [mediaRecorderRef, webcamRef, setCapturing]);
 
   const handleDownload = useCallback(() => {
@@ -58,16 +75,33 @@ export const Recorder = () => {
         type: 'video/webm',
       });
       const url = URL.createObjectURL(blob);
+
+      const reader = new FileReader();
+      reader.readAsArrayBuffer(blob);
+      reader.onload = function (e: any) {
+        console.log(url, recordingCount);
+        
+        setCurrentStepData({
+          ...currentStepData,
+          videoPreviewSrc: url,
+          fragmentData: e.target.result,
+          fragmentStartTime: 0,
+          fragmentFinishTime: recordingCount, 
+        });
+      };
+      reader.onerror = function (error: any) {
+        console.error(error);
+      };
+/* 
       const reader = new FileReader();
       reader.readAsArrayBuffer(blob);
       reader.onload = function (e: any) {};
       const a = document.createElement('a');
       document.body.appendChild(a);
-      /*       a.style = "display: none"; */
       a.href = url;
       a.download = 'react-webcam-stream-capture.webm';
       a.click();
-      window.URL.revokeObjectURL(url);
+      window.URL.revokeObjectURL(url); */
       setRecordedChunks([]);
     }
   }, [recordedChunks]);
@@ -86,6 +120,7 @@ export const Recorder = () => {
           className={styles['record-button']}
         />
       </div>
+      {Boolean(recordingCount)&&recordingCount}
       {recordedChunks.length > 0 && <button onClick={handleDownload}>Download</button>}
     </>
   );

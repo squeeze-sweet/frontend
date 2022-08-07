@@ -36,8 +36,14 @@ export default function VideoPlayer({
     async function handleGettingDuration(element: HTMLVideoElement) {
       element.onloadedmetadata = function () {
         if (videoPreviewSrc) {
-          setVideoDuration(element.duration);
-          !finishTime && setFinishTime(element.duration);
+          if (element.duration === Infinity) {
+            setVideoDuration(finishTime);
+            !finishTime && setFinishTime(finishTime);
+          } else {
+            setVideoDuration(element.duration);
+            !finishTime && setFinishTime(element.duration);
+          }
+          
         }
       };
     }
