@@ -10,18 +10,20 @@ function Layout() {
   console.log('location', pathname);
   const handleClick = (path: string) => [navigate(path)];
   return (
-    <>
+    <div className={styles.page}>
       <div className={styles.breadcrumbs}>
         {routes.map(({ path, name }, index: number) => (
-          <>
+          <div className={styles['link-container']}>
+            <div className={styles.line} />
             <p
               onClick={() => handleClick(path)}
               className={cn(styles.link, { [styles.active]: pathname.includes(path) })}
             >
               {name}
             </p>
-            {index !== routes.length - 1 && <div className={styles.line} />}
-          </>
+            <div className={styles.line} />
+            {/*     {index !== routes.length - 1 && <div className={styles.line} />} */}
+          </div>
         ))}
       </div>
       <div className={styles.outlet}>
@@ -30,7 +32,7 @@ function Layout() {
           <Preloader />
         </div>
       </div>
-    </>
+    </div>
   );
 }
 
