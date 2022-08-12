@@ -2,11 +2,13 @@ import axios, { AxiosResponse } from 'axios';
 
 //Очень плохо, токены так не хранят
 const token = 'AQAAAABXo1nYAAfi9NW9crs7YE-biO-y3vpjHOg';
-
+const rootFolder = 'editor';
 export interface API {
   getUploadLink: (fileName: string) => any;
   uploadFile: (link: string, file: any) => any;
   getDownloadLink: (fileName: string) => any;
+  checkUserAcess: (email: string) => any;
+  /*   getDownlLink: (fileName: string) => any; */
   downloadFile: (link: string) => any;
 }
 
@@ -38,6 +40,26 @@ const api: API = {
         },
       },
     ),
+  checkUserAcess: async (email: string) =>
+    await axios.get(
+      `https://cloud-api.yandex.net/v1/disk/resources/download?path=${rootFolder}%2F${email}`,
+      {
+        headers: {
+          Authorization: `OAuth ${token}`,
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      },
+    ),
+  /*     getDownlLink: async (fileName: string) =>
+    await axios.get(
+      `https://cloud-api.yandex.net/v1/disk/resources/download?path=videosamples%2F${fileName}`,
+      {
+        headers: {
+          Authorization: `OAuth ${token}`,
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      },
+    ), */
   downloadFile: async (link: string) =>
     await axios.get(link, {
       headers: {
@@ -69,4 +91,3 @@ export const uploadVideo = async (fileName: string, fileData: any) => {
   } = await api.getDownloadLink(fileName);
   return downloadLink;
 };
-

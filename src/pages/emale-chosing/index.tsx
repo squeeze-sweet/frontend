@@ -4,6 +4,7 @@ import { useStore } from '../../store';
 import { Input } from '../../components/ui-elements/input';
 import { validateEmail } from './helpers';
 import LayoutPage from '../../components/templates/form-page';
+import yandexDiskApi from '../../services/api/api-yandex-disk';
 import { AudioPicker } from '../../components/ui-elements/audio-picker';
 import { downloadconfigFile } from '../../services/api/api-yandex-disk';
 /*  */
@@ -17,13 +18,13 @@ export default function EmaleChosing({ onSubmit }: any) {
 
   const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     const localEmail = e.target['email'].value;
+
     if (!validateEmail(localEmail)) {
       setErrorMsg('e-mail format is invalid!');
       return;
     } else {
-      setEmail(localEmail);
+      CheckAcess(localEmail);
     }
-    onSubmit();
   };
 
   const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -34,6 +35,16 @@ export default function EmaleChosing({ onSubmit }: any) {
       }
     }
   };
+
+  async function CheckAcess(localEmail: string) {
+    try {
+      await yandexDiskApi.checkUserAcess(email);
+      setEmail(localEmail);
+      onSubmit();
+    } catch (error) {
+      setErrorMsg('You have no access to service, please contact your curator');
+    }
+  }
 
   return (
     <LayoutPage onSubmit={handleSubmit} buttonText='Continue'>
