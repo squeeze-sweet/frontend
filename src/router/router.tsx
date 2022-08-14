@@ -76,7 +76,7 @@ function Router() {
     <HashRouter>
       <Routes>
         <Route path='/' element={<Layout />}>
-          <Route index element={<Navigate to='/introduce-yourself' />} />
+          <Route index element={<Navigate to='introduce-yourself' />} />
           <Route path='introduce-yourself' element={<IntroduceYourself />} />
           <Route
             path='select-questions'

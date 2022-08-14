@@ -16,6 +16,26 @@ export const makePremadeVideoClip = () => {
   };
 };
 
+export const makePremadeVideo = (downloadLink: string) => {
+  return [
+    {
+      asset: {
+        type: 'video',
+        src: downloadLink,
+      },
+      start: 0,
+      length: 5,
+      fit: 'none',
+      position: 'center',
+      scale: 0.7,
+      transition: {
+        in: 'fade',
+        out: 'fade',
+      },
+    },
+  ];
+};
+
 export const makeClipJsonForTitlePage = (
   name: string,
   jobTitle: string,
@@ -100,11 +120,11 @@ export const makeMusic = ({ downloadLink, finishTime }: any) => {
   };
 };
 
-export const makeBackgroundJson = ({ finishTime }: any) => {
+export const makeBackgroundJson = (finishTime: number, backgroundUrl: string) => {
   return {
     asset: {
       type: 'image',
-      src: 'https://downloader.disk.yandex.ru/disk/ec27ebc88f3d2d120967bfa8466e8300a05b0e2afecebf4e4384e52b068a8659/62f03c47/27dtdWwpiHWAOMwjvJSigCdbkJ2sC_KEk2e_VtbYAOdr6rmRYtpbQYz3IVW_GnQTUp8cZpYb05BdYA_XdsnYOQ%3D%3D?uid=1470323160&filename=%D0%93%D0%BE%D1%80%D1%8B.jpg&disposition=attachment&hash=&limit=0&content_type=image%2Fjpeg&owner_uid=1470323160&fsize=1762478&hid=17e80f91be8985790b9b63a1ab6d29f2&media_type=image&tknv=v2&etag=1392851f0668017168ee4b5a59d66e7b',
+      src: backgroundUrl,
     },
     start: 0,
     length: finishTime,

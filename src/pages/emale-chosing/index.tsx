@@ -5,14 +5,14 @@ import { Input } from '../../components/ui-elements/input';
 import { validateEmail } from './helpers';
 import LayoutPage from '../../components/templates/form-page';
 import yandexDiskApi from '../../services/api/api-yandex-disk';
-import { AudioPicker } from '../../components/ui-elements/audio-picker';
-import { downloadconfigFile } from '../../services/api/api-yandex-disk';
-/*  */
 
 export default function EmaleChosing({ onSubmit }: any) {
   const [errorMsg, setErrorMsg] = useState('');
-  const setEmail = useStore(state => state.setEmail);
-  const email = useStore(state => state.email);
+  const { email, setEmail, setPreloaderText } = useStore(state => ({
+    email: state.email,
+    setEmail: state.setEmail,
+    setPreloaderText: state.setPreloaderText,
+  }));
 
   let navigate = useNavigate();
 
@@ -24,6 +24,7 @@ export default function EmaleChosing({ onSubmit }: any) {
       return;
     } else {
       CheckAcess(localEmail);
+      setPreloaderText('checking access');
     }
   };
 
@@ -38,10 +39,12 @@ export default function EmaleChosing({ onSubmit }: any) {
 
   async function CheckAcess(localEmail: string) {
     try {
-      await yandexDiskApi.checkUserAcess(email);
+      await yandexDiskApi.checkUserAcess(localEmail);
       setEmail(localEmail);
+      setPreloaderText('');
       onSubmit();
     } catch (error) {
+      setPreloaderText('');
       setErrorMsg('You have no access to service, please contact your curator');
     }
   }

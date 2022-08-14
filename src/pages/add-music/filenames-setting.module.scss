@@ -3,7 +3,7 @@
 
 .form {
   margin: auto;
-  width: 50%;
+  width: 60%;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -17,10 +17,20 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   text-align: center;
   justify-content: center;
   gap: 5px;
+}
+
+.select {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.player {
+  min-width: 300px;
 }
 
 .footer {

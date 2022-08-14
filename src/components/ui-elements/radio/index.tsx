@@ -7,6 +7,7 @@ type Props = {
   isDisabled?: boolean;
   isDefaultChecked?: boolean;
   onChange?: (e: any) => void;
+  onClick?: (e: any) => void;
 };
 export default ({
   isDefaultChecked = false,
@@ -15,6 +16,7 @@ export default ({
   id,
   label,
   onChange,
+  onClick,
 }: Props) => {
   return (
     <div className={styles.container}>
@@ -26,6 +28,7 @@ export default ({
         defaultChecked={isDefaultChecked}
         disabled={isDisabled}
         onChange={onChange}
+        onClick={onClick}
         className={styles.checkbox}
       />
       <label className={styles.label} htmlFor={id}>

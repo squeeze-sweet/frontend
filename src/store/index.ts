@@ -1,7 +1,7 @@
 import create from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 import API from '../services/api/api';
-import yandexDiskApi, { downloadconfigFile, uploadVideo } from '../services/api/api-yandex-disk';
+import yandexDiskApi, { uploadVideo } from '../services/api/api-yandex-disk';
 import shotStackApi, { uploadOnShotStack } from '../services/api/api-shotstack';
 import docsApi from '../services/api/api-docs';
 import { STATUSES } from '../services/types';
@@ -10,6 +10,7 @@ import {
   makeBackgroundJson,
   makeClipJsonForTitlePage,
   makeMusic,
+  makePremadeVideo,
   makePremadeVideoClip,
   makeVideoClip,
 } from './helpers';
@@ -60,7 +61,7 @@ interface Store {
   currentFragmentDescription: string;
   setCurrentFragmentDescription: (currentFragmentName: any) => void;
   filesInfo: any[];
-  uploadFile: ({ fileName, fileDuration }: any) => void;
+  /*   uploadFile: ({ fileName, fileDuration }: any) => void; */
 
   musicLink: string;
   getMusicLink: (fileName: any) => void;
@@ -100,8 +101,23 @@ export const useStore = create<Store>()(
       set({ preloaderText: text }, false, `setPreloader to ${text}`),
 
     email: '',
-    setEmail: email => {
+    setEmail: async email => {
       set({ email: email }, false, 'setEmail');
+
+      const {
+        data: { href: introVideoLink },
+      } = await yandexDiskApi.getDownloadLink('editor/', 'intro.mp4');
+
+      set(
+        state => ({
+          tracks: {
+            mainClips: [makePremadeVideo(introVideoLink)],
+          },
+          currentDuration: state.currentDuration + TITLE_VIDEO_DURATION,
+        }),
+        false,
+        'add intro video',
+      );
     },
 
     userInfo: {
@@ -208,7 +224,7 @@ export const useStore = create<Store>()(
 
     filesInfo: [],
 
-    uploadFile: async ({ fileName, fileData, videoDuration, startTime, finishTime }: any) => {
+    /*   uploadFile: async ({ fileName, fileData, videoDuration, startTime, finishTime }: any) => {
       set({ status: STATUSES.fetching });
       try {
         const downloadLink = await uploadVideo(fileName, fileData);
@@ -249,7 +265,7 @@ export const useStore = create<Store>()(
         set({ status: STATUSES.failure });
         console.log('upload error', error);
       }
-    },
+    }, */
 
     status: STATUSES.initial,
 
@@ -258,7 +274,9 @@ export const useStore = create<Store>()(
     currentDuration: PREMADE_VIDEO_DURATION,
 
     tracks: {
-      mainClips: [makePremadeVideoClip()],
+      mainClips: [
+        /* makePremadeVideoClip() */
+      ],
       audiosClips: [],
       audioTrackClips: [],
     },
@@ -282,28 +300,14 @@ export const useStore = create<Store>()(
 
     createVideo: async () => {
       set({ status: STATUSES.fetching });
-      const uploadAndSaveUrl = async (name: string, data: any) => {
-        const downloadLink = await uploadVideo(name, data);
-        set(
-          {
-            stepsData: {
-              ...get().stepsData,
-              [name]: {
-                ...get().stepsData[name],
-                downloadLink: downloadLink,
-              },
-            },
-          },
-          false,
-          'uploadAndSaveUrl',
-        );
-      };
       const fileNames = get().filenames;
       const mainTrackData = get().stepsData;
       // загружаем фрагменты на диск и получаем ссылки на скачивание.
       const uploadQueries: any[] = [];
       fileNames.forEach((fileName: string) => {
-        uploadQueries.push(uploadVideo(fileName, mainTrackData[fileName].fragmentData));
+        uploadQueries.push(
+          uploadVideo(get().email, fileName, mainTrackData[fileName].fragmentData),
+        );
       });
       const downloadLinks = await Promise.all(uploadQueries);
 
@@ -311,13 +315,18 @@ export const useStore = create<Store>()(
         //-----------------------------
         let mainClips: any[] = [];
         let audiosClips: any[] = [];
-        let currentDuration = TITLE_VIDEO_DURATION;
+        let currentDuration = 10; //TODO Убрать хардкод
+
+        const {
+          data: { href: introVideoLink },
+        } = await yandexDiskApi.getDownloadLink('editor/', 'intro.mp4');
 
         mainClips = [
+          ...makePremadeVideo(introVideoLink),
           makeClipJsonForTitlePage(
             get().userInfo?.firstName + ' ' + get().userInfo?.lastName,
             get().userInfo?.jobTitle as any,
-            0,
+            5,
           ),
         ];
 
@@ -353,18 +362,17 @@ export const useStore = create<Store>()(
           Number(get().stepsData[get().filenames[get().filenames.length - 1]].fragmentFinishTime) -
           Number(get().stepsData[get().filenames[get().filenames.length - 1]].fragmentStartTime);
 
-        const imageClip = [
-          makeBackgroundJson({
-            finishTime: finalLength,
-          }),
-        ];
+        const {
+          data: { href: backgroundUrl },
+        } = await yandexDiskApi.getDownloadLink('editor/', 'background.jpg');
+        const imageClip = [makeBackgroundJson(finalLength, backgroundUrl)];
 
         const requestData = {
           timeline: {
             soundtrack: {
               src: get().musicLink,
               effect: 'fadeIn',
-              volume: 0.2,
+              volume: 0.1,
             },
             tracks: [
               {
@@ -385,7 +393,7 @@ export const useStore = create<Store>()(
         };
 
         console.log(requestData);
-
+        set({ preloaderText: 'Rendering' }, false, `setPreloader to 'Rendering'`);
         const {
           data: {
             response: { id },
@@ -413,6 +421,7 @@ export const useStore = create<Store>()(
         /*           shotStackApi.render(requestData); */
 
         set({ status: STATUSES.success });
+        set({ preloaderText: '' });
       } catch (error: unknown) {
         set({ status: STATUSES.failure });
         console.log('creating video error', error);
@@ -451,15 +460,15 @@ export const useStore = create<Store>()(
     musicLink: '',
 
     getMusicLink: async fileName => {
-      set({ status: STATUSES.fetching });
-      const response = await yandexDiskApi.getDownloadLink(`${fileName}.mp3`);
+      /* set({ status: STATUSES.fetching });
+      const response = await yandexDiskApi.getDownloadLink('editor/', `${fileName}.mp3`); */
       set(state => ({
         tracks: {
           ...state.tracks,
           audioTrackClips: [
             makeAudioToVideo({
               currentDuration: 0,
-              downloadLink: response.data.href,
+              downloadLink: fileName,
               startTime: 0,
               finishTime: 0,
             }),
@@ -468,7 +477,7 @@ export const useStore = create<Store>()(
         currentDuration: 0,
       }));
 
-      set({ musicLink: response.data.href });
+      set({ musicLink: fileName });
       set({ status: STATUSES.success });
     },
   })),

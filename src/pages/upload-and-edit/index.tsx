@@ -1,5 +1,5 @@
 import { Button } from '../../components/ui-elements/button';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import UploadNavigation from '../../components/navigation';
 import { useStore } from '../../store';
 import styles from './step.module.scss';
@@ -8,21 +8,31 @@ import { Recorder } from '../recorder';
 /* import Preview from '../preview'; */
 import VideoPlayer from '../../components/video-player';
 import { useState } from 'react';
+import { indexOf } from 'lodash';
 
 export default function UploadAndEdit() {
+  const navitage = useNavigate();
   const {
     currentFragmentName,
+    filenames,
     currentStepData,
     currentStepData: { fragmentStartTime, fragmentFinishTime, videoPreviewSrc },
     setCurrentStepData,
     updateStepsData,
     resetStepData,
+    setCurrentFragmentName,
+    switchCurrentStep,
+    stepsData,
   } = useStore(state => ({
     currentFragmentName: state.currentFragmentName,
+    filenames: state.filenames,
     currentStepData: state.currentStepData,
     setCurrentStepData: state.setCurrentStepData,
     updateStepsData: state.updateStepsData,
     resetStepData: state.resetStepData,
+    setCurrentFragmentName: state.setCurrentFragmentName,
+    switchCurrentStep: state.switchCurrentStep,
+    stepsData: state.stepsData,
   }));
 
   const [inputType, setInputType] = useState<'upload' | 'record'>('upload');
@@ -42,6 +52,9 @@ export default function UploadAndEdit() {
 
   const handleSaveData = () => {
     updateStepsData(currentFragmentName, currentStepData);
+    if (currentFragmentName !== filenames[filenames.length - 1]) {
+      navigateToNextStep();
+    } else navigateToAudioChoosing();
   };
 
   const clearValue = () => {
@@ -59,6 +72,30 @@ export default function UploadAndEdit() {
     return videoPreviewSrc && fragmentData && fragmentFinishTime;
   };
 
+  const navigateToNextStep = () => {
+    setCurrentFragmentName(filenames[filenames.indexOf(currentFragmentName) + 1]);
+    switchCurrentStep(filenames[filenames.indexOf(currentFragmentName) + 1]);
+  };
+
+  const navigateToAudioChoosing = () => {
+    let isValid = true;
+    filenames.forEach((filename: string, index) => {
+      if (index === filenames.length) {
+        if (
+          !(
+            Boolean(stepsData[filename].fragmentData) &&
+            Boolean(stepsData[filename].fragmentFinishTime) &&
+            Boolean(stepsData[filename].videoPreviewSrc)
+          )
+        ) {
+          isValid = false;
+        }
+      }
+    });
+    if (isValid) {
+      navitage('../add-music');
+    }
+  };
   return (
     <section className={styles.page}>
       <UploadNavigation />
@@ -102,9 +139,9 @@ export default function UploadAndEdit() {
           )}
         </div>
         <div className={styles.bottomButtons}>
-          <Button className={styles.submit} onClick={clearValue} disabled={!isFragmentReady()}>
+          {/*           <Button className={styles.submit} onClick={clearValue} disabled={!isFragmentReady()}>
             try again
-          </Button>
+          </Button> */}
           <Button className={styles.submit} onClick={handleSaveData} disabled={!isFragmentReady()}>
             submit
           </Button>
