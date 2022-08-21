@@ -15,6 +15,12 @@ export default function Finish() {
     setPreloaderText: state.setPreloaderText,
   }));
 
+  useEffect(() => {
+    if (finishUrl) {
+      setPreloaderText('');
+    }
+  }, [finishUrl]);
+
   const checkIsVideosUploaded: any = () => {
     let isValid = true;
     filenames.forEach((filename: string) => {

@@ -41,10 +41,9 @@ export default function Uploader({ children }: Props) {
   /*   const { getInputProps, isDragActive, getRootProps } = useDropzone({ onDrop }); */
 
   return (
-    <Dropzone onDrop={handleDrop}>
+    <Dropzone onDrop={handleDrop} accept={{ 'video/mp4': ['.mp4'] }} maxSize={52428800}>
       {({ getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject }) => {
         const additionalClass = isDragAccept ? 'accept' : isDragReject ? 'reject' : '';
-
         return (
           <div
             {...getRootProps({

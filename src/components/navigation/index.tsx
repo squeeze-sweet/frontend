@@ -44,13 +44,15 @@ export default function Navigation() {
       {filenames.map((filename: string, index: number) => (
         <div key={index}>
           <p
-            className={cn(styles.link, { [styles.active]: currentFragmentName === filename })}
+            className={cn(styles.link, {
+              [styles.active]: currentFragmentName === filename,
+              [styles.done]: stepsData[`${filename}`].videoPreviewSrc,
+            })}
             onClick={() => {
               handleClick(filename);
             }}
           >
-            {`${index + 1}. ${filename}`}
-            {stepsData[`${filename}`].videoPreviewSrc && <img src={checkIcon} />}
+            {`${index + 1}`}
           </p>
         </div>
       ))}

@@ -81,7 +81,7 @@ interface Store {
 
   finishId: string;
 
-  getFinalLink: () => void;
+  /*   getFinalLink: () => void; */
 }
 
 const sum = (array: any, maxIndex: any) => {
@@ -449,13 +449,13 @@ export const useStore = create<Store>()(
       },
     */
 
-    getFinalLink: async () => {
+    /*     getFinalLink: async () => {
       //set({ status: STATUSES.fetching });
       const response = await shotStackApi.getVideoStatus(get().finishId);
       //console.log('response!!!!', resultResponse);
       set({ finishUrl: response.data.response.url });
       set({ status: STATUSES.success });
-    },
+    }, */
 
     musicLink: '',
 
