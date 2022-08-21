@@ -373,7 +373,7 @@ export const useStore = create<Store>()(
             soundtrack: {
               src: get().musicLink,
               effect: 'fadeIn',
-              volume: 0.1,
+              volume: 0.05,
             },
             tracks: [
               {
@@ -412,6 +412,7 @@ export const useStore = create<Store>()(
               set({ finishUrl: url });
               shotStackApi.download(url);
               set({ preloaderText: '' });
+              downloadResource(url, 'filename');
             } else QueryUntillData();
           }, 5000);
         };
@@ -460,3 +461,32 @@ export const useStore = create<Store>()(
     },
   })),
 );
+
+function forceDownload(blob: any, filename: any) {
+  var a = document.createElement('a');
+  a.download = filename;
+  a.href = blob;
+  // For Firefox https://stackoverflow.com/a/32226068
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+}
+
+// Current blob size limit is around 500MB for browsers
+function downloadResource(url: any, filename: any) {
+  if (!filename) filename = url.split('\\').pop().split('/').pop();
+  fetch(url, {
+    headers: new Headers({
+      Origin: location.origin,
+    }),
+    mode: 'cors',
+  })
+    .then(response => response.blob())
+    .then(blob => {
+      console.log('blob', blob);
+
+      let blobUrl = window.URL.createObjectURL(blob);
+      forceDownload(blobUrl, filename);
+    })
+    .catch(e => console.error(e));
+}
