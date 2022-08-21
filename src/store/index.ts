@@ -71,6 +71,7 @@ interface Store {
 
   finishUrl: string;
 
+  setFinishUrl: (finishUrl: string) => void;
   createVideo: () => void;
   tracks: any;
   currentDuration: number;
@@ -409,19 +410,14 @@ export const useStore = create<Store>()(
             } = await shotStackApi.getVideoStatus(id);
             if (url) {
               set({ finishUrl: url });
+              set({ preloaderText: '' });
             } else QueryUntillData();
           }, 5000);
         };
 
         QueryUntillData();
 
-        /*           console.log('FINISH url', url); */
-
-        /*           set({ finishUrl: response.data.response.url }); */
-        /*           shotStackApi.render(requestData); */
-
         set({ status: STATUSES.success });
-        set({ preloaderText: '' });
       } catch (error: unknown) {
         set({ status: STATUSES.failure });
         console.log('creating video error', error);
@@ -434,28 +430,9 @@ export const useStore = create<Store>()(
     finishId: '',
     finishUrl: '',
 
-    /*
-        \"clips": [
-          {
-            "asset": {
-              "type": "video",
-              "src": "https://downloader.disk.yandex.ru/disk/4e4afbd0271bace8ae90bc8d584b3563815c4268b2006c6735acf16c4aeb8e0c/62c54a17/8_WUTPzIXosyqU0TknxfgtTKot0z8-Zv2wNO95T6Fmc3jDFqcElgtBt7YJEGl3dzNp6tN0gKYVimiVspuWOL-w%3D%3D?uid=1470323160&filename=videoplayback.mp4&disposition=attachment&hash=&limit=0&content_type=video%2Fmp4&owner_uid=1470323160&fsize=45921&hid=dfb1c2488611f27cb7a4aba2ff2efb22&media_type=video&tknv=v2&etag=f15f80b5729df453bc4b06b7d1f608ac"
-              "trim": startTime,
-            },
-            "start": 0,
-            "length": videoLength-videoStartTime
-          }
-        ]
-      },
-    */
-
-    /*     getFinalLink: async () => {
-      //set({ status: STATUSES.fetching });
-      const response = await shotStackApi.getVideoStatus(get().finishId);
-      //console.log('response!!!!', resultResponse);
-      set({ finishUrl: response.data.response.url });
-      set({ status: STATUSES.success });
-    }, */
+    setFinishUrl: finishUrl => {
+      set({ finishUrl: finishUrl });
+    },
 
     musicLink: '',
 
@@ -482,9 +459,3 @@ export const useStore = create<Store>()(
     },
   })),
 );
-
-/*
-        
-        console.log('finalResponse', finalResponse);
-        //set({ finishUrl: response1.data.url });
-*/

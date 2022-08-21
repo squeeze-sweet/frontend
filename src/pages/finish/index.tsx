@@ -6,20 +6,27 @@ import styles from './step-2.module.scss';
 
 export default function Finish() {
   const createVideo = useStore(state => state.createVideo);
-  const finishUrl = useStore(state => state.finishUrl);
   /* 
   const [isAllVideosUploaded, setIsAllVideosUploaded] = useState(false); */
-  const { filenames, stepsData, setPreloaderText } = useStore(state => ({
+  const { filenames, stepsData, setPreloaderText, finishUrl, setFinishUrl } = useStore(state => ({
     filenames: state.filenames,
     stepsData: state.stepsData,
     setPreloaderText: state.setPreloaderText,
+    finishUrl: state.finishUrl,
+    setFinishUrl: state.setFinishUrl,
   }));
 
   useEffect(() => {
+    return () => {
+      setFinishUrl('');
+    };
+  }, []);
+
+  /*   useEffect(() => {
     if (finishUrl) {
       setPreloaderText('');
     }
-  }, [finishUrl]);
+  }, [finishUrl]); */
 
   const checkIsVideosUploaded: any = () => {
     let isValid = true;
@@ -36,25 +43,14 @@ export default function Finish() {
     createVideo();
   }, []);
 
-  /*   useEffect(() => {
-    if (checkIsVideosUploaded()) {
-      setPreloaderText('Rendering');
-      uploadVideo();
-    }
-  }, [stepsData]);
-
-  useEffect(() => {
-    if (finishUrl) {
-      setPreloaderText('');
-    }
-  }, [finishUrl]); */
-
   return (
     <section className={styles.container}>
       {/*       <Button onClick={handleClick}>Create</Button> */}
       {/*       <Button onClick={handleUploadVideo}>Upload</Button> */}
       <h1>{!Boolean(finishUrl) ? "You're video is almost here"! : 'Done!'} </h1>
-      {finishUrl && <video src={`${finishUrl}`} poster='poster.jpg' controls></video>}
+      {finishUrl && (
+        <video className={styles.video} src={`${finishUrl}`} poster='poster.jpg' controls />
+      )}
     </section>
   );
 }
