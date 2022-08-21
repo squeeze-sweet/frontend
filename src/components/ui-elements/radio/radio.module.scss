@@ -4,13 +4,35 @@
 .container {
   width: 100%;
   display: flex;
+  align-items: center;
+  height: 71px;
+  background-color: $checkbox-background-gray;
 }
 
 .checkbox {
   display: none;
 }
 
+.play {
+  margin: 0 20px;
+  cursor: pointer;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 10px 0 10px 17.3px;
+  border-color: transparent transparent transparent #000000;
+}
+
+.stop {
+  width: 17px;
+  height: 17px;
+  background-color: #000000;
+}
+
 .label {
+  display: flex;
+  align-items: center;
+  gap: 20px;
   cursor: pointer;
   padding: 21px;
   width: 100%;
