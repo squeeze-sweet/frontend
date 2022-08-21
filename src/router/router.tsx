@@ -10,6 +10,7 @@ import { GeneralInfo } from '../pages/general-info';
 import { Recorder } from '../pages/recorder';
 import UploadAndEdit from '../pages/upload-and-edit';
 import { useStore } from '../store';
+import HowItWorks from '../pages/how-it-works';
 
 export const routes = [
   {
@@ -17,9 +18,14 @@ export const routes = [
     name: 'Introduce yourself',
   },
   {
+    path: 'how-it-works',
+    name: 'How it works',
+  },
+  {
     path: 'select-questions',
     name: 'Select questions',
   },
+
   {
     path: 'upload-and-edit',
     name: 'Upload and edit',
@@ -78,6 +84,7 @@ function Router() {
         <Route path='/' element={<Layout />}>
           <Route index element={<Navigate to='introduce-yourself' />} />
           <Route path='introduce-yourself' element={<IntroduceYourself />} />
+          <Route path='how-it-works' element={<HowItWorks />} />
           <Route
             path='select-questions'
             element={isEmail() && isUserInfo() ? <SelectQuestions /> : <Navigate to='/' />}
@@ -88,7 +95,7 @@ function Router() {
               isEmail() && isUserInfo() && isFilenamesChosen() ? (
                 <UploadAndEdit />
               ) : (
-                <Navigate to='/' />
+                <Navigate to='/select-questions' />
               )
             }
           />

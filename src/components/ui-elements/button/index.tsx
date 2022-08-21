@@ -7,6 +7,7 @@ type Props = {
   disabled?: boolean;
   className?: string;
   children: string;
+  reversed?: boolean;
 };
 export const Button = ({
   htmlType = 'button',
@@ -14,13 +15,17 @@ export const Button = ({
   onClick,
   className,
   children,
+  reversed,
 }: Props) => {
   return (
     <button
       type={htmlType}
       disabled={disabled}
       onClick={onClick}
-      className={cn(styles.button, className, { [styles.disabled]: disabled })}
+      className={cn(styles.button, className, {
+        [styles.disabled]: disabled,
+        [styles.reversed]: reversed,
+      })}
     >
       {children}
     </button>

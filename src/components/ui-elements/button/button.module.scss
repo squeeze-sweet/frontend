@@ -13,9 +13,16 @@
   padding: 16px;
   width: 100%;
   border: none;
+  outline: 1px #ffffff solid;
 }
 
 .disabled {
   background-color: $button-disabled-gray;
   cursor: auto;
+}
+
+.reversed {
+  color: $button-black;
+  background-color: $button-white-text;
+  outline: 1px black solid;
 }

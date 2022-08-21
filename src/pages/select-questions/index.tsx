@@ -50,17 +50,20 @@ export default function SelectQuestions() {
   };
 
   return (
-    <section className={styles['page-container']}>
+    <form onSubmit={handleSubmit} className={styles['page-container']}>
       <div className={styles['header-container']}>
         <div className={styles.text}>
           <h1>Select the questions</h1>
           <p className={styles.description}>
             answer them in videos in next step. ideal length is 10-20 sec per question.
           </p>
+          <div className={styles.button}>
+            <Button htmlType='submit'>Next</Button>
+          </div>
         </div>
       </div>
 
-      <form onSubmit={handleSubmit} className={styles['content-container']}>
+      <div className={styles['content-container']}>
         <div className={styles.checkboxes}>
           {questions.map(({ heading }: any, index) => (
             <Checkbox
@@ -74,10 +77,7 @@ export default function SelectQuestions() {
             />
           ))}
         </div>
-        <div className={styles.footer}>
-          <Button htmlType='submit'>Next</Button>
-        </div>
-      </form>
-    </section>
+      </div>
+    </form>
   );
 }

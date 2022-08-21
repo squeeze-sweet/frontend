@@ -26,7 +26,7 @@ export default function IntroduceYourself() {
       setCurrentStep(currentStep + 1);
     } else {
       setCurrentStep(0);
-      navigate('/select-questions');
+      navigate('/how-it-works');
     }
   };
 
