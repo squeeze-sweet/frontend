@@ -21,7 +21,13 @@ export default function VideoPlayer({
   setFinishTime,
 }: Props) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const sliderRef = useRef<HTMLInputElement>(null);
   const [videoDuration, setVideoDuration] = useState(0);
+
+  const marks = {
+    [startTime]: startTime,
+    [finishTime]: Math.round(finishTime),
+  };
 
   const handleError = () => {
     resetVideoPreviewSrs();
@@ -43,7 +49,6 @@ export default function VideoPlayer({
             setVideoDuration(element.duration);
             !finishTime && setFinishTime(element.duration);
           }
-          
         }
       };
     }
@@ -82,6 +87,8 @@ export default function VideoPlayer({
       {videoDuration && (
         <div className={styles.slider}>
           <Slider
+            marks={marks}
+            ref={sliderRef}
             range
             max={videoDuration}
             allowCross={false}
