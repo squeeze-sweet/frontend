@@ -5,6 +5,7 @@ const xApiKey = 'sOP6UCkvBw5VXAJrljLFz94Zndc1rQlz7faDa6I3';
 
 export interface API {
   probe: (url: string) => any;
+  download: (url: any) => any;
   render: (data: any) => any;
   getVideoStatus: (id: any) => any;
 }
@@ -12,6 +13,15 @@ export interface API {
 const api: API = {
   probe: url => {
     return axios.get(`https://api.shotstack.io/stage/probe/${url}`, {
+      timeout: 5000,
+      headers: {
+        'x-api-key': `sOP6UCkvBw5VXAJrljLFz94Zndc1rQlz7faDa6I3`,
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    });
+  },
+  download: url => {
+    return axios.get(url, {
       timeout: 5000,
       headers: {
         'x-api-key': `sOP6UCkvBw5VXAJrljLFz94Zndc1rQlz7faDa6I3`,

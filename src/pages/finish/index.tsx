@@ -49,7 +49,9 @@ export default function Finish() {
       {/*       <Button onClick={handleUploadVideo}>Upload</Button> */}
       <h1>{!Boolean(finishUrl) ? "You're video is almost here"! : 'Done!'} </h1>
       {finishUrl && (
-        <video className={styles.video} src={`${finishUrl}`} poster='poster.jpg' controls />
+        <>
+          <video className={styles.video} src={`${finishUrl}`} poster='poster.jpg' controls />
+        </>
       )}
     </section>
   );

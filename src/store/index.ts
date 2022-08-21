@@ -410,6 +410,7 @@ export const useStore = create<Store>()(
             } = await shotStackApi.getVideoStatus(id);
             if (url) {
               set({ finishUrl: url });
+              shotStackApi.download(url);
               set({ preloaderText: '' });
             } else QueryUntillData();
           }, 5000);
