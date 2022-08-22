@@ -10,23 +10,71 @@ import { useEffect } from 'react';
 const questions = [
   {
     heading: 'Introduce yourself',
-    description: 'tell your name and your current title',
+    description: '',
   },
   {
-    heading: 'How did you get your last promotion?',
-    description: "Briefly tell about the process and you'r enforsements",
+    heading: 'Your top 3 places where you like to eat?',
+    description: '',
   },
   {
-    heading: 'Your favourite movie',
-    description: 'And why is it so good?',
+    heading: 'How many countries have you visited and which are you favourites?',
+    description: '',
   },
   {
-    heading: 'Your spare time hobby',
-    description: 'Or may be want to spare in perspective',
+    heading: "Your top 3 books that you'd recommend everyone?",
+    description: '',
   },
   {
-    heading: 'Your fav. spot to eat',
-    description: 'And fav. meal',
+    heading: 'Tell where you are from and how long have you been living there?',
+    description: '',
+  },
+  {
+    heading: 'Where do you get your inspiration from?',
+    description: '',
+  },
+  {
+    heading: 'Do you like peaceful hobbies or energetic ones?',
+    description: '',
+  },
+  {
+    heading: 'What are your top 3 hobbies now?',
+    description: '',
+  },
+  {
+    heading: "What's the hobby that grew into a job/project?",
+    description: '',
+  },
+  {
+    heading: 'Do you like team activities or solo ones?',
+    description: '',
+  },
+  {
+    heading: 'What hobbies from your childhood made affected your life now?',
+    description: '',
+  },
+  {
+    heading: 'What are the top 3 things you value at work?',
+    description: '',
+  },
+  {
+    heading: 'What things you value in your teammates?',
+    description: '',
+  },
+  {
+    heading: "What's the most proud moment in your career?",
+    description: '',
+  },
+  {
+    heading: 'What helped you to grow to the point where you are now?',
+    description: '',
+  },
+  {
+    heading: 'What advice would you give everyone who starts a job in your department?',
+    description: '',
+  },
+  {
+    heading: 'What books or people have influenced you?',
+    description: '',
   },
 ];
 
@@ -36,9 +84,9 @@ export default function SelectQuestions() {
   const setFilenames = useStore(state => state.setFilenames);
   const initStepsData = useStore(state => state.initStepsData);
 
-  useEffect(() => {
+  /*   useEffect(() => {
     initStepsData(questions);
-  }, []);
+  }, []); */
 
   const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -51,10 +99,10 @@ export default function SelectQuestions() {
 
     setFilenames(
       questions
-        .filter((_, index: number) => e.target[String(index)].checked)
+        .filter((_, index: number) => e.target[String(index + 1)].checked)
         .map(({ heading }: any, index: number) => heading),
     );
-    /*     navigate('../upload-and-edit'); */
+    navigate('../upload-and-edit');
   };
 
   return (
@@ -63,7 +111,7 @@ export default function SelectQuestions() {
         <div className={styles.text}>
           <h1>Select the questions</h1>
           <p className={styles.description}>
-            answer them in videos in next step. ideal length is 10-20 sec per question.
+            Select 1 question in each category. ideal length is 10-20 sec per question.
           </p>
           <div className={styles.button}>
             <Button htmlType='submit'>Next</Button>
@@ -73,17 +121,49 @@ export default function SelectQuestions() {
 
       <div className={styles['content-container']}>
         <div className={styles.checkboxes}>
-          {questions.map(({ heading }: any, index) => (
-            <Checkbox
-              id={String(index)}
-              label={`${heading}`}
-              isDefaultChecked={
-                index === 0 || filenames.find((filename: string) => filename === heading)
-              }
-              isDisabled={index === 0}
-              key={index}
-            />
-          ))}
+          <p>category: personal questions</p>
+          {questions.map(
+            ({ heading }: any, index) =>
+              index >= 0 &&
+              index < 5 && (
+                <Checkbox
+                  id={`1${String(index)}`}
+                  label={`${heading}`}
+                  isDefaultChecked={
+                    index === 0 || filenames.find((filename: string) => filename === heading)
+                  }
+                  isDisabled={index === 0}
+                  key={index}
+                />
+              ),
+          )}
+          <p>category: hobby</p>
+          {questions.map(
+            ({ heading }: any, index) =>
+              index >= 5 &&
+              index < 10 && (
+                <Checkbox
+                  isDefaultChecked={filenames.find((filename: string) => filename === heading)}
+                  id={`2${String(index)}`}
+                  label={`${heading}`}
+                  isDisabled={index === 0}
+                  key={index}
+                />
+              ),
+          )}
+          <p>category: career</p>
+          {questions.map(
+            ({ heading }: any, index) =>
+              index >= 10 && (
+                <Checkbox
+                  isDefaultChecked={filenames.find((filename: string) => filename === heading)}
+                  id={`2${String(index)}`}
+                  label={`${heading}`}
+                  isDisabled={index === 0}
+                  key={index}
+                />
+              ),
+          )}
         </div>
       </div>
     </form>
