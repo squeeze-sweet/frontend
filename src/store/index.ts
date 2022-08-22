@@ -81,7 +81,7 @@ interface Store {
   files: any[];
 
   finishId: string;
-
+  blobToDownload: any;
   /*   getFinalLink: () => void; */
 }
 
@@ -96,6 +96,7 @@ const sum = (array: any, maxIndex: any) => {
 
 export const useStore = create<Store>()(
   devtools((set, get) => ({
+    blobToDownload: null,
     preloaderText: '',
 
     setPreloaderText: (text: string) =>
@@ -401,7 +402,7 @@ export const useStore = create<Store>()(
           },
         } = await shotStackApi.render(requestData);
 
-        /*         const forceDownload = (blob: any, filename: any) => {
+        const forceDownload = (blob: any, filename: any) => {
           var a = document.createElement('a');
           a.download = filename;
           a.href = blob;
@@ -409,32 +410,35 @@ export const useStore = create<Store>()(
           document.body.appendChild(a);
           a.click();
           a.remove();
-        }; */
+        };
 
         // Current blob size limit is around 500MB for browsers
-        const downloadResource = (url: any, filename: any) => {
-          if (!filename) filename = url.split('\\').pop().split('/').pop();
-          fetch(url, {
+        const downloadResource = async (url: any) => {
+          const response = await fetch(url, {
             headers: new Headers({
               Origin: location.origin,
             }),
             mode: 'cors',
-          })
-            .then(response => {
-              set({ preloaderText: '' });
-              return response.arrayBuffer();
-            })
-            .then(data => {
-              console.log('data', data);
-              uploadVideo(get().email, 'result', data);
-            })
-            /*     .then(blob => {
+          });
+          console.log('response', response);
+
+          const arrayBuffer = await response.arrayBuffer();
+          console.log('arrayBuffer', arrayBuffer);
+          /*           const blob = await response.blob();
+          console.log('blob', blob); */
+
+          uploadVideo(get().email, 'result', arrayBuffer);
+          /*               let blobUrl = window.URL.createObjectURL(await res.blob);
+              forceDownload(blobUrl, filename); */
+
+          /* set({ blobToDownload: res.blob }); */
+
+          /*     .then(blob => {
               console.log('blob', blob);
         
               let blobUrl = window.URL.createObjectURL(blob);
               forceDownload(blobUrl, filename);
             }) */
-            .catch(e => console.error(e));
         };
 
         const QueryUntillData = async () => {
@@ -448,7 +452,7 @@ export const useStore = create<Store>()(
               set({ finishUrl: url });
               shotStackApi.download(url);
               set({ preloaderText: 'saving video' });
-              const data = await downloadResource(url, 'filename');
+              const data = await downloadResource(url);
             } else QueryUntillData();
           }, 5000);
         };

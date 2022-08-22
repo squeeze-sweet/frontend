@@ -8,13 +8,15 @@ export default function Finish() {
   const createVideo = useStore(state => state.createVideo);
   /* 
   const [isAllVideosUploaded, setIsAllVideosUploaded] = useState(false); */
-  const { filenames, stepsData, setPreloaderText, finishUrl, setFinishUrl } = useStore(state => ({
-    filenames: state.filenames,
-    stepsData: state.stepsData,
-    setPreloaderText: state.setPreloaderText,
-    finishUrl: state.finishUrl,
-    setFinishUrl: state.setFinishUrl,
-  }));
+  const { filenames, stepsData, setPreloaderText, finishUrl, setFinishUrl, blobToDownload } =
+    useStore(state => ({
+      filenames: state.filenames,
+      stepsData: state.stepsData,
+      setPreloaderText: state.setPreloaderText,
+      finishUrl: state.finishUrl,
+      setFinishUrl: state.setFinishUrl,
+      blobToDownload: state.blobToDownload,
+    }));
 
   useEffect(() => {
     return () => {
@@ -27,6 +29,19 @@ export default function Finish() {
       setPreloaderText('');
     }
   }, [finishUrl]); */
+  const forceDownload = (blob: any, filename: any) => {
+    var a = document.createElement('a');
+    a.download = filename;
+    a.href = blob;
+    // For Firefox https://stackoverflow.com/a/32226068
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  };
+  const handleDownload = () => {
+    let blobUrl = window.URL.createObjectURL(blobToDownload);
+    forceDownload(blobUrl, 'result');
+  };
 
   const checkIsVideosUploaded: any = () => {
     let isValid = true;
@@ -51,6 +66,9 @@ export default function Finish() {
       {finishUrl && (
         <>
           <video className={styles.video} src={`${finishUrl}`} poster='poster.jpg' controls />
+          {/*           <Button disabled={!blobToDownload} onClick={handleDownload}>
+            Download
+          </Button> */}
         </>
       )}
     </section>
