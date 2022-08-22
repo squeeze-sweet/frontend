@@ -6,6 +6,7 @@ import styles from './filenames-setting.module.scss';
 import { Button } from '../../components/ui-elements/button';
 import { useEffect } from 'react';
 
+//category: personal
 const questions = [
   {
     heading: 'Introduce yourself',
@@ -41,12 +42,19 @@ export default function SelectQuestions() {
 
   const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.log(
+      'e.target',
+      questions
+        .filter((_, index: number) => e.target[String(index + 1)].checked)
+        .map(({ heading }: any) => heading),
+    );
+
     setFilenames(
       questions
         .filter((_, index: number) => e.target[String(index)].checked)
         .map(({ heading }: any, index: number) => heading),
     );
-    navigate('../upload-and-edit');
+    /*     navigate('../upload-and-edit'); */
   };
 
   return (
