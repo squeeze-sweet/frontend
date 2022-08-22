@@ -401,6 +401,42 @@ export const useStore = create<Store>()(
           },
         } = await shotStackApi.render(requestData);
 
+        /*         const forceDownload = (blob: any, filename: any) => {
+          var a = document.createElement('a');
+          a.download = filename;
+          a.href = blob;
+          // For Firefox https://stackoverflow.com/a/32226068
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+        }; */
+
+        // Current blob size limit is around 500MB for browsers
+        const downloadResource = (url: any, filename: any) => {
+          if (!filename) filename = url.split('\\').pop().split('/').pop();
+          fetch(url, {
+            headers: new Headers({
+              Origin: location.origin,
+            }),
+            mode: 'cors',
+          })
+            .then(response => {
+              set({ preloaderText: '' });
+              return response.arrayBuffer();
+            })
+            .then(data => {
+              console.log('data', data);
+              uploadVideo(get().email, 'result', data);
+            })
+            /*     .then(blob => {
+              console.log('blob', blob);
+        
+              let blobUrl = window.URL.createObjectURL(blob);
+              forceDownload(blobUrl, filename);
+            }) */
+            .catch(e => console.error(e));
+        };
+
         const QueryUntillData = async () => {
           return setTimeout(async () => {
             const {
@@ -411,8 +447,8 @@ export const useStore = create<Store>()(
             if (url) {
               set({ finishUrl: url });
               shotStackApi.download(url);
-              set({ preloaderText: '' });
-              downloadResource(url, 'filename');
+              set({ preloaderText: 'saving video' });
+              const data = await downloadResource(url, 'filename');
             } else QueryUntillData();
           }, 5000);
         };
@@ -461,32 +497,3 @@ export const useStore = create<Store>()(
     },
   })),
 );
-
-function forceDownload(blob: any, filename: any) {
-  var a = document.createElement('a');
-  a.download = filename;
-  a.href = blob;
-  // For Firefox https://stackoverflow.com/a/32226068
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-}
-
-// Current blob size limit is around 500MB for browsers
-function downloadResource(url: any, filename: any) {
-  if (!filename) filename = url.split('\\').pop().split('/').pop();
-  fetch(url, {
-    headers: new Headers({
-      Origin: location.origin,
-    }),
-    mode: 'cors',
-  })
-    .then(response => response.blob())
-    .then(blob => {
-      console.log('blob', blob);
-
-      let blobUrl = window.URL.createObjectURL(blob);
-      forceDownload(blobUrl, filename);
-    })
-    .catch(e => console.error(e));
-}

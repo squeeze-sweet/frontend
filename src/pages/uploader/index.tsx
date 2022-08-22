@@ -35,6 +35,8 @@ export default function Uploader({ children }: Props) {
   };
 
   const handleDrop = useCallback((acceptedFiles: any) => {
+    console.log('size', acceptedFiles[0].size);
+
     saveVideo(acceptedFiles[0]);
   }, []);
 

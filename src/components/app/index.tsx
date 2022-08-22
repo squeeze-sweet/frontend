@@ -2,11 +2,7 @@ import Router from '../../router/router';
 import Preloader from '../preloader';
 
 function App() {
-  return (
-    <Preloader>
-      <Router />
-    </Preloader>
-  );
+  return <Router />;
 }
 
 export default App;
