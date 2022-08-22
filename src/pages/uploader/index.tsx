@@ -34,9 +34,20 @@ export default function Uploader({ children }: Props) {
     };
   };
 
+  const validateTimeAndSize = (file: any) => {
+    let error = '';
+    if (file.size > 52428800) error += 'please choose the file less then 50mb';
+    var video = document.createElement('video');
+    video.src = file;
+    video.onloadedmetadata = event => {
+      console.log('video.duration', video.duration);
+    };
+    console.log('video.duration', video.duration);
+    video.remove();
+  };
   const handleDrop = useCallback((acceptedFiles: any) => {
     console.log('size', acceptedFiles[0].size);
-
+    validateTimeAndSize(acceptedFiles[0]);
     saveVideo(acceptedFiles[0]);
   }, []);
 

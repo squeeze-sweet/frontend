@@ -6,10 +6,12 @@ import { useStore } from '../../store';
 type Props = {
   videoPreviewSrc: string;
   resetVideoPreviewSrs: () => void;
+  setError: (error: string) => void;
   startTime: number;
   setStartTime: (time: number) => void;
   finishTime: number;
   setFinishTime: (time: number) => void;
+  clearValue: () => void;
 };
 
 export default function VideoPlayer({
@@ -19,11 +21,12 @@ export default function VideoPlayer({
   setStartTime,
   finishTime,
   setFinishTime,
+  clearValue,
+  setError,
 }: Props) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const sliderRef = useRef<HTMLInputElement>(null);
   const [videoDuration, setVideoDuration] = useState(0);
-
   const marks = {
     [startTime]: startTime,
     [finishTime]: Math.round(finishTime),
@@ -32,6 +35,16 @@ export default function VideoPlayer({
   const handleError = () => {
     resetVideoPreviewSrs();
   };
+
+  useEffect(() => {
+    if (finishTime > 30) {
+      clearValue;
+      setError('video length is too big, please upload video less then 30s.');
+    } else {
+      setError('');
+    }
+    console.log('finishTime', finishTime);
+  }, [finishTime]);
 
   useEffect(() => {
     if (videoRef.current) {

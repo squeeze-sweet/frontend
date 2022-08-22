@@ -84,9 +84,9 @@ export default function SelectQuestions() {
   const setFilenames = useStore(state => state.setFilenames);
   const initStepsData = useStore(state => state.initStepsData);
 
-  /*   useEffect(() => {
+  useEffect(() => {
     initStepsData(questions);
-  }, []); */
+  }, []);
 
   const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();

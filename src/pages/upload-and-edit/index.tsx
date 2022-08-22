@@ -7,7 +7,7 @@ import Uploader from '../uploader';
 import { Recorder } from '../recorder';
 /* import Preview from '../preview'; */
 import VideoPlayer from '../../components/video-player';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { indexOf } from 'lodash';
 
 export default function UploadAndEdit() {
@@ -36,6 +36,7 @@ export default function UploadAndEdit() {
   }));
 
   const [inputType, setInputType] = useState<'upload' | 'record'>('upload');
+  const [error, setError] = useState('');
 
   const resetVideoPreviewSrs = () => {
     setCurrentStepData({ ...currentStepData, videoPreviewSrc: '' });
@@ -59,7 +60,6 @@ export default function UploadAndEdit() {
 
   const clearValue = () => {
     setCurrentStepData({
-      ...currentStepData,
       videoPreviewSrc: '',
       fragmentData: '',
       fragmentStartTime: 0,
@@ -69,7 +69,7 @@ export default function UploadAndEdit() {
 
   const isFragmentReady = () => {
     const { videoPreviewSrc, fragmentData, fragmentFinishTime } = currentStepData;
-    return videoPreviewSrc && fragmentData && fragmentFinishTime;
+    return videoPreviewSrc && fragmentData && fragmentFinishTime && !error;
   };
 
   const navigateToNextStep = () => {
@@ -129,6 +129,8 @@ export default function UploadAndEdit() {
 
           {videoPreviewSrc && (
             <VideoPlayer
+              setError={setError}
+              clearValue={clearValue}
               videoPreviewSrc={videoPreviewSrc}
               resetVideoPreviewSrs={resetVideoPreviewSrs}
               startTime={fragmentStartTime}
@@ -137,6 +139,7 @@ export default function UploadAndEdit() {
               setFinishTime={setFinishTime}
             />
           )}
+          <p className={styles.error}>{error}</p>
         </div>
         <div className={styles.bottomButtons}>
           {/*           <Button className={styles.submit} onClick={clearValue} disabled={!isFragmentReady()}>
