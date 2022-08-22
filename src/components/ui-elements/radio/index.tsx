@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import cn from 'classnames';
 import styles from './radio.module.scss';
 
@@ -25,40 +25,58 @@ export default ({
   file,
 }: Props) => {
   const [isPlaying, setIsPlaying] = useState(false);
+  const itemRef = useRef<any>();
+  const inputRef = useRef<any>();
+
   const handleClick = () => {
-    if (isPlaying) {
+    /*     if (isPlaying) {
       itemRef?.current && itemRef?.current.pause();
       itemRef?.current && (itemRef.current.currentTime = 0);
     } else {
       itemRef?.current && itemRef?.current.play();
     }
-    setIsPlaying(!isPlaying);
+    setIsPlaying(!isPlaying); */
   };
 
-  const itemRef = useRef<any>();
+  useEffect(() => {
+    if (inputRef?.current?.checked) {
+      itemRef?.current && itemRef?.current.play();
+      setIsPlaying(true);
+    } else {
+      itemRef?.current && itemRef?.current.pause();
+      itemRef?.current && (itemRef.current.currentTime = 0);
+      setIsPlaying(false);
+    }
+  }, [inputRef?.current?.checked]);
+
+  const handleChange = (e: any) => {
+    console.log('e.target', e.target.checked);
+  };
+
   return (
     <div className={styles.container}>
-      <div
-        id='play'
-        className={cn(styles.play, { [styles.stop]: isPlaying })}
-        onClick={handleClick}
-      />
-
       <audio ref={itemRef} /*  controls */ src={file} className={styles.player} />
 
       <input
+        ref={inputRef}
         id={id}
         name='radio'
         type='radio'
         value={value}
         defaultChecked={isDefaultChecked}
         disabled={isDisabled}
-        onChange={onChange}
+        onChange={handleChange}
         onClick={onClick}
         className={styles.checkbox}
       />
 
       <label className={styles.label} htmlFor={id}>
+        <div
+          id='play'
+          className={cn(styles.play, { [styles.stop]: isPlaying })}
+          onClick={handleClick}
+        />
+
         {label}
       </label>
     </div>
