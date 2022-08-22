@@ -394,7 +394,6 @@ export const useStore = create<Store>()(
           },
         };
 
-        console.log(requestData);
         set({ preloaderText: 'Rendering' }, false, `setPreloader to 'Rendering'`);
         const {
           data: {
@@ -420,10 +419,8 @@ export const useStore = create<Store>()(
             }),
             mode: 'cors',
           });
-          console.log('response', response);
 
           const arrayBuffer = await response.arrayBuffer();
-          console.log('arrayBuffer', arrayBuffer);
           /*           const blob = await response.blob();
           console.log('blob', blob); */
 
@@ -462,7 +459,6 @@ export const useStore = create<Store>()(
         set({ status: STATUSES.success });
       } catch (error: unknown) {
         set({ status: STATUSES.failure });
-        console.log('creating video error', error);
       }
     },
 

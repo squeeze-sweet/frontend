@@ -90,12 +90,6 @@ export default function SelectQuestions() {
 
   const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(
-      'e.target',
-      questions
-        .filter((_, index: number) => e.target[String(index + 1)].checked)
-        .map(({ heading }: any) => heading),
-    );
 
     setFilenames(
       questions

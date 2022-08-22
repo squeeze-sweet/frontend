@@ -43,7 +43,6 @@ export default function VideoPlayer({
     } else {
       setError('');
     }
-    console.log('finishTime', finishTime);
   }, [finishTime]);
 
   useEffect(() => {

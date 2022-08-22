@@ -1,5 +1,5 @@
 import { useRef, useState, useCallback, useEffect } from 'react';
-
+import cn from 'classnames';
 import Webcam from 'react-webcam';
 import { VideoButton } from '../../components/ui-elements/video-button';
 import { useStore } from '../../store';
@@ -16,17 +16,24 @@ export const Recorder = () => {
     currentStepData: state.currentStepData,
     setCurrentStepData: state.setCurrentStepData,
   }));
-  const [recordingCount, setRecordingCount] = useState(0)
+  const [recordingCount, setRecordingCount] = useState(30);
 
   var recordingCounter: any;
-  
+
   const startCount = () => {
-    recordingCounter = setInterval(()=>{
-      setRecordingCount((recordingCount) => recordingCount + 1)
-    }, 1000)
-  }
-  
-  console.log('recordingCount', recordingCount);
+    recordingCounter = setInterval(() => {
+      
+
+      setRecordingCount(prev => {
+        console.log('recordingCount', prev);
+        if (prev <= 0) {
+          handleStopCaptureClick();
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  };
+
   const handleStartCaptureClick = useCallback(() => {
     setCount(3);
     setTimeout(() => {
@@ -40,7 +47,7 @@ export const Recorder = () => {
     }, 1000);
 
     setTimeout(() => {
-      startCount()
+      startCount();
       startCapturing();
     }, 3000);
   }, [webcamRef, setCapturing, mediaRecorderRef]);
@@ -67,11 +74,9 @@ export const Recorder = () => {
     setCapturing(false);
     /* setRecordingCount(0) */
     clearInterval(recordingCounter);
-    console.log("download", recordedChunks.length);
-    
   }, [mediaRecorderRef, webcamRef, setCapturing]);
 
-/*   useEffect(()=>{
+  /*   useEffect(()=>{
     if (recordedChunks.length && !capturing) {
     handleDownload()
     }
@@ -87,20 +92,18 @@ export const Recorder = () => {
       const reader = new FileReader();
       reader.readAsArrayBuffer(blob);
       reader.onload = function (e: any) {
-        console.log(url, recordingCount);
-        
         setCurrentStepData({
           ...currentStepData,
           videoPreviewSrc: url,
           fragmentData: e.target.result,
           fragmentStartTime: 0,
-          fragmentFinishTime: recordingCount, 
+          fragmentFinishTime: recordingCount,
         });
       };
       reader.onerror = function (error: any) {
         console.error(error);
       };
-/* 
+      /* 
       const reader = new FileReader();
       reader.readAsArrayBuffer(blob);
       reader.onload = function (e: any) {};
@@ -114,13 +117,31 @@ export const Recorder = () => {
     }
   }, [recordedChunks]);
 
+  useEffect(() => {
+    if (recordedChunks.length) {
+      handleDownload();
+    }
+  }, [recordedChunks.length]);
+
+  const videoConstraints = {
+    /*   width: { min: 480 },
+  height: { min: 720 }, */
+    aspectRatio: 1.77777777778,
+  };
+
   return (
     <>
       <h1>Inctoduce yourself</h1>
       <p>tell your name and your current title</p>
 
       <div className={styles.recorder}>
-        <Webcam audio={true} muted ref={webcamRef} className={styles.webcam} />
+        <Webcam
+          videoConstraints={videoConstraints}
+          audio={true}
+          muted
+          ref={webcamRef}
+          className={styles.webcam}
+        />
         {Boolean(count) && <p className={styles.counter}>{count}</p>}
         <VideoButton
           onClick={capturing ? handleStopCaptureClick : handleStartCaptureClick}
@@ -128,8 +149,13 @@ export const Recorder = () => {
           className={styles['record-button']}
         />
       </div>
-      {Boolean(recordingCount)&&recordingCount}
-       {recordedChunks.length > 0 && <button onClick={handleDownload}>бля нажми меня чтобы подтвердить, это костыль</button>} 
+      {Boolean(recordingCount !== 30) && (
+        <>
+          {' '}
+          <p className={styles.red}>recording</p>
+          <p className={cn(styles.count)}>time left: {recordingCount}</p>
+        </>
+      )}
     </>
   );
 };

@@ -7,7 +7,6 @@ import Preloader from '../ui-elements/preloader';
 function Layout() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
-  console.log('location', pathname);
   const handleClick = (path: string) => [navigate(path)];
   return (
     <div className={styles.page}>
