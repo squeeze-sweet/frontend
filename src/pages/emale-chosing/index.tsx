@@ -24,7 +24,6 @@ export default function EmaleChosing({ onSubmit }: any) {
       return;
     } else {
       CheckAcess(localEmail);
-      setPreloaderText('checking access');
     }
   };
 
@@ -41,10 +40,8 @@ export default function EmaleChosing({ onSubmit }: any) {
     try {
       await yandexDiskApi.checkUserAcess(localEmail);
       setEmail(localEmail);
-      setPreloaderText('');
       onSubmit();
     } catch (error) {
-      setPreloaderText('');
       setErrorMsg('You have no access to service, please contact your curator');
     }
   }
