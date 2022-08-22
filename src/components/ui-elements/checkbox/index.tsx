@@ -5,13 +5,21 @@ type Props = {
   label: string;
   isDisabled?: boolean;
   isDefaultChecked?: boolean;
+  name: string;
 };
-export const Checkbox = ({ isDefaultChecked = false, isDisabled = false, id, label }: Props) => {
+export const Checkbox = ({
+  isDefaultChecked = false,
+  isDisabled = false,
+  id,
+  label,
+  name,
+}: Props) => {
   return (
     <div className={styles.container}>
       <input
         id={id}
-        type='checkbox'
+        name={name}
+        type='radio'
         defaultChecked={isDefaultChecked}
         disabled={isDisabled}
         className={styles.checkbox}

@@ -124,6 +124,7 @@ export default function SelectQuestions() {
           <p>required question</p>
           <Checkbox
             id={`0${String(0)}`}
+            name={'0'}
             label={`${questions[0].heading}`}
             isDefaultChecked={true}
             isDisabled={true}
@@ -136,6 +137,7 @@ export default function SelectQuestions() {
               index < 5 && (
                 <Checkbox
                   id={`1${String(index)}`}
+                  name={'1'}
                   label={`${heading}`}
                   isDefaultChecked={filenames.find((filename: string) => filename === heading)}
                   isDisabled={index === 0}
@@ -151,6 +153,7 @@ export default function SelectQuestions() {
                 <Checkbox
                   isDefaultChecked={filenames.find((filename: string) => filename === heading)}
                   id={`2${String(index)}`}
+                  name={'2'}
                   label={`${heading}`}
                   isDisabled={index === 0}
                   key={index}
@@ -163,7 +166,8 @@ export default function SelectQuestions() {
               index >= 10 && (
                 <Checkbox
                   isDefaultChecked={filenames.find((filename: string) => filename === heading)}
-                  id={`2${String(index)}`}
+                  id={`3${String(index)}`}
+                  name={'3'}
                   label={`${heading}`}
                   isDisabled={index === 0}
                   key={index}
