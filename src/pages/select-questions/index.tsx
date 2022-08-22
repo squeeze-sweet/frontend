@@ -121,17 +121,23 @@ export default function SelectQuestions() {
 
       <div className={styles['content-container']}>
         <div className={styles.checkboxes}>
+          <p>required question</p>
+          <Checkbox
+            id={`0${String(0)}`}
+            label={`${questions[0].heading}`}
+            isDefaultChecked={true}
+            isDisabled={true}
+            key={`0${String(0)}`}
+          />
           <p>category: personal questions</p>
           {questions.map(
             ({ heading }: any, index) =>
-              index >= 0 &&
+              index >= 1 &&
               index < 5 && (
                 <Checkbox
                   id={`1${String(index)}`}
                   label={`${heading}`}
-                  isDefaultChecked={
-                    index === 0 || filenames.find((filename: string) => filename === heading)
-                  }
+                  isDefaultChecked={filenames.find((filename: string) => filename === heading)}
                   isDisabled={index === 0}
                   key={index}
                 />
