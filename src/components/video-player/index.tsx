@@ -37,13 +37,13 @@ export default function VideoPlayer({
   };
 
   useEffect(() => {
-    if (finishTime > 30) {
+    if (finishTime - startTime > 30) {
       clearValue;
       setError('video length is too big, please upload video less then 30s.');
     } else {
       setError('');
     }
-  }, [finishTime]);
+  }, [finishTime, startTime]);
 
   useEffect(() => {
     if (videoRef.current) {
