@@ -129,9 +129,6 @@ export const Recorder = () => {
 
   return (
     <>
-      <h1>Inctoduce yourself</h1>
-      <p>tell your name and your current title</p>
-
       <div className={styles.recorder}>
         <Webcam
           videoConstraints={videoConstraints}
