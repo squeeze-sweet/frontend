@@ -108,8 +108,8 @@ export const makeBackground = ({
       type: 'video',
       src: downloadLink,
     },
-    start: currentDuration,
-    length: finishTime - startTime + VIDEO_TITLEDURATION,
+    start: currentDuration + VIDEO_TITLEDURATION,
+    length: finishTime - startTime,
     fit: 'cover',
     position: 'center',
     transition: {
