@@ -1,6 +1,6 @@
-import { PREMADE_VIDEO_DURATION, TITLE_VIDEO_DURATION, VIDEO_TITLEDURATION } from './constants';
+import { TITLE_VIDEO_DURATION, VIDEO_TITLEDURATION } from './constants';
 
-export const makePremadeVideoClip = () => {
+/* export const makePremadeVideoClip = () => {
   return {
     asset: {
       type: 'html',
@@ -14,7 +14,7 @@ export const makePremadeVideoClip = () => {
     start: 0,
     length: PREMADE_VIDEO_DURATION,
   };
-};
+}; */
 
 export const makePremadeVideo = (downloadLink: string) => {
   return [

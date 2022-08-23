@@ -12,10 +12,9 @@ import {
   makeClipJsonForTitlePage,
   makeMusic,
   makePremadeVideo,
-  makePremadeVideoClip,
   makeVideoClip,
 } from './helpers';
-import { PREMADE_VIDEO_DURATION, TITLE_VIDEO_DURATION, VIDEO_TITLEDURATION } from './constants';
+import { TITLE_VIDEO_DURATION, VIDEO_TITLEDURATION } from './constants';
 import { isEmptyObject } from '../utils/helpers';
 
 type UserInfo = {
@@ -274,7 +273,7 @@ export const useStore = create<Store>()(
 
     setStatus: status => set({ status: status }),
 
-    currentDuration: PREMADE_VIDEO_DURATION,
+    currentDuration: TITLE_VIDEO_DURATION,
 
     tracks: {
       mainClips: [
@@ -319,7 +318,7 @@ export const useStore = create<Store>()(
         let mainClips: any[] = [];
         let audiosClips: any[] = [];
         let backgrounds: any[] = [];
-        let currentDuration = 10; //TODO Убрать хардкод
+        let currentDuration = 5; //TODO Убрать хардкод
 
         const {
           data: { href: introVideoLink },
@@ -340,11 +339,11 @@ export const useStore = create<Store>()(
         });
 
         mainClips = [
-          ...makePremadeVideo(introVideoLink),
+          /*           ...makePremadeVideo(introVideoLink), */
           makeClipJsonForTitlePage(
             get().userInfo?.firstName + ' ' + get().userInfo?.lastName,
             get().userInfo?.jobTitle as any,
-            5,
+            0,
           ),
         ];
 
