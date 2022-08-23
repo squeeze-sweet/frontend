@@ -453,6 +453,7 @@ export const useStore = create<Store>()(
           console.log('blob', blob); */
 
           uploadVideo(get().email, 'result', arrayBuffer);
+          set({ preloaderText: '' });
           /*               let blobUrl = window.URL.createObjectURL(await res.blob);
               forceDownload(blobUrl, filename); */
 
