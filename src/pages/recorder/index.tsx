@@ -23,7 +23,6 @@ export const Recorder = () => {
   const startCount = () => {
     recordingCounter = setInterval(() => {
       setRecordingCount(prev => {
-        console.log('recordingCount', prev);
         if (prev > 30) {
           handleStopCaptureClick();
         }

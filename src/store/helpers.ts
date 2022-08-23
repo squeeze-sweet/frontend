@@ -85,7 +85,7 @@ export const makeVideoClip = ({
       },
       start: currentDuration + VIDEO_TITLEDURATION,
       length: finishTime - startTime,
-      fit: 'none',
+      fit: 'cover',
       position: 'center',
       scale: 0.8,
       transition: {
@@ -111,7 +111,7 @@ export const makeVideoClipVithoutText = ({
       },
       start: currentDuration,
       length: finishTime - startTime,
-      fit: 'none',
+      fit: 'cover',
       position: 'center',
       scale: 0.8,
       transition: {
