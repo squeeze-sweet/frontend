@@ -7,12 +7,15 @@ import docsApi from '../services/api/api-docs';
 import { STATUSES } from '../services/types';
 import {
   makeAudioToVideo,
+  makeAudioToVideo0,
   makeBackground,
+  makeBackground0,
   makeBackgroundJson,
   makeClipJsonForTitlePage,
   makeMusic,
   makePremadeVideo,
   makeVideoClip,
+  makeVideoClipVithoutText,
 } from './helpers';
 import { TITLE_VIDEO_DURATION, VIDEO_TITLEDURATION } from './constants';
 import { isEmptyObject } from '../utils/helpers';
@@ -318,7 +321,7 @@ export const useStore = create<Store>()(
         let mainClips: any[] = [];
         let audiosClips: any[] = [];
         let backgrounds: any[] = [];
-        let currentDuration = 5; //TODO Убрать хардкод
+        let currentDuration = 0; //TODO Убрать хардкод
 
         const {
           data: { href: introVideoLink },
@@ -338,51 +341,88 @@ export const useStore = create<Store>()(
           );
         });
 
+        // 1 видео из introduce yourself
+        mainClips = [
+          ...makeVideoClipVithoutText({
+            currentDuration: 0,
+            downloadLink: downloadLinks[0],
+            startTime: mainTrackData[fileNames[0]].fragmentStartTime,
+            finishTime: mainTrackData[fileNames[0]].fragmentFinishTime,
+          }),
+        ];
+        audiosClips = [
+          makeAudioToVideo0({
+            currentDuration: 0,
+            downloadLink: downloadLinks[0],
+            startTime: mainTrackData[fileNames[0]].fragmentStartTime,
+            finishTime: mainTrackData[fileNames[0]].fragmentFinishTime,
+          }),
+        ];
+        backgrounds = [
+          makeBackground0({
+            currentDuration: 0,
+            downloadLink: bgUrls.map(bgdata => bgdata.data.href)[0],
+            startTime: mainTrackData[fileNames[0]].fragmentStartTime,
+            finishTime: mainTrackData[fileNames[0]].fragmentFinishTime,
+          }),
+        ];
+
+        currentDuration +=
+          mainTrackData[fileNames[0]].fragmentFinishTime -
+          mainTrackData[fileNames[0]].fragmentStartTime;
+        console.log('mainClips', mainClips);
+        // 2 title page
         mainClips = [
           /*           ...makePremadeVideo(introVideoLink), */
+          ...mainClips,
           makeClipJsonForTitlePage(
             get().userInfo?.firstName + ' ' + get().userInfo?.lastName,
             get().userInfo?.jobTitle as any,
-            0,
+            currentDuration,
           ),
         ];
+        console.log('mainClips', mainClips);
 
+        currentDuration += TITLE_VIDEO_DURATION;
+        // 3 если длина выбраных файлов больше 1 то остальные
         fileNames.forEach((fileName: string, index: number) => {
-          mainClips = [
-            ...mainClips,
-            ...makeVideoClip({
-              currentDuration: currentDuration,
-              fileName,
-              downloadLink: downloadLinks[index],
-              startTime: mainTrackData[fileName].fragmentStartTime,
-              finishTime: mainTrackData[fileName].fragmentFinishTime,
-            }),
-          ];
-          audiosClips = [
-            ...audiosClips,
-            makeAudioToVideo({
-              currentDuration: currentDuration,
-              downloadLink: downloadLinks[index],
-              startTime: mainTrackData[fileName].fragmentStartTime,
-              finishTime: mainTrackData[fileName].fragmentFinishTime,
-            }),
-          ];
-          backgrounds = [
-            ...backgrounds,
-            makeBackground({
-              currentDuration: currentDuration,
-              downloadLink: bgUrls.map(bgdata => bgdata.data.href)[index % bgUrls.length],
-              startTime: mainTrackData[fileName].fragmentStartTime,
-              finishTime: mainTrackData[fileName].fragmentFinishTime,
-            }),
-          ];
+          if (index > 0) {
+            mainClips = [
+              ...mainClips,
+              ...makeVideoClip({
+                currentDuration: currentDuration,
+                fileName,
+                downloadLink: downloadLinks[index],
+                startTime: mainTrackData[fileName].fragmentStartTime,
+                finishTime: mainTrackData[fileName].fragmentFinishTime,
+              }),
+            ];
+            audiosClips = [
+              ...audiosClips,
+              makeAudioToVideo({
+                currentDuration: currentDuration,
+                downloadLink: downloadLinks[index],
+                startTime: mainTrackData[fileName].fragmentStartTime,
+                finishTime: mainTrackData[fileName].fragmentFinishTime,
+              }),
+            ];
+            backgrounds = [
+              ...backgrounds,
+              makeBackground({
+                currentDuration: currentDuration,
+                downloadLink: bgUrls.map(bgdata => bgdata.data.href)[index % bgUrls.length],
+                startTime: mainTrackData[fileName].fragmentStartTime,
+                finishTime: mainTrackData[fileName].fragmentFinishTime,
+              }),
+            ];
 
-          currentDuration +=
-            mainTrackData[fileName].fragmentFinishTime -
-            mainTrackData[fileName].fragmentStartTime +
-            VIDEO_TITLEDURATION;
+            currentDuration +=
+              mainTrackData[fileName].fragmentFinishTime -
+              mainTrackData[fileName].fragmentStartTime +
+              VIDEO_TITLEDURATION;
+          }
         });
-
+        console.log('mainClips', mainClips);
         const finalLength =
           currentDuration +
           Number(get().stepsData[get().filenames[get().filenames.length - 1]].fragmentFinishTime) -

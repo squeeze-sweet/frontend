@@ -96,6 +96,32 @@ export const makeVideoClip = ({
   ];
 };
 
+export const makeVideoClipVithoutText = ({
+  currentDuration,
+  downloadLink,
+  startTime,
+  finishTime,
+}: any) => {
+  return [
+    {
+      asset: {
+        type: 'video',
+        src: downloadLink,
+        trim: startTime,
+      },
+      start: currentDuration,
+      length: finishTime - startTime,
+      fit: 'none',
+      position: 'center',
+      scale: 0.7,
+      transition: {
+        in: 'fade',
+        out: 'fade',
+      },
+    },
+  ];
+};
+
 export const makeBackground = ({
   currentDuration,
   fileName,
@@ -109,6 +135,46 @@ export const makeBackground = ({
       src: downloadLink,
     },
     start: currentDuration + VIDEO_TITLEDURATION,
+    length: finishTime - startTime,
+    fit: 'cover',
+    position: 'center',
+    transition: {
+      in: 'fade',
+      out: 'fade',
+    },
+  };
+};
+
+export const makeAudioToVideo0 = ({
+  currentDuration,
+  downloadLink,
+  startTime,
+  finishTime,
+}: any) => {
+  return {
+    asset: {
+      type: 'audio',
+      src: downloadLink,
+      trim: startTime,
+    },
+    start: currentDuration,
+    length: finishTime - startTime,
+  };
+};
+
+export const makeBackground0 = ({
+  currentDuration,
+  fileName,
+  downloadLink,
+  startTime,
+  finishTime,
+}: any) => {
+  return {
+    asset: {
+      type: 'video',
+      src: downloadLink,
+    },
+    start: currentDuration,
     length: finishTime - startTime,
     fit: 'cover',
     position: 'center',
