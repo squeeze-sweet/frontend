@@ -16,20 +16,18 @@ export const Recorder = () => {
     currentStepData: state.currentStepData,
     setCurrentStepData: state.setCurrentStepData,
   }));
-  const [recordingCount, setRecordingCount] = useState(30);
+  const [recordingCount, setRecordingCount] = useState(0);
 
   var recordingCounter: any;
 
   const startCount = () => {
     recordingCounter = setInterval(() => {
-      
-
       setRecordingCount(prev => {
         console.log('recordingCount', prev);
-        if (prev <= 0) {
+        if (prev > 30) {
           handleStopCaptureClick();
         }
-        return prev - 1;
+        return prev + 1;
       });
     }, 1000);
   };
@@ -149,11 +147,11 @@ export const Recorder = () => {
           className={styles['record-button']}
         />
       </div>
-      {Boolean(recordingCount !== 30) && (
+      {Boolean(recordingCount !== 0) && (
         <>
           {' '}
           <p className={styles.red}>recording</p>
-          <p className={cn(styles.count)}>time left: {recordingCount}</p>
+          <p className={cn(styles.count)}>time left: {30 - recordingCount}</p>
         </>
       )}
     </>
