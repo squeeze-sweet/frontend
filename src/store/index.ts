@@ -7,6 +7,7 @@ import docsApi from '../services/api/api-docs';
 import { STATUSES } from '../services/types';
 import {
   makeAudioToVideo,
+  makeBackground,
   makeBackgroundJson,
   makeClipJsonForTitlePage,
   makeMusic,
@@ -317,11 +318,26 @@ export const useStore = create<Store>()(
         //-----------------------------
         let mainClips: any[] = [];
         let audiosClips: any[] = [];
+        let backgrounds: any[] = [];
         let currentDuration = 10; //TODO Убрать хардкод
 
         const {
           data: { href: introVideoLink },
         } = await yandexDiskApi.getDownloadLink('editor/', 'intro.mp4');
+
+        //-----------------------------------------------Скачиваю фоновые видео
+        const bgUrls = await Promise.all([
+          yandexDiskApi.getDownloadLink('editor/', 'bg1.mp4'),
+          yandexDiskApi.getDownloadLink('editor/', 'bg2.mp4'),
+          yandexDiskApi.getDownloadLink('editor/', 'bg3.mp4'),
+        ]);
+        console.log('bgUrls', bgUrls);
+
+        fileNames.forEach((fileName: string) => {
+          uploadQueries.push(
+            uploadVideo(get().email, fileName, mainTrackData[fileName].fragmentData),
+          );
+        });
 
         mainClips = [
           ...makePremadeVideo(introVideoLink),
@@ -348,6 +364,15 @@ export const useStore = create<Store>()(
             makeAudioToVideo({
               currentDuration: currentDuration,
               downloadLink: downloadLinks[index],
+              startTime: mainTrackData[fileName].fragmentStartTime,
+              finishTime: mainTrackData[fileName].fragmentFinishTime,
+            }),
+          ];
+          backgrounds = [
+            ...backgrounds,
+            makeBackground({
+              currentDuration: currentDuration,
+              downloadLink: bgUrls.map(bgdata => bgdata.data.href)[index % bgUrls.length],
               startTime: mainTrackData[fileName].fragmentStartTime,
               finishTime: mainTrackData[fileName].fragmentFinishTime,
             }),
@@ -382,6 +407,9 @@ export const useStore = create<Store>()(
               },
               {
                 clips: audiosClips,
+              },
+              {
+                clips: backgrounds,
               },
               {
                 clips: imageClip,

@@ -96,6 +96,29 @@ export const makeVideoClip = ({
   ];
 };
 
+export const makeBackground = ({
+  currentDuration,
+  fileName,
+  downloadLink,
+  startTime,
+  finishTime,
+}: any) => {
+  return {
+    asset: {
+      type: 'video',
+      src: downloadLink,
+    },
+    start: currentDuration,
+    length: finishTime - startTime + VIDEO_TITLEDURATION,
+    fit: 'cover',
+    position: 'center',
+    transition: {
+      in: 'fade',
+      out: 'fade',
+    },
+  };
+};
+
 export const makeAudioToVideo = ({ currentDuration, downloadLink, startTime, finishTime }: any) => {
   return {
     asset: {
