@@ -87,7 +87,7 @@ export const makeVideoClip = ({
       length: finishTime - startTime,
       fit: 'none',
       position: 'center',
-      scale: 0.7,
+      scale: 0.8,
       transition: {
         in: 'fade',
         out: 'fade',
@@ -113,7 +113,7 @@ export const makeVideoClipVithoutText = ({
       length: finishTime - startTime,
       fit: 'none',
       position: 'center',
-      scale: 0.7,
+      scale: 0.8,
       transition: {
         in: 'fade',
         out: 'fade',
