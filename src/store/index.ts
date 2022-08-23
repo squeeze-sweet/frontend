@@ -391,7 +391,7 @@ export const useStore = create<Store>()(
 
         const {
           data: { href: backgroundUrl },
-        } = await yandexDiskApi.getDownloadLink('editor/', 'background.jpg');
+        } = await yandexDiskApi.getDownloadLink('editor/', 'background.png');
         const imageClip = [makeBackgroundJson(finalLength, backgroundUrl)];
 
         const requestData = {
