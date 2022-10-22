@@ -37,6 +37,8 @@ export default function AddMusic() {
     setPreloaderText('');
   }, []);
 
+  console.log('filesInfo', filesInfo);
+
   const itemsRef = useRef<any[]>([]);
 
   return (

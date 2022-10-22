@@ -1,4 +1,4 @@
-import { HashRouter, Route, Routes, Navigate, Outlet } from 'react-router-dom';
+import { BrowserRouter, Route, Routes, Navigate, Outlet } from 'react-router-dom';
 import Layout from '../components/layout';
 import EmaleChosing from '../pages/emale-chosing';
 import IntroduceYourself from '../pages/introduce-yourself';
@@ -11,6 +11,8 @@ import { Recorder } from '../pages/recorder';
 import UploadAndEdit from '../pages/upload-and-edit';
 import { useStore } from '../store';
 import HowItWorks from '../pages/how-it-works';
+import AdminLogin from '../pages/admin-login';
+import AdminControlls from '../pages/admin-controlls';
 
 export const routes = [
   {
@@ -79,7 +81,7 @@ function Router() {
   };
 
   return (
-    <HashRouter>
+    <BrowserRouter>
       <Routes>
         <Route path='/' element={<Layout />}>
           <Route index element={<Navigate to='introduce-yourself' />} />
@@ -118,8 +120,10 @@ function Router() {
           {/*           <Route path='upload' element={<VideoFragment />} />
           <Route path='recorder' element={<Recorder />} /> */}
         </Route>
+        <Route path='/admin' element={<AdminLogin />} />
+        <Route path='/controls' element={<AdminControlls />} />
       </Routes>
-    </HashRouter>
+    </BrowserRouter>
   );
 }
 
