@@ -1,17 +1,17 @@
-import { ChangeEvent, MouseEventHandler, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Input } from '../../components/ui-elements/input';
 import cn from 'classnames';
 import styles from './admin-controlls.module.scss';
-import { Button } from '../../components/ui-elements/button';
 import { audios } from './mock/audios';
 import deleteIcon from '../../assets/icons/delete.svg';
-
+import audioApi from '../../services/api/admin';
+import UploadAudio from './upload-audio-controls';
+import Modal from '../../components/ui-elements/modal/modal';
+import AudioControlls from './audio-controls';
 const steps = ['users', 'questions', 'audios', 'video backgrounds'];
 
 export default function AdminControlls() {
   const navigate = useNavigate();
-
   const [currentStep, setCurrentStep] = useState('users');
 
   const handleTabClick = (text: string) => {
@@ -20,9 +20,13 @@ export default function AdminControlls() {
     setCurrentStep(text);
   };
 
+  useEffect(() => {
+    audioApi.getAudioList();
+  }, []);
+
   //audios
   const [playingAudioName, setPlayingAudioName] = useState('');
-  console.log('playingAudioName', playingAudioName);
+  const [isUploadActive, setIsAploadActive] = useState(true);
 
   return (
     <section className={styles.page}>
@@ -38,7 +42,16 @@ export default function AdminControlls() {
       </div>
       <div className={styles.content}>
         {currentStep === 'audios' && (
-          <>
+          <AudioControlls />
+          /* {isUploadActive && (
+              <Modal
+                handleModalClose={() => {
+                  setIsAploadActive(false);
+                }}
+              >
+                <UploadAudio />
+              </Modal>
+            )}
             {audios?.map(({ name, link }, index) => (
               <>
                 <AudioPlayer
@@ -49,7 +62,7 @@ export default function AdminControlls() {
                 />
               </>
             ))}
-          </>
+          </AudioC> */
         )}
       </div>
     </section>

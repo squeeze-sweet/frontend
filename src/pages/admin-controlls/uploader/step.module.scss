@@ -1,0 +1,37 @@
+@import '/src/styles/variables.scss';
+
+.input {
+  display: none;
+}
+
+.label {
+  color: $button-white-text;
+  background-color: $button-black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  cursor: pointer;
+  font-family: 'Inter';
+  font-size: 16px;
+  line-height: 19px;
+  letter-spacing: 0em;
+  padding: 16px;
+  width: 100%;
+  border: none;
+}
+
+.dropzone {
+  cursor: pointer;
+  width: 100%;
+  max-height: 310px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+  border: 1px dashed #cacaca;
+}
+
+.description {
+  text-align: center;
+}
