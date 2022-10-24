@@ -3,8 +3,9 @@ import { Input } from '../../../components/ui-elements/input';
 import { Button } from '../../../components/ui-elements/button';
 import styles from './upload-audio.module.scss';
 import Uploader from '../uploader';
+import audioApi from '../../../services/api/admin';
 
-export default function uploadAudio() {
+export default function uploadAudio({ handleCloseModal, handleAddAudio }: any) {
   const [fileName, setFileName] = useState('');
   const [fileNameError, setFilenameError] = useState('');
   const [file, setFile] = useState<any>(null);
@@ -17,17 +18,17 @@ export default function uploadAudio() {
     setFileName(e.target.value);
   };
 
-  const handleSubmit: FormEventHandler<HTMLFormElement> = e => {
+  const handleSubmit: FormEventHandler<HTMLFormElement> = async e => {
     e.preventDefault();
     if (!fileName) {
       setFilenameError('name can not be empty!');
       console.log('name can not be empty!');
-
       return;
     }
     console.log(file, fileError);
     if (file && !fileError) {
-      console.log('success');
+      await handleAddAudio(file);
+      handleCloseModal();
     }
   };
 
@@ -36,14 +37,16 @@ export default function uploadAudio() {
       <Input
         value={fileName}
         id='fileName'
-        placeholder="please type you'r email here"
+        placeholder='type audio display name'
         label='file name'
         onChange={hanleFileNameChange}
         error={fileNameError}
       />
       <Uploader file={file} setFile={setFile} error={fileError} setFileError={setFileError} />
       {fileError && fileError}
-      <Button htmlType='submit'>Submit</Button>
+      <Button htmlType='submit' disabled={!(file && fileName)}>
+        Submit
+      </Button>
     </form>
   );
 }

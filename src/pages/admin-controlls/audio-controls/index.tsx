@@ -2,32 +2,73 @@ import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import cn from 'classnames';
 import styles from './audio-controlls.module.scss';
-import { audios } from '../mock/audios';
 import deleteIcon from '../../../assets/icons/delete.svg';
 import audioApi from '../../../services/api/admin';
 import { Button } from '../../../components/ui-elements/button';
 const steps = ['users', 'questions', 'audios', 'video backgrounds'];
+import crossIcon from '../../../assets/icons/cross-white.svg';
 import UploadAudio from '../upload-audio-controls';
 import Modal from '../../../components/ui-elements/modal/modal';
 
 export default function AudioControlls() {
+  const [audios, setAudios] = useState<any>([]);
   useEffect(() => {
-    audioApi.getAudioList();
+    getAudios();
   }, []);
 
+  const getAudios = async () => {
+    try {
+      const { data } = await audioApi.getAudioList();
+      console.log('data', data);
+      setAudios(data);
+    } catch (error) {}
+  };
   //audios
   const [playingAudioName, setPlayingAudioName] = useState('');
-  const [isUploadActive, setIsAploadActive] = useState(true);
+  const [isUploadActive, setIsAploadActive] = useState(false);
+
+  const handleOpenModal = () => {
+    setIsAploadActive(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsAploadActive(false);
+  };
+
+  const handleDelete = async (id: string) => {
+    try {
+      await audioApi.deleteFile(id);
+    } catch (error) {
+      console.error();
+    }
+    getAudios();
+  };
+
+  const handleAdd = async (file: any) => {
+    try {
+      await audioApi.postFile(file);
+    } catch (error) {
+      console.error();
+    }
+    getAudios();
+  };
 
   return (
     <section className={styles.audios}>
-      <Button>add audio</Button>
-      {audios?.map(({ name, link }, index) => (
+      <Button onClick={handleOpenModal}>
+        <div className={styles.adderContent}>
+          <p>add audio</p>
+          <img src={crossIcon} className={styles.cross}></img>
+        </div>
+      </Button>
+      {audios?.map(({ id, name, link }: any) => (
         <AudioPlayer
-          link={link}
+          id={id}
+          link={''}
           name={name}
           currentName={playingAudioName}
           setCurrentName={setPlayingAudioName}
+          handleDelete={handleDelete}
         />
       ))}
       {isUploadActive && (
@@ -36,14 +77,21 @@ export default function AudioControlls() {
             setIsAploadActive(false);
           }}
         >
-          <UploadAudio />
+          <UploadAudio handleCloseModal={handleCloseModal} handleAddAudio={handleAdd} />
         </Modal>
       )}
     </section>
   );
 }
 
-function AudioPlayer({ link, name, currentName, setCurrentName }: any) {
+function AudioPlayer({
+  id,
+  link = '/calm.mp3',
+  name,
+  currentName,
+  setCurrentName,
+  handleDelete,
+}: any) {
   const audioRef = useRef<any>();
   const handleClick = () => {
     if (currentName === name) {
@@ -62,9 +110,13 @@ function AudioPlayer({ link, name, currentName, setCurrentName }: any) {
     }
   }, [currentName]);
 
+  const onDelete = async () => {
+    handleDelete(id);
+  };
+
   return (
     <section className={styles.audioPlayer}>
-      <audio src={link} className={styles.player} ref={audioRef} />
+      <audio src={'/calm.mp3'} className={styles.player} ref={audioRef} />
       <div className={styles.leftGroup}>
         <div
           id='play'
@@ -73,7 +125,7 @@ function AudioPlayer({ link, name, currentName, setCurrentName }: any) {
         />
         {name}
       </div>
-      <img src={deleteIcon} className={styles.deleteIcon} />
+      <img src={deleteIcon} className={styles.deleteIcon} onClick={onDelete} />
     </section>
   );
 }

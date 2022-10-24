@@ -10,15 +10,7 @@ export default function Uploader({ file, setFile, error, setError }: any) {
   const [name, setName] = useState('');
 
   const saveVideo = (file: any) => {
-    const videoPreviewSrc = URL.createObjectURL(file);
-    const reader = new FileReader();
-    reader.readAsArrayBuffer(file);
-    reader.onload = function (e: any) {
-      setFile(e.target.result);
-    };
-    reader.onerror = function (error: any) {
-      console.error(error);
-    };
+    setFile(file);
   };
 
   const validateSize = (file: any) => {
@@ -27,7 +19,6 @@ export default function Uploader({ file, setFile, error, setError }: any) {
   };
 
   const handleDrop = useCallback((acceptedFiles: any) => {
-    console.log(acceptedFiles[0]);
     setName(acceptedFiles[0].name);
     validateSize(acceptedFiles[0]);
     saveVideo(acceptedFiles[0]);
@@ -51,8 +42,8 @@ export default function Uploader({ file, setFile, error, setError }: any) {
               ) : (
                 <>
                   {' '}
-                  <p>Upload audio</p>
-                  <p>Any format, less than 10 mb</p>
+                  <p>Upload file</p>
+                  <p>Click to upload or drag and</p>
                 </>
               )}
               {error && error}

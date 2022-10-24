@@ -6,7 +6,7 @@ type Props = {
   htmlType?: 'button' | 'reset' | 'submit';
   disabled?: boolean;
   className?: string;
-  children: string;
+  children: any;
   reversed?: boolean;
 };
 export const Button = ({
