@@ -8,6 +8,7 @@ import audioApi from '../../services/api/admin';
 import UploadAudio from './upload-audio-controls';
 import Modal from '../../components/ui-elements/modal/modal';
 import AudioControlls from './audio-controls';
+import UserControls from './user-controls';
 const steps = ['users', 'questions', 'audios', 'video backgrounds'];
 
 export default function AdminControlls() {
@@ -36,7 +37,10 @@ export default function AdminControlls() {
           </div>
         ))}
       </div>
-      <div className={styles.content}>{currentStep === 'audios' && <AudioControlls />}</div>
+      <div className={styles.content}>
+        {currentStep === 'audios' && <AudioControlls />}{' '}
+        {currentStep === 'users' && <UserControls />}
+      </div>
     </section>
   );
 }

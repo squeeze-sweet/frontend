@@ -1,8 +1,10 @@
 import axios from 'axios';
 export interface API {
   postFile: (audio: any) => any; //Публикация новой аудио записи
-  deleteFile: (id: string) => any; //Получение доступных аудио записей
+  deleteFile: (id: string) => any; //Удаление аудиозаписи
   getAudioList: () => any; //Получение доступных аудио записей
+  getWhiteList: () => any; //Получение доступных аудио записей
+  addWhiteListUser: (email: string) => any;
 }
 
 function authenticateUser(user: string, password: string) {
@@ -16,7 +18,6 @@ const client = axios.create({
   timeout: 10000,
   headers: {
     Authorization: `${authenticateUser('tester@test.ru', 'test')}`,
-    'Content-Type': 'multipart/form-data',
   },
 });
 
@@ -35,25 +36,8 @@ const api: API = {
     return fetch('http://localhost:8000/api/v1/admin/files', requestOptions as any);
   },
   deleteFile: async id => client.delete(`/admin/files/${id}`),
+  getWhiteList: async () => client.get(`/admin/users`),
+  addWhiteListUser: async (email: string) => client.post(`/admin/white-list`, { email: email }),
 };
 
 export default api;
-
-/*var myHeaders = new Headers();
-    myHeaders.append('Authorization', 'Basic dGVzdGVyQHRlc3QucnU6dGVzdA==');
-
-    var formdata = new FormData();
-    formdata.append('file', file, '/C:/Users/alexa/Downloads/NЮ - Некуда Бежать.mp3');
-
-    var requestOptions = {
-      method: 'POST',
-      headers: myHeaders,
-      body: formdata,
-      redirect: 'follow',
-    };
-
-    fetch('http://localhost:8000/api/v1/admin/files', requestOptions as any)
-      .then(response => response.text())
-      .then(result => console.log(result))
-      .catch(error => console.log('error', error));
-  };*/
