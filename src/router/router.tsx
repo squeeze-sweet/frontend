@@ -41,6 +41,7 @@ export const routes = [
     name: 'Ready',
   },
 ];
+
 function Router() {
   const email = useStore(state => state.email);
   const isEmail = () => {

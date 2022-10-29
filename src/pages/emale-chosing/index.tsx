@@ -5,8 +5,10 @@ import { Input } from '../../components/ui-elements/input';
 import { validateEmail } from './helpers';
 import LayoutPage from '../../components/templates/form-page';
 import yandexDiskApi from '../../services/api/api-yandex-disk';
+import useLang from '../../hooks/useLang';
 
 export default function EmaleChosing({ onSubmit }: any) {
+  const { tr } = useLang();
   const [errorMsg, setErrorMsg] = useState('');
   const { email, setEmail, setPreloaderText } = useStore(state => ({
     email: state.email,
@@ -20,7 +22,7 @@ export default function EmaleChosing({ onSubmit }: any) {
     const localEmail = e.target['email'].value;
 
     if (!validateEmail(localEmail)) {
-      setErrorMsg('e-mail format is invalid!');
+      setErrorMsg(tr('e-mail format is invalid!'));
       return;
     } else {
       CheckAcess(localEmail);
@@ -42,22 +44,21 @@ export default function EmaleChosing({ onSubmit }: any) {
       setEmail(localEmail);
       onSubmit();
     } catch (error) {
-      setErrorMsg('You have no access to service, please contact your curator');
+      setErrorMsg(tr('You have no access to service, please contact your curator'));
     }
   }
 
   return (
-    <LayoutPage onSubmit={handleSubmit} buttonText='Continue'>
+    <LayoutPage onSubmit={handleSubmit} buttonText={tr('Next')}>
       <>
         <Input
           defaultValue={email}
           id='email'
-          placeholder="please type you'r email here"
+          placeholder={tr('type your e-mail')}
           label='email'
           onChange={handleEmailChange}
           error={errorMsg}
         />
-        {/* <AudioPicker text='Calm' /> */}
       </>
     </LayoutPage>
   );

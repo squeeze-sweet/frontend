@@ -1,23 +1,13 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Button } from '../../components/ui-elements/button';
 import EmaleChosing from '../emale-chosing';
 import { GeneralInfo } from '../general-info';
+import useLang from '../../hooks/useLang';
 import styles from './introduce-yourself.module.scss';
 
-const stepsData = [
-  {
-    heading: 'welcome to the meet the peer tool!',
-    text: 'the tool that will help you make a more personal introduction to the team',
-    component: <EmaleChosing />,
-  },
-  {
-    heading: 'and what’s your name?',
-    text: '',
-    component: <GeneralInfo />,
-  },
-];
-
 export default function IntroduceYourself() {
+  const { tr, toggleLang } = useLang();
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(0);
 
@@ -32,13 +22,12 @@ export default function IntroduceYourself() {
 
   const stepsData = [
     {
-      heading: 'welcome to the meet the peer tool!',
-      text: 'the tool that will help you make a more personal introduction to the team',
+      heading: tr("welcome to the ''meet the peer'' tool!"),
+      text: tr('the tool that will help you make a more personal introduction to the team'),
       component: <EmaleChosing onSubmit={handleChangeStep} />,
     },
     {
-      heading: 'and what’s your name?',
-      text: 'please tyle general info about you',
+      heading: tr('and what’s your name?'),
       component: <GeneralInfo onSubmit={handleChangeStep} />,
     },
   ];
@@ -46,10 +35,16 @@ export default function IntroduceYourself() {
   return (
     <section className={styles['page-container']}>
       <div className={styles['header-container']}>
+        <div></div>
         <div className={styles.text}>
           <h1>{stepsData[currentStep].heading}</h1>
-          <p className={styles.description}>{stepsData[currentStep].text}</p>
+          {stepsData[currentStep].text && (
+            <p className={styles.description}>{stepsData[currentStep].text}</p>
+          )}
         </div>
+        <Button className={styles.button} onClick={toggleLang}>
+          {tr('English')}
+        </Button>
       </div>
       <div className={styles['content-container']}>{stepsData[currentStep].component}</div>
     </section>

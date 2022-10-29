@@ -22,7 +22,7 @@ export const Button = ({
       type={htmlType}
       disabled={disabled}
       onClick={onClick}
-      className={cn(styles.button, className, {
+      className={cn(className, styles.button, {
         [styles.disabled]: disabled,
         [styles.reversed]: reversed,
       })}

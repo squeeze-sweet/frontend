@@ -36,6 +36,11 @@ interface StepData {
 }
 
 interface Store {
+  //language controll
+  lang: 'en' | 'fr';
+  setLang: (lang: 'en' | 'fr') => void;
+  //-------------------------------------
+
   currentStepData: any;
   setCurrentStepData: any /* (stepsData: any) => void */;
   switchCurrentStep: any /* (fragmentName: any) => void */;
@@ -99,6 +104,11 @@ const sum = (array: any, maxIndex: any) => {
 
 export const useStore = create<Store>()(
   devtools((set, get) => ({
+    lang: 'fr',
+    setLang: lang => {
+      set({ lang: lang }, false, `setLang to ${lang}`);
+    },
+
     blobToDownload: null,
     preloaderText: '',
 

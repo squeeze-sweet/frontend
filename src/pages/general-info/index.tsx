@@ -3,11 +3,13 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Input } from '../../components/ui-elements/input';
 import LayoutPage from '../../components/templates/form-page';
+import useLang from '../../hooks/useLang';
 import styles from './general-info.module.scss';
 
 type FormErrors = { firstName: string; lastName: string; jobTitle: string };
 
 export const GeneralInfo = ({ onSubmit }: any) => {
+  const { tr } = useLang();
   const [errors, setErrors] = useState<FormErrors>({ firstName: '', lastName: '', jobTitle: '' });
   const setUserInfo = useStore(state => state.setUserInfo);
   const { firstName, lastName, jobTitle } = useStore(state => state.userInfo);
@@ -47,23 +49,23 @@ export const GeneralInfo = ({ onSubmit }: any) => {
     <LayoutPage onSubmit={handleSubmit} buttonText='Continue'>
       <div className={styles.inputs}>
         <Input
-          id='first-name'
-          placeholder="please type you'r first name"
-          label='first-name'
+          id='first name'
+          placeholder={tr('please type your first name')}
+          label={tr('first name')}
           defaultValue={firstName}
           error={errors.firstName}
         />
         <Input
-          id='last-name'
-          placeholder="please type you'r last name"
-          label='last-name'
+          id='last name'
+          placeholder={tr('please type your last name')}
+          label={tr('last name')}
           defaultValue={lastName}
           error={errors.lastName}
         />
         <Input
-          id='job-title'
-          placeholder="please type you'r job title"
-          label='job-title'
+          id='job title'
+          placeholder={tr('please type your job title')}
+          label={tr('job title')}
           defaultValue={jobTitle}
           error={errors.jobTitle}
         />
