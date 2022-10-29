@@ -18,7 +18,7 @@ export default function AudioControlls() {
 
   const getAudios = async () => {
     try {
-      const { data } = await audioApi.getAudioList();
+      const { data } = await audioApi.getAudios();
       console.log('data', data);
       setAudios(data);
     } catch (error) {}

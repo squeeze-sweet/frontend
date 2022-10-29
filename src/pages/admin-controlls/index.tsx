@@ -8,7 +8,9 @@ import audioApi from '../../services/api/admin';
 import UploadAudio from './upload-audio-controls';
 import Modal from '../../components/ui-elements/modal/modal';
 import AudioControlls from './audio-controls';
+import VideoControlls from './video-controls';
 import UserControls from './user-controls';
+import UserQuestions from './user-questions';
 const steps = ['users', 'questions', 'audios', 'video backgrounds'];
 
 export default function AdminControlls() {
@@ -22,7 +24,7 @@ export default function AdminControlls() {
   };
 
   useEffect(() => {
-    audioApi.getAudioList();
+    audioApi.getAudios();
   }, []);
 
   return (
@@ -38,8 +40,10 @@ export default function AdminControlls() {
         ))}
       </div>
       <div className={styles.content}>
-        {currentStep === 'audios' && <AudioControlls />}{' '}
+        {currentStep === 'audios' && <AudioControlls />}
         {currentStep === 'users' && <UserControls />}
+        {currentStep === 'questions' && <UserQuestions />}
+        {currentStep === 'video backgrounds' && <VideoControlls />}
       </div>
     </section>
   );

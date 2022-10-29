@@ -38,7 +38,7 @@ export default function UserControls() {
 
   const handleDelete = async (id: string) => {
     try {
-      /*      await audioApi.deleteFile(id); */
+      await audioApi.deleteFile(id);
     } catch (error) {
       console.error();
     }

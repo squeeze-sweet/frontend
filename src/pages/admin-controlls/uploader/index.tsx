@@ -25,7 +25,7 @@ export default function Uploader({ file, setFile, error, setError }: any) {
   }, []);
 
   return (
-    <Dropzone onDrop={handleDrop} accept={{ 'audio/mp3': ['.mp3'] }}>
+    <Dropzone onDrop={handleDrop} /* accept={{ 'audio/mp3': ['.mp3'] }} */>
       {({ getRootProps, getInputProps }) => {
         return (
           <div
@@ -41,7 +41,6 @@ export default function Uploader({ file, setFile, error, setError }: any) {
                 name
               ) : (
                 <>
-                  {' '}
                   <p>Upload file</p>
                   <p>Click to upload or drag and</p>
                 </>
