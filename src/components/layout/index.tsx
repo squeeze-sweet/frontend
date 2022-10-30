@@ -1,10 +1,11 @@
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import cn from 'classnames';
-import { routes } from '../../router/router';
+import useRouter from '../../router/useRouter';
 import styles from './layout.module.scss';
 import Preloader from '../ui-elements/preloader';
 
 function Layout() {
+  const { routes } = useRouter();
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const handleClick = (path: string) => [navigate(path)];

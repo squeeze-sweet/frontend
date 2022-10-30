@@ -19,10 +19,12 @@ export const GeneralInfo = ({ onSubmit }: any) => {
   let navigate = useNavigate();
 
   const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
+    console.log('event', e.target);
+
     const {
-      'first-name': firstNameInput,
-      'last-name': lastNameInput,
-      'job-title': jobTitleInput,
+      'first name': firstNameInput,
+      'last name': lastNameInput,
+      'job title': jobTitleInput,
     } = e.target;
     const firstName = firstNameInput.value;
     const lastName = lastNameInput.value;

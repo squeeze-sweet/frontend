@@ -5,44 +5,15 @@ import IntroduceYourself from '../pages/introduce-yourself';
 import Finish from '../pages/finish';
 import SelectQuestions from '../pages/select-questions';
 import AddMusic from '../pages/add-music';
-
-import { GeneralInfo } from '../pages/general-info';
-import { Recorder } from '../pages/recorder';
+import useLang from '../hooks/useLang';
 import UploadAndEdit from '../pages/upload-and-edit';
 import { useStore } from '../store';
 import HowItWorks from '../pages/how-it-works';
 import AdminLogin from '../pages/admin-login';
 import AdminControlls from '../pages/admin-controlls';
 
-export const routes = [
-  {
-    path: 'introduce-yourself',
-    name: 'Introduce yourself',
-  },
-  {
-    path: 'how-it-works',
-    name: 'How it works',
-  },
-  {
-    path: 'select-questions',
-    name: 'Select questions',
-  },
-
-  {
-    path: 'upload-and-edit',
-    name: 'Upload and edit',
-  },
-  {
-    path: 'add-music',
-    name: 'Add music',
-  },
-  {
-    path: 'ready',
-    name: 'Ready',
-  },
-];
-
 function Router() {
+  const { tr, toggleLang } = useLang();
   const email = useStore(state => state.email);
   const isEmail = () => {
     if (email) return true;

@@ -1,22 +1,20 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import { Typography, Input, Button } from 'antd';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useCallback, useRef } from 'react';
 import uloadIcon from '../../assets/icons/upload.svg';
 import { useStore } from '../../store';
 import Dropzone from 'react-dropzone';
+import useLang from '../../hooks/useLang';
 import styles from './step.module.scss';
 
 interface Props {
   children?: string;
 }
 export default function Uploader({ children }: Props) {
+  const { tr } = useLang();
   const { currentStepData, setCurrentStepData } = useStore(state => ({
     currentStepData: state.currentStepData,
     setCurrentStepData: state.setCurrentStepData,
   }));
-
-  const inputRef = useRef<any>(null);
 
   const saveVideo = (file: any) => {
     const videoPreviewSrc = URL.createObjectURL(file);
@@ -46,8 +44,6 @@ export default function Uploader({ children }: Props) {
     saveVideo(acceptedFiles[0]);
   }, []);
 
-  /*   const { getInputProps, isDragActive, getRootProps } = useDropzone({ onDrop }); */
-
   return (
     <Dropzone onDrop={handleDrop} accept={{ 'video/mp4': ['.mp4'] }} maxSize={52428800}>
       {({ getRootProps, getInputProps, isDragActive, isDragAccept, isDragReject }) => {
@@ -61,32 +57,12 @@ export default function Uploader({ children }: Props) {
             <input {...getInputProps()} />
             <div className={styles.description}>
               <img src={uloadIcon} alt='upload' />
-              <p>Upload the video</p>
-              <p>Any format, less than 10 mb</p>
+              <p>{tr('Upload video')}</p>
+              <p>{tr('Any format, less than 10 mb')}</p>
             </div>
           </div>
         );
       }}
     </Dropzone>
-    /* 
-    <label className={styles.label} {...getRootProps()}>
-      {children}
-      {isDragActive ? (
-        <p>Drop the files here ...</p>
-      ) : (
-        <p>Drag 'n' drop some files here, or click to select files</p>
-      )}
-            <input
-        ref={inputRef}
-        id='video-input'
-        type='file'
-        accept='video/*'
-        onClick={clearValue}
-        onChange={saveVideo}
-        className={styles.input}
-        
-      ></input> 
-      <input {...getInputProps()} />
-    </label> */
   );
 }

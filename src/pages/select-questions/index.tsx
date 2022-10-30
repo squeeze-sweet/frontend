@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import LayoutPage from '../../components/templates/form-page';
+import useLang from '../../hooks/useLang';
 import { useStore } from '../../store';
 import { Checkbox } from '../../components/ui-elements/checkbox';
 import styles from './filenames-setting.module.scss';
@@ -79,6 +79,7 @@ const questions = [
 ];
 
 export default function SelectQuestions() {
+  const { tr } = useLang();
   let navigate = useNavigate();
   const filenames = useStore(state => state.filenames);
   const setFilenames = useStore(state => state.setFilenames);
@@ -103,12 +104,12 @@ export default function SelectQuestions() {
     <form onSubmit={handleSubmit} className={styles['page-container']}>
       <div className={styles['header-container']}>
         <div className={styles.text}>
-          <h1>Select the questions</h1>
+          <h1>{tr('Select questions')}</h1>
           <p className={styles.description}>
-            Select 1 question in each category. ideal length is 10-20 sec per question.
+            {tr('to answer them, we recommend about 10-20 sec per question.')}
           </p>
           <div className={styles.button}>
-            <Button htmlType='submit'>Next</Button>
+            <Button htmlType='submit'>{tr('Next')}</Button>
           </div>
         </div>
       </div>

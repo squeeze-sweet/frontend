@@ -1,16 +1,16 @@
 import { Button } from '../../components/ui-elements/button';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import UploadNavigation from '../../components/navigation';
 import { useStore } from '../../store';
 import styles from './step.module.scss';
 import Uploader from '../uploader';
 import { Recorder } from '../recorder';
-/* import Preview from '../preview'; */
 import VideoPlayer from '../../components/video-player';
-import { useEffect, useState } from 'react';
-import { indexOf } from 'lodash';
+import useLang from '../../hooks/useLang';
+import { useState } from 'react';
 
 export default function UploadAndEdit() {
+  const { tr } = useLang();
   const navitage = useNavigate();
   const {
     currentFragmentName,
@@ -110,7 +110,9 @@ export default function UploadAndEdit() {
                 clearValue();
               }}
             >
-              {Boolean(videoPreviewSrc) ? 'record another video with webcam' : 'record with webcam'}
+              {Boolean(videoPreviewSrc)
+                ? tr('record another video with a web camera')
+                : tr('record with a web camera')}
             </Button>
             <Button
               className={styles.button}
@@ -119,7 +121,7 @@ export default function UploadAndEdit() {
                 clearValue();
               }}
             >
-              {Boolean(videoPreviewSrc) ? 'upload another video from device' : 'upload from device'}
+              {Boolean(videoPreviewSrc) ? tr('upload another video') : tr('upload video')}
             </Button>
           </div>
         </div>
@@ -142,11 +144,8 @@ export default function UploadAndEdit() {
           <p className={styles.error}>{error}</p>
         </div>
         <div className={styles.bottomButtons}>
-          {/*           <Button className={styles.submit} onClick={clearValue} disabled={!isFragmentReady()}>
-            try again
-          </Button> */}
           <Button className={styles.submit} onClick={handleSaveData} disabled={!isFragmentReady()}>
-            submit
+            {tr('next')}
           </Button>
         </div>
       </section>
