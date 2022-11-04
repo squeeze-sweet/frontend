@@ -18,7 +18,7 @@ export default function FormPage({ onSubmit, heading, buttonText, className, chi
   };
 
   return (
-    <form onSubmit={handleSubmit} className={cn(styles.container + className)}>
+    <form onSubmit={handleSubmit} className={cn(styles.container)}>
       {heading && <h1>{heading}</h1>}
       {children}
       <Button htmlType='submit'>{buttonText}</Button>

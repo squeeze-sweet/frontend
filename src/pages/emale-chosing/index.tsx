@@ -50,16 +50,14 @@ export default function EmaleChosing({ onSubmit }: any) {
 
   return (
     <LayoutPage onSubmit={handleSubmit} buttonText={tr('Next')}>
-      <>
-        <Input
-          defaultValue={email}
-          id='email'
-          placeholder={tr('type your e-mail')}
-          label='email'
-          onChange={handleEmailChange}
-          error={errorMsg}
-        />
-      </>
+      <Input
+        defaultValue={email}
+        id='email'
+        placeholder={tr('type your e-mail')}
+        label='email'
+        onChange={handleEmailChange}
+        error={errorMsg}
+      />
     </LayoutPage>
   );
 }

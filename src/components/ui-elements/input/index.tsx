@@ -14,7 +14,7 @@ type Props = {
 export const Input = ({ value, onChange, id, placeholder, label, defaultValue, error }: Props) => {
   return (
     <label className={styles.container}>
-      {label}
+      <p>{label}</p>
       <input
         id={id}
         type='text'

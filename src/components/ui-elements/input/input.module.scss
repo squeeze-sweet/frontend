@@ -4,9 +4,9 @@
 .container {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 10px;
   text-align: left;
-  width: 100%;
+  width: 286px;
   cursor: pointer;
   @include input-text;
 }
