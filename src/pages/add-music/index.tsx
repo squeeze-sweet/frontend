@@ -5,6 +5,7 @@ import Radio from '../../components/ui-elements/radio';
 import styles from './filenames-setting.module.scss';
 import { Button } from '../../components/ui-elements/button';
 import { useEffect, useRef, useState } from 'react';
+import useLang from '../../hooks/useLang';
 
 const musics = ['Energetic', 'Calm', 'Uplifting'];
 
@@ -14,6 +15,8 @@ export default function AddMusic() {
   const navigate = useNavigate();
   const getMusicLink = useStore(state => state.getMusicLink);
   const setPreloaderText = useStore(state => state.setPreloaderText);
+  const { tr } = useLang();
+
   const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault(); // @ts-ignore: Unreachable code error
     //TODO обратобать отсутствие ввода
@@ -42,34 +45,39 @@ export default function AddMusic() {
   const itemsRef = useRef<any[]>([]);
 
   return (
-    <form onSubmit={handleSubmit} className={styles.form}>
-      <div className={styles.checkboxes}>
-        {/*         {musics.map((musicName, index) => (
-          <Radio id={String(index)} label={`${musicName}`} key={index} value={musicName} />
-        ))} */}
-        {filesInfo?.map(({ name, file }, index) => (
-          <div className={styles.select}>
-            <Radio
-              id={String(index)}
-              label={`${name}`}
-              key={index}
-              value={file}
-              onClick={() => {
-                setChosenMusicLink(file);
-              }}
-              onPlayClick={() => {
-                itemsRef?.current.length && itemsRef?.current[index].play();
-              }}
-              file={file}
-            />
-          </div>
-        ))}
+    <section className={styles['page-container']}>
+      <div className={styles['header-container']}>
+        <div></div>
+        <div className={styles.text}>
+          <h1>{tr('Select the mood')}</h1>
+
+          <p className={styles.description}>
+            {tr('this music will be in the background of your video')}
+          </p>
+        </div>
+        <Button className={styles.button}>{tr('Next')}</Button>
       </div>
-      <div className={styles.footer}>
-        <Button htmlType='submit' disabled={!chosenMusicLink}>
-          Next
-        </Button>
+      <div className={styles['content-container']}>
+        <div className={styles.checkboxes}>
+          {filesInfo?.map(({ name, file }, index) => (
+            <div className={styles.select}>
+              <Radio
+                id={String(index)}
+                label={`${name}`}
+                key={index}
+                value={file}
+                onClick={() => {
+                  setChosenMusicLink(file);
+                }}
+                onPlayClick={() => {
+                  itemsRef?.current.length && itemsRef?.current[index].play();
+                }}
+                file={file}
+              />
+            </div>
+          ))}
+        </div>
       </div>
-    </form>
+    </section>
   );
 }

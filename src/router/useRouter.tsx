@@ -22,7 +22,7 @@ const useRouter = () => {
     },
     {
       path: 'add-music',
-      name: tr('Add music'),
+      name: tr('Select the mood'),
     },
     {
       path: 'ready',

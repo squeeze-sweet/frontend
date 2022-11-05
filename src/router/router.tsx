@@ -87,10 +87,6 @@ function Router() {
               )
             }
           />
-          {/*           <Route path='step-:id' element={<Step />} /> */}
-
-          {/*           <Route path='upload' element={<VideoFragment />} />
-          <Route path='recorder' element={<Recorder />} /> */}
         </Route>
         <Route path='/admin' element={<AdminLogin />} />
         <Route path='/controls' element={<AdminControlls />} />

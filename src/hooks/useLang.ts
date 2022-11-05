@@ -44,6 +44,10 @@ const dictionary: any = {
   'record with a web camera': 'enregistrer avec une camera web',
   'record another video with a web camera': 'enregistrer une autre vidéo avec une camera web',
   'Any format, less than 10 mb': 'Tous types de format, moins de 10 mb',
+  'Select the mood': 'Choisis ton ambiance',
+  'this music will be in the background of your video':
+    'cette musique sera le fond sonore de ta vidéo',
+  'select the mood': 'Choisis ton ambiance',
 };
 
 const useLang = () => {
