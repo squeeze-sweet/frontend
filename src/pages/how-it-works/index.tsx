@@ -107,15 +107,11 @@ export default function HowItWorks() {
       <div className={styles['content-container']}>{stepsData[currentStep].component}</div>
       <div className={styles.buttons}>
         {currentStep > 0 && (
-          <div className={styles.button}>
-            <Button reversed onClick={handleBack}>
-              {tr('Back')}
-            </Button>
-          </div>
+          <Button reversed onClick={handleBack}>
+            {tr('Back')}
+          </Button>
         )}
-        <div className={styles.button}>
-          <Button onClick={handleForward}>{tr('Next')}</Button>
-        </div>
+        <Button onClick={handleForward}>{tr('Next')}</Button>
       </div>
     </section>
   );
