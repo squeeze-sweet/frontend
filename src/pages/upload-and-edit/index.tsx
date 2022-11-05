@@ -145,7 +145,7 @@ export default function UploadAndEdit() {
         </div>
         <div className={styles.bottomButtons}>
           <Button className={styles.submit} onClick={handleSaveData} disabled={!isFragmentReady()}>
-            {tr('next')}
+            {tr('Next')}
           </Button>
         </div>
       </section>

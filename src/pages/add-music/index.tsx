@@ -1,23 +1,19 @@
 import { useNavigate } from 'react-router-dom';
-import yandexDiskApi from '../../services/api/api-yandex-disk';
-import { useStore } from '../../store';
 import styles from './filenames-setting.module.scss';
 import { Button } from '../../components/ui-elements/button';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import audioApi from '../../services/api/admin';
 import useLang from '../../hooks/useLang';
 import AudioPlayer from '../../components/audio';
 
-const musics = ['Energetic', 'Calm', 'Uplifting'];
-
 export default function AddMusic() {
-  const [filesInfo, setFilesInfo] = useState<any[]>([]);
   const [audios, setAudios] = useState<any>([]);
   const [playingAudioName, setPlayingAudioName] = useState('');
+  const [chosenAudioId, setChosenAudioId] = useState('');
+  const [error, setError] = useState('');
 
   const navigate = useNavigate();
-  const getMusicLink = useStore(state => state.getMusicLink);
-  const setPreloaderText = useStore(state => state.setPreloaderText);
+
   const { tr } = useLang();
 
   useEffect(() => {
@@ -31,36 +27,24 @@ export default function AddMusic() {
       setAudios(data);
     } catch (error) {}
   };
-
-  const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
-    e.preventDefault(); // @ts-ignore: Unreachable code error
-    //TODO обратобать отсутствие ввода
-    getMusicLink(Array.from(e.target).filter((target: any) => target.checked === true)[0].value);
-    if (Array.from(e.target).filter((target: any) => target.checked === true)[0]) {
-      navigate('../ready');
+  const handleAudioSelect = (id: string) => {
+    setChosenAudioId(id);
+    if (error) {
+      setError('');
     }
   };
 
-  useEffect(() => {
-    setPreloaderText('downloading audios');
-    const getFilesInfo = async () => {
-      const {
-        data: {
-          _embedded: { items },
-        },
-      } = await yandexDiskApi.getFilesInfo('editor/music/');
-      setFilesInfo(items);
-    };
-    getFilesInfo();
-    setPreloaderText('');
-  }, []);
-
-  console.log('filesInfo', filesInfo);
-
-  const itemsRef = useRef<any[]>([]);
+  const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
+    e.preventDefault(); // @ts-ignore: Unreachable code error
+    if (chosenAudioId) {
+      console.log('success');
+    }
+    setError(tr('please select audio'));
+    /*  navigate('/ready'); */
+  };
 
   return (
-    <section className={styles['page-container']}>
+    <form className={styles['page-container']} onSubmit={handleSubmit}>
       <div className={styles['header-container']}>
         <div></div>
         <div className={styles.text}>
@@ -70,7 +54,12 @@ export default function AddMusic() {
             {tr('this music will be in the background of your video')}
           </p>
         </div>
-        <Button className={styles.button}>{tr('Next')}</Button>
+        <div>
+          <Button className={styles.button} htmlType='submit'>
+            {tr('Next')}
+          </Button>
+          {error && <p>{error}</p>}
+        </div>
       </div>
       <div className={styles['content-container']}>
         <div className={styles.checkboxes}>
@@ -81,27 +70,12 @@ export default function AddMusic() {
               name={name}
               currentName={playingAudioName}
               setCurrentName={setPlayingAudioName}
+              chosenAudioId={chosenAudioId}
+              setChosenAudioId={handleAudioSelect}
             />
           ))}
-          {/* {filesInfo?.map(({ name, file }, index) => (
-            <div className={styles.select}>
-              <Radio
-                id={String(index)}
-                label={`${name}`}
-                key={index}
-                value={file}
-                onClick={() => {
-                  setChosenMusicLink(file);
-                }}
-                onPlayClick={() => {
-                  itemsRef?.current.length && itemsRef?.current[index].play();
-                }}
-                file={file}
-              />
-            </div>
-          ))} */}
         </div>
       </div>
-    </section>
+    </form>
   );
 }

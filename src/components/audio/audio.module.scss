@@ -1,4 +1,8 @@
+@import '/src/styles/variables.scss';
+
 .audioPlayer {
+  width: 100%;
+  cursor: pointer;
   background-color: #f3f3f3;
   display: flex;
   align-items: center;
@@ -27,4 +31,8 @@
 
 .deleteIcon {
   cursor: pointer;
+}
+
+.active {
+  background-color: $checkbox-checked;
 }

@@ -48,6 +48,8 @@ const dictionary: any = {
   'this music will be in the background of your video':
     'cette musique sera le fond sonore de ta vidéo',
   'select the mood': 'Choisis ton ambiance',
+  'video length is too big, please upload video less then 30s.':
+    'la longueur de la vidéo est trop grande, veuillez télécharger la vidéo moins de 30s.',
 };
 
 const useLang = () => {

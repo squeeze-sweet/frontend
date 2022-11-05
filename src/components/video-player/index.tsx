@@ -2,6 +2,7 @@ import { ReactEventHandler, useEffect, useRef, useState } from 'react';
 import Slider from 'rc-slider';
 import styles from './video-player.module.scss';
 import { useStore } from '../../store';
+import useLang from '../../hooks/useLang';
 
 type Props = {
   videoPreviewSrc: string;
@@ -27,6 +28,7 @@ export default function VideoPlayer({
   const videoRef = useRef<HTMLVideoElement>(null);
   const sliderRef = useRef<HTMLInputElement>(null);
   const [videoDuration, setVideoDuration] = useState(0);
+  const { tr } = useLang();
   const marks = {
     [startTime]: startTime,
     [finishTime]: Math.round(finishTime),
@@ -39,7 +41,7 @@ export default function VideoPlayer({
   useEffect(() => {
     if (finishTime - startTime > 30) {
       clearValue;
-      setError('video length is too big, please upload video less then 30s.');
+      setError(tr('video length is too big, please upload video less then 30s.'));
     } else {
       setError('');
     }

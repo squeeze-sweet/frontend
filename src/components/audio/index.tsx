@@ -3,14 +3,29 @@ import cn from 'classnames';
 import deleteIcon from '../../assets/icons/delete.svg';
 import styles from './audio.module.scss';
 
-function AudioPlayer({ id, link, name, currentName, setCurrentName, handleDelete }: any) {
+function AudioPlayer({
+  id,
+  link,
+  name,
+  currentName,
+  setCurrentName,
+  handleDelete,
+  chosenAudioId,
+  setChosenAudioId,
+}: any) {
   const audioRef = useRef<any>();
-  const handleClick = () => {
+
+  const handleClick = (e: any) => {
+    e.stopPropagation();
     if (currentName === name) {
       setCurrentName('');
       return;
     }
     setCurrentName(name);
+  };
+
+  const handleChoseAudio = () => {
+    setChosenAudioId(id);
   };
 
   useEffect(() => {
@@ -27,7 +42,10 @@ function AudioPlayer({ id, link, name, currentName, setCurrentName, handleDelete
   };
 
   return (
-    <section className={styles.audioPlayer}>
+    <section
+      className={cn(styles.audioPlayer, { [styles.active]: chosenAudioId === id })}
+      onClick={handleChoseAudio}
+    >
       <audio src={link} className={styles.player} ref={audioRef} />
       <div className={styles.leftGroup}>
         <div
