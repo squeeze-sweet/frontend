@@ -16,7 +16,7 @@ function authenticateUser(user: string, password: string) {
 }
 
 const client = axios.create({
-  baseURL: 'http://localhost:8000/api/v1',
+  baseURL: 'http://213.189.216.169/api/v1',
   timeout: 10000,
   headers: {
     Authorization: `${authenticateUser('tester@test.ru', 'test')}`,

@@ -1,0 +1,30 @@
+.audioPlayer {
+  background-color: #f3f3f3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px;
+}
+.leftGroup {
+  display: flex;
+}
+.play {
+  margin-right: 20px;
+  cursor: pointer;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 10px 0 10px 17.3px;
+  border-color: transparent transparent transparent #000000;
+}
+
+.stop {
+  width: 17px;
+  height: 17px;
+  border-width: 0;
+  background-color: #000000;
+}
+
+.deleteIcon {
+  cursor: pointer;
+}
