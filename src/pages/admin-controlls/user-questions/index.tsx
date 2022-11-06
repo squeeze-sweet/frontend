@@ -56,7 +56,7 @@ export default function UserQuestions() {
 
   return (
     <section className={styles.audios}>
-      <Button onClick={handleOpenModal}>
+      <Button onClick={handleOpenModal} className={styles.button}>
         <div className={styles.adderContent}>
           <p>add category</p>
           <img src={crossIcon} className={styles.cross}></img>
@@ -94,7 +94,7 @@ function AudioPlayer({ id, name, questions, handleDelete, isCategory = true }: a
       {questions?.map(({ text, id }: any) => (
         <>
           <div className={styles.children}>
-            <Button onClick={() => {}}>
+            <Button onClick={() => {}} className={styles.button}>
               <div className={styles.adderContent}>
                 <p>add question</p>
                 <img src={crossIcon} className={styles.cross}></img>

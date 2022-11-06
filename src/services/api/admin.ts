@@ -36,7 +36,7 @@ const api: API = {
       headers: { Authorization: 'Basic dGVzdGVyQHRlc3QucnU6dGVzdA==' },
       body: formData,
     };
-    return fetch('http://localhost:8000/api/v1/admin/files', requestOptions as any);
+    return fetch('http://213.189.216.169/api/v1/admin/files', requestOptions as any);
   },
   deleteFile: async id => client.delete(`/admin/files/${id}`),
   addWhiteListUser: async (email: string) => client.post(`/admin/white-list`, { email: email }),

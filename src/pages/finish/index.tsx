@@ -18,11 +18,11 @@ export default function Finish() {
       blobToDownload: state.blobToDownload,
     }));
 
-  useEffect(() => {
+  /*   useEffect(() => {
     return () => {
       setFinishUrl('');
     };
-  }, []);
+  }, []); */
 
   /*   useEffect(() => {
     if (finishUrl) {
@@ -54,8 +54,10 @@ export default function Finish() {
   };
 
   useEffect(() => {
-    setPreloaderText('Uploading on Google Drive');
-    createVideo();
+    console.log('финиш');
+
+    /*     setPreloaderText('Uploading on Google Drive');
+    createVideo(); */
   }, []);
 
   return (

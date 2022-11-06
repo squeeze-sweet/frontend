@@ -53,7 +53,7 @@ export default function AudioControlls() {
 
   return (
     <section className={styles.audios}>
-      <Button onClick={handleOpenModal}>
+      <Button onClick={handleOpenModal} className={styles.button}>
         <div className={styles.adderContent}>
           <p>add audio</p>
           <img src={crossIcon} className={styles.cross}></img>

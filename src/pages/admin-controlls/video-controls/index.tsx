@@ -55,7 +55,7 @@ export default function VideoControlls() {
 
   return (
     <section className={styles.audios}>
-      <Button onClick={handleOpenModal}>
+      <Button onClick={handleOpenModal} className={styles.button}>
         <div className={styles.adderContent}>
           <p>add video</p>
           <img src={crossIcon} className={styles.cross}></img>
@@ -64,7 +64,7 @@ export default function VideoControlls() {
       {videos?.map(({ id, name, link }: any) => (
         <VideoPlayer
           id={id}
-          link={''}
+          link={link}
           name={name}
           currentName={playingAudioName}
           setCurrentName={setPlayingAudioName}
@@ -84,14 +84,7 @@ export default function VideoControlls() {
   );
 }
 
-function VideoPlayer({
-  id,
-  link = '/calm.mp3',
-  name,
-  currentName,
-  setCurrentName,
-  handleDelete,
-}: any) {
+function VideoPlayer({ id, link, name, currentName, setCurrentName, handleDelete }: any) {
   const audioRef = useRef<any>();
   const handleClick = () => {
     if (currentName === name) {
@@ -115,17 +108,19 @@ function VideoPlayer({
   };
 
   return (
-    <section className={styles.audioPlayer}>
-      <video src={'/video.mp4'} className={styles.player} ref={audioRef} />
-      <div className={styles.leftGroup}>
-        <div
-          id='play'
-          className={cn(styles.play, { [styles.stop]: currentName === name })}
-          onClick={handleClick}
-        />
-        {name}
+    <section className={styles.videoPlayer}>
+      <video src={link} className={styles.player} ref={audioRef} />
+      <div className={styles.controlls}>
+        <div className={styles.leftGroup}>
+          <div
+            id='play'
+            className={cn(styles.play, { [styles.stop]: currentName === name })}
+            onClick={handleClick}
+          />
+          {name}
+        </div>
+        <img src={deleteIcon} className={styles.deleteIcon} onClick={onDelete} />
       </div>
-      <img src={deleteIcon} className={styles.deleteIcon} onClick={onDelete} />
     </section>
   );
 }

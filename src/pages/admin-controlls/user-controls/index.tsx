@@ -56,7 +56,7 @@ export default function UserControls() {
 
   return (
     <section className={styles.audios}>
-      <Button onClick={handleOpenModal}>
+      <Button onClick={handleOpenModal} className={styles.button}>
         <div className={styles.adderContent}>
           <p>add user</p>
           <img src={crossIcon} className={styles.cross}></img>

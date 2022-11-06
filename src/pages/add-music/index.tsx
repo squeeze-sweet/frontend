@@ -40,7 +40,7 @@ export default function AddMusic() {
       console.log('success');
     }
     setError(tr('please select audio'));
-    /*  navigate('/ready'); */
+    navigate('/ready');
   };
 
   return (
