@@ -64,6 +64,7 @@ export default function UploadAndEdit() {
       fragmentData: '',
       fragmentStartTime: 0,
       fragmentFinishTime: 0,
+      file: null,
     });
   };
 

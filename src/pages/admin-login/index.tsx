@@ -21,7 +21,7 @@ export default function AdminLogin() {
       setEmailError('e-mail is incorrect, please type another');
       isError = true;
     }
-    if (password.length < 4) {
+    if (password.length < 3) {
       setPasswordError('please type minimum 4 symbols');
       isError = true;
     }

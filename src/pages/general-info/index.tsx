@@ -14,8 +14,6 @@ export const GeneralInfo = ({ onSubmit }: any) => {
   const setUserInfo = useStore(state => state.setUserInfo);
   const { firstName, lastName, jobTitle } = useStore(state => state.userInfo);
 
-  const addClipNameAndTitle = useStore(state => state.addClipNameAndTitle);
-
   let navigate = useNavigate();
 
   const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
@@ -42,7 +40,6 @@ export const GeneralInfo = ({ onSubmit }: any) => {
       return;
     } else {
       setUserInfo({ firstName, lastName, jobTitle });
-      addClipNameAndTitle(`${firstName} ${lastName}`, jobTitle);
       onSubmit();
     }
   };

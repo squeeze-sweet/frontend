@@ -16,7 +16,7 @@ function authenticateUser(user: string, password: string) {
 }
 
 const client = axios.create({
-  baseURL: 'http://213.189.216.169/api/v1',
+  baseURL: 'https://1ce4-94-140-143-181.eu.ngrok.io/api/v1',
   timeout: 10000,
   headers: {
     Authorization: `${authenticateUser('tester@test.ru', 'test')}`,
@@ -36,7 +36,7 @@ const api: API = {
       headers: { Authorization: 'Basic dGVzdGVyQHRlc3QucnU6dGVzdA==' },
       body: formData,
     };
-    return fetch('http://213.189.216.169/api/v1/admin/files', requestOptions as any);
+    return fetch('1ce4-94-140-143-181.eu.ngrok.io/api/v1/admin/files', requestOptions as any);
   },
   deleteFile: async id => client.delete(`/admin/files/${id}`),
   addWhiteListUser: async (email: string) => client.post(`/admin/white-list`, { email: email }),

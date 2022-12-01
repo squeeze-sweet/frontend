@@ -25,6 +25,7 @@ export default function Uploader({ children }: Props) {
         ...currentStepData,
         videoPreviewSrc: videoPreviewSrc,
         fragmentData: e.target.result,
+        file: file,
       });
     };
     reader.onerror = function (error: any) {

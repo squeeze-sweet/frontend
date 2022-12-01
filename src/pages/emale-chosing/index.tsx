@@ -16,8 +16,6 @@ export default function EmaleChosing({ onSubmit }: any) {
     setPreloaderText: state.setPreloaderText,
   }));
 
-  let navigate = useNavigate();
-
   const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     const localEmail = e.target['email'].value;
 
