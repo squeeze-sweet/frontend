@@ -1,7 +1,7 @@
 import create from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 import { QuestionsAndCategories } from './types';
-import API from '../services/api/api';
+import api from '../services/api/admin';
 import yandexDiskApi, { uploadVideo } from '../services/api/api-yandex-disk';
 import shotStackApi, { uploadOnShotStack } from '../services/api/api-shotstack';
 import docsApi from '../services/api/api-docs';
@@ -46,15 +46,21 @@ interface Store {
   questionsAndCategories: QuestionsAndCategories | null;
   setQuestionsAndCategories: (data: QuestionsAndCategories) => void;
 
+  email: string;
+  setEmail: (email: string) => void;
+
+  password: string;
+  setPassword: (password: string) => void;
+
+  audios: any[];
+  getAudios: () => void;
+
   currentStepData: any;
   setCurrentStepData: any /* (stepsData: any) => void */;
   switchCurrentStep: any /* (fragmentName: any) => void */;
 
   preloaderText: string;
   setPreloaderText: (text: string) => void;
-
-  email: string;
-  setEmail: (email: string) => void;
 
   userInfo: UserInfo;
   setUserInfo: (userInfo: UserInfo) => void;
@@ -103,6 +109,18 @@ export const useStore = create<Store>()(
     email: '',
     setEmail: async email => {
       set({ email: email }, false, 'setEmail');
+    },
+
+    password: '',
+    setPassword: async password => {
+      set({ password: password }, false, 'setPassword');
+    },
+
+    audios: [],
+
+    getAudios: async () => {
+      const { data } = await api.getAudios(get().email, get().password);
+      set({ audios: data }, false, 'set Audios');
     },
 
     userInfo: {

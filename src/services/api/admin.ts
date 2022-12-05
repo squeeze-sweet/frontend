@@ -1,9 +1,9 @@
 import axios from 'axios';
 export interface API {
   getQuestions: (email: string, password: string) => any;
+  getAudios: (email: string, password: string) => Promise<any>; //Получение доступных аудио записей
   postFile: (audio: any) => any; //Публикация новой аудио записи
   deleteFile: (id: string) => any; //Удаление фала
-  getAudios: () => Promise<any>; //Получение доступных аудио записей
   getVideos: () => Promise<{ data: any }>; //Получение доступных аудио записей
   getWhiteList: () => any; //Получение доступных аудио записей
   addWhiteListUser: (email: string) => any;
@@ -31,7 +31,12 @@ const api: API = {
         Authorization: `${authenticateUser(email, password)}`,
       },
     }),
-  getAudios: async () => client.get('/files?content-type=audio'),
+  getAudios: async (email, password) =>
+    client.get('/files?content-type=audio', {
+      headers: {
+        Authorization: `${authenticateUser(email, password)}`,
+      },
+    }),
   getWhiteList: async () => client.get(`/admin/users`),
   getVideos: async () => client.get('/files?content-type=video'),
   postFile: file => {

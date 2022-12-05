@@ -5,12 +5,13 @@ import { useEffect, useState } from 'react';
 import audioApi from '../../services/api/admin';
 import useLang from '../../hooks/useLang';
 import AudioPlayer from '../../components/audio';
+import { useStore } from '../../store';
 
 export default function AddMusic() {
-  const [audios, setAudios] = useState<any>([]);
   const [playingAudioName, setPlayingAudioName] = useState('');
   const [chosenAudioId, setChosenAudioId] = useState('');
   const [error, setError] = useState('');
+  const { audios, getAudios } = useStore(({ audios, getAudios }) => ({ audios, getAudios }));
 
   const navigate = useNavigate();
 
@@ -20,13 +21,6 @@ export default function AddMusic() {
     getAudios();
   }, []);
 
-  const getAudios = async () => {
-    try {
-      const { data } = await audioApi.getAudios();
-      console.log('data', data);
-      setAudios(data);
-    } catch (error) {}
-  };
   const handleAudioSelect = (id: string) => {
     setChosenAudioId(id);
     if (error) {

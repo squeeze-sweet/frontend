@@ -7,20 +7,14 @@ import crossIcon from '../../../assets/icons/cross-white.svg';
 import UploadAudio from '../upload-audio-controls';
 import Modal from '../../../components/ui-elements/modal/modal';
 import AudioPlayer from '../../../components/audio';
+import { useStore } from '../../../store';
 
 export default function AudioControlls() {
-  const [audios, setAudios] = useState<any>([]);
+  const { audios, getAudios } = useStore(({ audios, getAudios }) => ({ audios, getAudios }));
   useEffect(() => {
     getAudios();
   }, []);
 
-  const getAudios = async () => {
-    try {
-      const { data } = await audioApi.getAudios();
-      console.log('data', data);
-      setAudios(data);
-    } catch (error) {}
-  };
   //audios
   const [playingAudioName, setPlayingAudioName] = useState('');
   const [isUploadActive, setIsAploadActive] = useState(false);

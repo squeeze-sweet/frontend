@@ -11,18 +11,20 @@ import AudioControlls from './audio-controls';
 import VideoControlls from './video-controls';
 import UserControls from './user-controls';
 import UserQuestions from './user-questions';
+import { useStore } from '../../store';
 const steps = ['users', 'questions', 'audios', 'video backgrounds'];
 
 export default function AdminControlls() {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState('users');
+  const { getAudios } = useStore(({ getAudios }) => ({ audios, getAudios }));
 
   const handleTabClick = (text: string) => {
     setCurrentStep(text);
   };
 
   useEffect(() => {
-    audioApi.getAudios();
+    getAudios();
   }, []);
 
   return (

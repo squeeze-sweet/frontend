@@ -12,14 +12,14 @@ import api from '../../services/api/admin';
 export default function EmaleChosing({ onSubmit }: any) {
   const { tr } = useLang();
 
-  const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
-  const [password, setPassword] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const setQuestionsAndCategories = useStore(state => state.setQuestionsAndCategories);
-  const questionsAndCategories = useStore(state => state.questionsAndCategories);
   const setPreloaderText = useStore(state => state.setPreloaderText);
+  const { email, setEmail, password, setPassword } = useStore(
+    ({ email, setEmail, password, setPassword }) => ({ email, setEmail, password, setPassword }),
+  );
 
   const getCategories = async (email: string, password: string) => {
     try {

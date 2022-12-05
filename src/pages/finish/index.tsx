@@ -16,13 +16,12 @@ export default function Finish() {
     const uploadQueries: any[] = [];
     fileNames.forEach((fileName: string) => {
       uploadQueries.push(
-        console.log(
-          fileName,
-          stepsData[fileName].fragmentStartTime,
-          stepsData[fileName].fragmentFinishTime,
-          stepsData[fileName].videoPreviewSrc,
-        ),
+        fileName,
+        stepsData[fileName].fragmentStartTime,
+        stepsData[fileName].fragmentFinishTime,
+        stepsData[fileName].videoPreviewSrc,
       );
+      console.log('uploadQueries', uploadQueries);
     });
   }, []);
 

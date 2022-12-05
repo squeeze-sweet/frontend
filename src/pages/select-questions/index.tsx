@@ -34,7 +34,7 @@ export default function SelectQuestions() {
 
   const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    /*     navigate('../upload-and-edit'); */
+    navigate('../upload-and-edit');
   };
 
   const handleChange = (text: string) => {
