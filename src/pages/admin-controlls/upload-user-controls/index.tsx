@@ -18,7 +18,7 @@ export default function UploadUserModal({ handleCloseModal, handleAddUser }: any
     e.preventDefault();
     if (!fileName) {
       setFilenameError('name can not be empty!');
-      console.log('name can not be empty!');
+      console.error('name can not be empty!');
       return;
     }
     if (!fileNameError) {

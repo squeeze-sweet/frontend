@@ -19,7 +19,6 @@ export default function VideoControlls() {
   const getVideos = async () => {
     try {
       const { data } = await audioApi.getVideos();
-      console.log('data', data);
       setVideos(data);
     } catch (error) {}
   };

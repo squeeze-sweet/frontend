@@ -88,7 +88,7 @@ function Router() {
           <Route
             path='/ready'
             element={
-              isCategoriesAndQuestions() && isUserInfo() && isStepsData() ? (
+              isCategoriesAndQuestions() && isUserInfo() /*  && isStepsData() */ ? (
                 <Finish />
               ) : (
                 <Navigate to='/upload-and-edit' />

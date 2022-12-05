@@ -49,10 +49,6 @@ export default ({
     }
   }, [inputRef?.current?.checked]);
 
-  const handleChange = (e: any) => {
-    console.log('e.target', e.target.checked);
-  };
-
   return (
     <div className={styles.container}>
       <audio ref={itemRef} /*  controls */ src={file} className={styles.player} />
@@ -65,7 +61,7 @@ export default ({
         value={value}
         defaultChecked={isDefaultChecked}
         disabled={isDisabled}
-        onChange={handleChange}
+        onChange={() => {}}
         onClick={onClick}
         className={styles.checkbox}
       />

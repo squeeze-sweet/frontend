@@ -6,6 +6,7 @@ type Props = {
   isDisabled?: boolean;
   isDefaultChecked?: boolean;
   name: string;
+  onChange?: React.ChangeEventHandler<HTMLInputElement>;
 };
 export const Checkbox = ({
   isDefaultChecked = false,
@@ -13,16 +14,18 @@ export const Checkbox = ({
   id,
   label,
   name,
+  onChange,
 }: Props) => {
   return (
     <div className={styles.container}>
       <input
         id={id}
         name={name}
-        type='radio'
+        type='checkbox'
         defaultChecked={isDefaultChecked}
         disabled={isDisabled}
         className={styles.checkbox}
+        onChange={onChange}
       />
       <label className={styles.label} htmlFor={id}>
         {label}

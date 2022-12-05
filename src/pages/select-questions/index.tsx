@@ -4,79 +4,8 @@ import { useStore } from '../../store';
 import { Checkbox } from '../../components/ui-elements/checkbox';
 import styles from './filenames-setting.module.scss';
 import { Button } from '../../components/ui-elements/button';
-import { useEffect } from 'react';
-
-//category: personal
-const questions = [
-  {
-    heading: 'Introduce yourself',
-    description: '',
-  },
-  {
-    heading: 'Your top 3 places where you like to eat?',
-    description: '',
-  },
-  {
-    heading: 'How many countries have you visited and which are you favourites?',
-    description: '',
-  },
-  {
-    heading: "Your top 3 books that you'd recommend everyone?",
-    description: '',
-  },
-  {
-    heading: 'Tell where you are from and how long have you been living there?',
-    description: '',
-  },
-  {
-    heading: 'Where do you get your inspiration from?',
-    description: '',
-  },
-  {
-    heading: 'Do you like peaceful hobbies or energetic ones?',
-    description: '',
-  },
-  {
-    heading: 'What are your top 3 hobbies now?',
-    description: '',
-  },
-  {
-    heading: "What's the hobby that grew into a job/project?",
-    description: '',
-  },
-  {
-    heading: 'Do you like team activities or solo ones?',
-    description: '',
-  },
-  {
-    heading: 'What hobbies from your childhood made affected your life now?',
-    description: '',
-  },
-  {
-    heading: 'What are the top 3 things you value at work?',
-    description: '',
-  },
-  {
-    heading: 'What things you value in your teammates?',
-    description: '',
-  },
-  {
-    heading: "What's the most proud moment in your career?",
-    description: '',
-  },
-  {
-    heading: 'What helped you to grow to the point where you are now?',
-    description: '',
-  },
-  {
-    heading: 'What advice would you give everyone who starts a job in your department?',
-    description: '',
-  },
-  {
-    heading: 'What books or people have influenced you?',
-    description: '',
-  },
-];
+import { useEffect, useState } from 'react';
+import _ from 'lodash';
 
 export default function SelectQuestions() {
   const { tr } = useLang();
@@ -87,18 +16,33 @@ export default function SelectQuestions() {
   const questionsAndCategories = useStore(state => state.questionsAndCategories);
 
   useEffect(() => {
-    initStepsData(questions);
+    const data: string[] = [];
+    questionsAndCategories?.forEach(category =>
+      category.questions.map(({ text }) => {
+        data.push(text);
+      }),
+    );
+    console.log('stepsData', data);
+    initStepsData(data);
   }, []);
+
+  useEffect(() => {
+    if (!filenames?.length && questionsAndCategories) {
+      setFilenames([questionsAndCategories[0].questions[0].text]);
+    }
+  }, [filenames, questionsAndCategories]);
 
   const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
+    /*     navigate('../upload-and-edit'); */
+  };
 
-    setFilenames(
-      questions
-        .filter((_, index: number) => e.target[String(index + 1)].checked)
-        .map(({ heading }: any, index: number) => heading),
-    );
-    navigate('../upload-and-edit');
+  const handleChange = (text: string) => {
+    if (filenames.find(filename => filename === text)) {
+      setFilenames(_.remove(filenames, filename => filename !== text));
+    } else {
+      setFilenames([...filenames, text]);
+    }
   };
 
   return (
@@ -117,23 +61,23 @@ export default function SelectQuestions() {
 
       <div className={styles['content-container']}>
         <div className={styles.checkboxes}>
-          {questionsAndCategories?.map(category => (
+          {questionsAndCategories?.map((category, categoryIndex) => (
             <>
               <p>{category.name}</p>
-              {category.questions.map(
-                ({ text }, index) =>
-                  index >= 1 &&
-                  index < 5 && (
-                    <Checkbox
-                      id={`1${String(index)}`}
-                      name={'1'}
-                      label={`${text}`}
-                      isDefaultChecked={filenames.find((filename: string) => filename === text)}
-                      isDisabled={index === 0}
-                      key={index}
-                    />
-                  ),
-              )}
+              {category.questions.map(({ text }, questionIndex) => (
+                <Checkbox
+                  id={`${categoryIndex}${questionIndex}`}
+                  name={`${categoryIndex}${questionIndex}`}
+                  label={`${text}`}
+                  isDefaultChecked={
+                    (categoryIndex === 0 && questionIndex === 0) ||
+                    filenames.find((filename: string) => filename === text)
+                  }
+                  isDisabled={categoryIndex === 0 && questionIndex === 0}
+                  key={`${categoryIndex}${questionIndex}`}
+                  onChange={() => handleChange(text)}
+                />
+              ))}
             </>
           ))}
         </div>

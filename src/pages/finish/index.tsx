@@ -24,8 +24,6 @@ export default function Finish() {
         ),
       );
     });
-
-    console.log('финиш');
   }, []);
 
   return (

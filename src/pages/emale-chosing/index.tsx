@@ -21,8 +21,6 @@ export default function EmaleChosing({ onSubmit }: any) {
   const questionsAndCategories = useStore(state => state.questionsAndCategories);
   const setPreloaderText = useStore(state => state.setPreloaderText);
 
-  console.log('questionsAndCategories', questionsAndCategories);
-
   const getCategories = async (email: string, password: string) => {
     try {
       setPreloaderText('authorizing');

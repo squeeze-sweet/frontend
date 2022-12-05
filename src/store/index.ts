@@ -60,7 +60,7 @@ interface Store {
   setUserInfo: (userInfo: UserInfo) => void;
 
   stepsData: any;
-  initStepsData: (questions: { heading: string; description: string }[]) => void;
+  initStepsData: (questions: string[]) => void;
 
   updateStepsData: (fragmentName: any, data: any) => void;
   resetStepData: (fragmentName: any, data: any) => void;
@@ -135,11 +135,14 @@ export const useStore = create<Store>()(
     },
 
     initStepsData: async questions => {
-      const stepsData: any = {};
-      if (isEmptyObject(get().stepsData)) {
+      console.log('initStepsData');
+
+      if (!get().stepsData?.length) {
+        console.log('initStepsDataIF');
+        const tempData: any = {};
         questions.forEach(
-          ({ heading }) =>
-            (stepsData[heading] = {
+          question =>
+            (tempData[question] = {
               fragmentData: '',
               fragmentStartTime: 0,
               fragmentFinishTime: 0,
@@ -149,7 +152,7 @@ export const useStore = create<Store>()(
         );
         set(
           {
-            stepsData: stepsData,
+            stepsData: tempData,
           },
           false,
           'init steps data',
@@ -192,7 +195,7 @@ export const useStore = create<Store>()(
 
     filenames: [],
     setFilenames: (filenames: any) => {
-      set({ filenames: filenames });
+      set({ filenames: filenames }, false, 'set filenames');
       set({ currentFragmentName: filenames[0] }, false, 'set chosen filenames');
     },
 

@@ -22,10 +22,9 @@ export default function uploadVideo({ handleCloseModal, handleAddAudio }: any) {
     e.preventDefault();
     if (!fileName) {
       setFilenameError('name can not be empty!');
-      console.log('name can not be empty!');
+      console.error('name can not be empty!');
       return;
     }
-    console.log(file, fileError);
     if (file && !fileError) {
       await handleAddAudio(file);
       handleCloseModal();

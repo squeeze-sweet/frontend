@@ -18,8 +18,6 @@ export default function AdminControlls() {
   const [currentStep, setCurrentStep] = useState('users');
 
   const handleTabClick = (text: string) => {
-    console.log(text);
-
     setCurrentStep(text);
   };
 

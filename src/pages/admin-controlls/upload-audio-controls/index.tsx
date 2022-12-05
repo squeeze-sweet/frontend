@@ -22,7 +22,7 @@ export default function uploadAudio({ handleCloseModal, handleAddAudio }: any) {
     e.preventDefault();
     if (!fileName) {
       setFilenameError('name can not be empty!');
-      console.log('name can not be empty!');
+      console.error('name can not be empty!');
       return;
     }
     console.log(file, fileError);

@@ -21,7 +21,6 @@ export default function UserControls() {
   const getWhiteList = async () => {
     try {
       const { data } = await audioApi.getWhiteList();
-      console.log('data', data);
       setUsers(data);
     } catch (error) {}
   };
