@@ -84,6 +84,7 @@ export default function SelectQuestions() {
   const filenames = useStore(state => state.filenames);
   const setFilenames = useStore(state => state.setFilenames);
   const initStepsData = useStore(state => state.initStepsData);
+  const questionsAndCategories = useStore(state => state.questionsAndCategories);
 
   useEffect(() => {
     initStepsData(questions);
@@ -116,59 +117,25 @@ export default function SelectQuestions() {
 
       <div className={styles['content-container']}>
         <div className={styles.checkboxes}>
-          <p>required question</p>
-          <Checkbox
-            id={`0${String(0)}`}
-            name={'0'}
-            label={`${questions[0].heading}`}
-            isDefaultChecked={true}
-            isDisabled={true}
-            key={`0${String(0)}`}
-          />
-          <p>category: personal questions</p>
-          {questions.map(
-            ({ heading }: any, index) =>
-              index >= 1 &&
-              index < 5 && (
-                <Checkbox
-                  id={`1${String(index)}`}
-                  name={'1'}
-                  label={`${heading}`}
-                  isDefaultChecked={filenames.find((filename: string) => filename === heading)}
-                  isDisabled={index === 0}
-                  key={index}
-                />
-              ),
-          )}
-          <p>category: hobby</p>
-          {questions.map(
-            ({ heading }: any, index) =>
-              index >= 5 &&
-              index < 10 && (
-                <Checkbox
-                  isDefaultChecked={filenames.find((filename: string) => filename === heading)}
-                  id={`2${String(index)}`}
-                  name={'2'}
-                  label={`${heading}`}
-                  isDisabled={index === 0}
-                  key={index}
-                />
-              ),
-          )}
-          <p>category: career</p>
-          {questions.map(
-            ({ heading }: any, index) =>
-              index >= 10 && (
-                <Checkbox
-                  isDefaultChecked={filenames.find((filename: string) => filename === heading)}
-                  id={`3${String(index)}`}
-                  name={'3'}
-                  label={`${heading}`}
-                  isDisabled={index === 0}
-                  key={index}
-                />
-              ),
-          )}
+          {questionsAndCategories?.map(category => (
+            <>
+              <p>{category.name}</p>
+              {category.questions.map(
+                ({ text }, index) =>
+                  index >= 1 &&
+                  index < 5 && (
+                    <Checkbox
+                      id={`1${String(index)}`}
+                      name={'1'}
+                      label={`${text}`}
+                      isDefaultChecked={filenames.find((filename: string) => filename === text)}
+                      isDisabled={index === 0}
+                      key={index}
+                    />
+                  ),
+              )}
+            </>
+          ))}
         </div>
       </div>
     </form>

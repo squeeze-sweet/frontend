@@ -44,7 +44,7 @@ interface Store {
   //-------------------------------------
 
   questionsAndCategories: QuestionsAndCategories | null;
-  setQuestionsAndCategories: any;
+  setQuestionsAndCategories: (data: QuestionsAndCategories) => void;
 
   currentStepData: any;
   setCurrentStepData: any /* (stepsData: any) => void */;
