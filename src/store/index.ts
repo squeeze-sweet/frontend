@@ -42,6 +42,9 @@ interface Store {
   setLang: (lang: 'en' | 'fr') => void;
   //-------------------------------------
 
+  questionsAndCategories: any;
+  setQuestionsAndCategories: any;
+
   currentStepData: any;
   setCurrentStepData: any /* (stepsData: any) => void */;
   switchCurrentStep: any /* (fragmentName: any) => void */;
@@ -80,10 +83,14 @@ interface Store {
 
 export const useStore = create<Store>()(
   devtools((set, get) => ({
-    lang: 'fr',
+    lang: 'en',
     setLang: lang => {
       set({ lang: lang }, false, `setLang to ${lang}`);
     },
+
+    questionsAndCategories: {},
+    setQuestionsAndCategories: (data: any) =>
+      set({ questionsAndCategories: data }, false, `setting questions and categories`),
 
     blobToDownload: null,
     preloaderText: '',

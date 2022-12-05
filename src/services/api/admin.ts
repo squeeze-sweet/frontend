@@ -1,12 +1,12 @@
 import axios from 'axios';
 export interface API {
+  getQuestions: (email: string, password: string) => any;
   postFile: (audio: any) => any; //Публикация новой аудио записи
   deleteFile: (id: string) => any; //Удаление фала
   getAudios: () => Promise<any>; //Получение доступных аудио записей
   getVideos: () => Promise<{ data: any }>; //Получение доступных аудио записей
   getWhiteList: () => any; //Получение доступных аудио записей
   addWhiteListUser: (email: string) => any;
-  getQuestions: () => any;
 }
 
 function authenticateUser(user: string, password: string) {
@@ -16,7 +16,7 @@ function authenticateUser(user: string, password: string) {
 }
 
 const client = axios.create({
-  baseURL: 'https://1ce4-94-140-143-181.eu.ngrok.io/api/v1',
+  baseURL: 'http://213.189.216.169/api/v1',
   timeout: 10000,
   headers: {
     Authorization: `${authenticateUser('tester@test.ru', 'test')}`,
@@ -24,8 +24,14 @@ const client = axios.create({
 });
 
 const api: API = {
+  getQuestions: async (email, password) =>
+    client.get('/categories', {
+      timeout: 10000,
+      headers: {
+        Authorization: `${authenticateUser(email, password)}`,
+      },
+    }),
   getAudios: async () => client.get('/files?content-type=audio'),
-  getQuestions: async () => client.get('/categories'),
   getWhiteList: async () => client.get(`/admin/users`),
   getVideos: async () => client.get('/files?content-type=video'),
   postFile: file => {

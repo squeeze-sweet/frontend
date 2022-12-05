@@ -6,56 +6,79 @@ import { validateEmail } from './helpers';
 import LayoutPage from '../../components/templates/form-page';
 import yandexDiskApi from '../../services/api/api-yandex-disk';
 import useLang from '../../hooks/useLang';
+import styles from './emale-chosing.module.scss';
+import api from '../../services/api/admin';
 
 export default function EmaleChosing({ onSubmit }: any) {
   const { tr } = useLang();
+
+  const [email, setEmail] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordError, setPasswordError] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
-  const { email, setEmail, setPreloaderText } = useStore(state => ({
-    email: state.email,
-    setEmail: state.setEmail,
-    setPreloaderText: state.setPreloaderText,
-  }));
+  const setQuestionsAndCategories = useStore(state => state.setQuestionsAndCategories);
+  const questionsAndCategories = useStore(state => state.questionsAndCategories);
 
+  console.log('questionsAndCategories', questionsAndCategories);
+
+  const getCategories = async (email: string, password: string) => {
+    try {
+      const { data } = await api.getQuestions(email, password);
+      setQuestionsAndCategories(data);
+      onSubmit();
+    } catch (error) {}
+  };
   const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
-    const localEmail = e.target['email'].value;
-
-    if (!validateEmail(localEmail)) {
-      setErrorMsg(tr('e-mail format is invalid!'));
-      return;
-    } else {
-      CheckAcess(localEmail);
+    e.preventDefault();
+    let isError = false;
+    if (!validateEmail(email)) {
+      setEmailError('e-mail is incorrect, please type another');
+      isError = true;
     }
+    if (password.length < 3) {
+      setPasswordError('please type minimum 4 symbols');
+      isError = true;
+    }
+    if (isError) return;
+    getCategories(email, password);
   };
 
   const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const localEmail = e.target.value;
-    if (errorMsg) {
-      if (validateEmail(localEmail)) {
-        setErrorMsg('');
-      }
+    const email = e.target.value;
+    setEmail(e.target.value);
+    if (emailError && validateEmail(email)) {
+      setEmailError('');
     }
   };
 
-  async function CheckAcess(localEmail: string) {
-    try {
-      await yandexDiskApi.checkUserAcess(localEmail);
-      setEmail(localEmail);
-      onSubmit();
-    } catch (error) {
-      setErrorMsg(tr('You have no access to service, please contact your curator'));
+  const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const password = e.target.value;
+    setPassword(e.target.value);
+    if (passwordError && !(password.length < 4)) {
+      setPasswordError('');
     }
-  }
+  };
 
   return (
     <LayoutPage onSubmit={handleSubmit} buttonText={tr('Next')}>
       <Input
-        defaultValue={email}
+        value={email}
         id='email'
         placeholder={tr('type your e-mail')}
         label='email'
         onChange={handleEmailChange}
-        error={errorMsg}
+        error={emailError}
       />
+      <Input
+        value={password}
+        id='password'
+        placeholder='type your password'
+        label='password'
+        onChange={handlePasswordChange}
+        error={passwordError}
+      />
+      {errorMsg && <p className={styles.error}>{errorMsg}</p>}
     </LayoutPage>
   );
 }

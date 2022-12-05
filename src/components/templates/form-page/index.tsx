@@ -8,7 +8,7 @@ type Props = {
   heading?: string;
   buttonText: string;
   className?: string;
-  children: ReactElement;
+  children: any;
 };
 
 export default function FormPage({ onSubmit, heading, buttonText, className, children }: Props) {

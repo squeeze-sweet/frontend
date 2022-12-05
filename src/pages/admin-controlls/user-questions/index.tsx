@@ -20,7 +20,8 @@ export default function UserQuestions() {
 
   const getQuestions = async () => {
     try {
-      const { data } = await audioApi.getQuestions();
+      const data = '';
+      /*       const { data } = await audioApi.getQuestions(); */
       console.log('data', data);
       setQuestions(data);
     } catch (error) {}
