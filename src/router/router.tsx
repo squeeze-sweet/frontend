@@ -14,9 +14,9 @@ import AdminControlls from '../pages/admin-controlls';
 
 function Router() {
   const { tr, toggleLang } = useLang();
-  const email = useStore(state => state.email);
-  const isEmail = () => {
-    if (email) return true;
+  const questionsAndCategories = useStore(state => state.questionsAndCategories);
+  const isCategoriesAndQuestions = () => {
+    if (questionsAndCategories) return true;
   };
 
   const userInfo = useStore(state => state.userInfo);
@@ -61,12 +61,14 @@ function Router() {
           <Route path='how-it-works' element={<HowItWorks />} />
           <Route
             path='select-questions'
-            element={isEmail() && isUserInfo() ? <SelectQuestions /> : <Navigate to='/' />}
+            element={
+              isCategoriesAndQuestions() && isUserInfo() ? <SelectQuestions /> : <Navigate to='/' />
+            }
           />
           <Route
             path='upload-and-edit'
             element={
-              isEmail() && isUserInfo() && isFilenamesChosen() ? (
+              isCategoriesAndQuestions() && isUserInfo() && isFilenamesChosen() ? (
                 <UploadAndEdit />
               ) : (
                 <Navigate to='/select-questions' />
@@ -75,12 +77,18 @@ function Router() {
           />
           <Route
             path='add-music'
-            element={isEmail() && isUserInfo() ? <AddMusic /> : <Navigate to='/select-questions' />}
+            element={
+              isCategoriesAndQuestions() && isUserInfo() ? (
+                <AddMusic />
+              ) : (
+                <Navigate to='/select-questions' />
+              )
+            }
           />
           <Route
             path='/ready'
             element={
-              isEmail() && isUserInfo() && isStepsData() ? (
+              isCategoriesAndQuestions() && isUserInfo() && isStepsData() ? (
                 <Finish />
               ) : (
                 <Navigate to='/upload-and-edit' />

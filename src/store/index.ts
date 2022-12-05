@@ -1,5 +1,6 @@
 import create from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
+import { QuestionsAndCategories } from './types';
 import API from '../services/api/api';
 import yandexDiskApi, { uploadVideo } from '../services/api/api-yandex-disk';
 import shotStackApi, { uploadOnShotStack } from '../services/api/api-shotstack';
@@ -42,7 +43,7 @@ interface Store {
   setLang: (lang: 'en' | 'fr') => void;
   //-------------------------------------
 
-  questionsAndCategories: any;
+  questionsAndCategories: QuestionsAndCategories | null;
   setQuestionsAndCategories: any;
 
   currentStepData: any;
@@ -88,7 +89,8 @@ export const useStore = create<Store>()(
       set({ lang: lang }, false, `setLang to ${lang}`);
     },
 
-    questionsAndCategories: {},
+    questionsAndCategories: null,
+
     setQuestionsAndCategories: (data: any) =>
       set({ questionsAndCategories: data }, false, `setting questions and categories`),
 

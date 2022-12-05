@@ -19,16 +19,22 @@ export default function EmaleChosing({ onSubmit }: any) {
   const [errorMsg, setErrorMsg] = useState('');
   const setQuestionsAndCategories = useStore(state => state.setQuestionsAndCategories);
   const questionsAndCategories = useStore(state => state.questionsAndCategories);
+  const setPreloaderText = useStore(state => state.setPreloaderText);
 
   console.log('questionsAndCategories', questionsAndCategories);
 
   const getCategories = async (email: string, password: string) => {
     try {
+      setPreloaderText('authorizing');
       const { data } = await api.getQuestions(email, password);
       setQuestionsAndCategories(data);
+      setPreloaderText('');
       onSubmit();
-    } catch (error) {}
+    } catch (error) {
+      setPreloaderText('');
+    }
   };
+
   const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     let isError = false;
