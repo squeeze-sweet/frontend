@@ -33,7 +33,7 @@ function Router() {
   }));
 
   const isFilenamesChosen = () => {
-    if (filenames.length) return true;
+    if (filenames.length > 1) return true;
   };
 
   const isStepsData = () => {
@@ -78,7 +78,7 @@ function Router() {
           <Route
             path='add-music'
             element={
-              isCategoriesAndQuestions() && isUserInfo() ? (
+              isCategoriesAndQuestions() && isUserInfo() && isStepsData() && isFilenamesChosen() ? (
                 <AddMusic />
               ) : (
                 <Navigate to='/select-questions' />
@@ -88,7 +88,7 @@ function Router() {
           <Route
             path='/ready'
             element={
-              isCategoriesAndQuestions() && isUserInfo() /*  && isStepsData() */ ? (
+              isCategoriesAndQuestions() && isUserInfo() && isStepsData() && isFilenamesChosen() ? (
                 <Finish />
               ) : (
                 <Navigate to='/upload-and-edit' />
