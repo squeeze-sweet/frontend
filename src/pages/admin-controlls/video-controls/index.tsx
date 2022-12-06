@@ -9,16 +9,22 @@ const steps = ['users', 'questions', 'audios', 'video backgrounds'];
 import crossIcon from '../../../assets/icons/cross-white.svg';
 import UploadAudio from '../upload-audio-controls';
 import Modal from '../../../components/ui-elements/modal/modal';
+import { useStore } from '../../../store';
 
 export default function VideoControlls() {
   const [videos, setVideos] = useState<any>([]);
+  const { email, password } = useStore(({ email, password }) => ({
+    email,
+    password,
+  }));
+
   useEffect(() => {
     getVideos();
   }, []);
 
   const getVideos = async () => {
     try {
-      const { data } = await audioApi.getVideos();
+      const { data } = await audioApi.getVideos(email, password);
       setVideos(data);
     } catch (error) {}
   };
@@ -36,7 +42,7 @@ export default function VideoControlls() {
 
   const handleDelete = async (id: string) => {
     try {
-      await audioApi.deleteFile(id);
+      await audioApi.deleteFile(id, email, password);
     } catch (error) {
       console.error();
     }

@@ -11,16 +11,22 @@ import UploadAudio from '../upload-audio-controls';
 import Modal from '../../../components/ui-elements/modal/modal';
 import Input from 'antd/lib/input/Input';
 import UploadUserModal from '../upload-user-controls';
+import { useStore } from '../../../store';
 
 export default function UserControls() {
   const [users, setUsers] = useState<any>([]);
+  const { email, password } = useStore(({ email, password }) => ({
+    email,
+    password,
+  }));
+
   useEffect(() => {
     getWhiteList();
   }, []);
 
   const getWhiteList = async () => {
     try {
-      const { data } = await audioApi.getWhiteList();
+      const { data } = await audioApi.getWhiteList(email, password);
       setUsers(data);
     } catch (error) {}
   };
@@ -37,7 +43,7 @@ export default function UserControls() {
 
   const handleDelete = async (id: string) => {
     try {
-      await audioApi.deleteFile(id);
+      await audioApi.deleteFile(id, email, password);
     } catch (error) {
       console.error();
     }
@@ -46,7 +52,7 @@ export default function UserControls() {
 
   const handleAdd = async (name: string) => {
     try {
-      await audioApi.addWhiteListUser(name);
+      await audioApi.addWhiteListUser(name, email, password);
     } catch (error) {
       console.error();
     }

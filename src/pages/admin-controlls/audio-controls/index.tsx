@@ -11,6 +11,11 @@ import { useStore } from '../../../store';
 
 export default function AudioControlls() {
   const { audios, getAudios } = useStore(({ audios, getAudios }) => ({ audios, getAudios }));
+  const { email, password } = useStore(({ email, password }) => ({
+    email,
+    password,
+  }));
+
   useEffect(() => {
     getAudios();
   }, []);
@@ -29,7 +34,7 @@ export default function AudioControlls() {
 
   const handleDelete = async (id: string) => {
     try {
-      await audioApi.deleteFile(id);
+      await audioApi.deleteFile(id, email, password);
     } catch (error) {
       console.error();
     }

@@ -10,10 +10,10 @@ export interface API {
     email: string,
     password: string,
   ) => any; //Публикация новой аудио записи
-  deleteFile: (id: string) => any; //Удаление фала
-  getVideos: () => Promise<{ data: any }>; //Получение доступных аудио записей
-  getWhiteList: () => any; //Получение доступных аудио записей
-  addWhiteListUser: (email: string) => any;
+  deleteFile: (id: string, email: string, password: string) => any; //Удаление фала
+  getVideos: (email: string, password: string) => Promise<{ data: any }>; //Получение доступных аудио записей
+  getWhiteList: (email: string, password: string) => any; //Получение доступных аудио записей
+  addWhiteListUser: (newEail: string, email: string, password: string) => any;
 }
 
 function authenticateUser(user: string, password: string) {
@@ -44,8 +44,20 @@ const api: API = {
         Authorization: `${authenticateUser(email, password)}`,
       },
     }),
-  getWhiteList: async () => client.get(`/admin/users`),
-  getVideos: async () => client.get('/files?content-type=video'),
+  getWhiteList: async (email, password) =>
+    client.get(`/admin/users`, {
+      timeout: 10000,
+      headers: {
+        Authorization: `${authenticateUser(email, password)}`,
+      },
+    }),
+  getVideos: async (email, password) =>
+    client.get('/files?content-type=video', {
+      timeout: 10000,
+      headers: {
+        Authorization: `${authenticateUser(email, password)}`,
+      },
+    }),
   postFile: file => {
     const formData = new FormData();
     formData.append('file', file);
@@ -72,8 +84,24 @@ const api: API = {
     console.log('meta', meta);
     return fetch('http://213.189.216.169/api/v1/merge-final-video', requestOptions as any);
   },
-  deleteFile: async id => client.delete(`/admin/files/${id}`),
-  addWhiteListUser: async (email: string) => client.post(`/admin/white-list`, { email: email }),
+  deleteFile: async (id, email, password) =>
+    client.delete(`/admin/files/${id}`, {
+      timeout: 10000,
+      headers: {
+        Authorization: `${authenticateUser(email, password)}`,
+      },
+    }),
+  addWhiteListUser: async (newEmail, email, password) =>
+    client.post(
+      `/admin/white-list`,
+      { email: newEmail },
+      {
+        timeout: 10000,
+        headers: {
+          Authorization: `${authenticateUser(email, password)}`,
+        },
+      },
+    ),
 };
 
 export default api;

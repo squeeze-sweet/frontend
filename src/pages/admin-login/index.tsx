@@ -4,15 +4,37 @@ import { Input } from '../../components/ui-elements/input';
 import styles from './introduce-yourself.module.scss';
 import { Button } from '../../components/ui-elements/button';
 import { validateEmail } from './helpers';
+import { useStore } from '../../store';
+import api from '../../services/api/admin';
 
 export default function AdminLogin() {
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
-  const [password, setPassword] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
+  const { email, setEmail, password, setPassword, setPreloaderText } = useStore(
+    ({ email, setEmail, password, setPassword, setPreloaderText }) => ({
+      email,
+      setEmail,
+      password,
+      setPassword,
+      setPreloaderText,
+    }),
+  );
+
+  const getUsers = async (email: string, password: string) => {
+    try {
+      setPreloaderText('authorizing');
+      const { data } = await api.getWhiteList(email, password);
+      console.log('users', data);
+
+      setPreloaderText('');
+      navigate('/controls');
+    } catch (error) {
+      setPreloaderText('');
+    }
+  };
 
   const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -22,11 +44,11 @@ export default function AdminLogin() {
       isError = true;
     }
     if (password.length < 3) {
-      setPasswordError('please type minimum 4 symbols');
+      setPasswordError('please type minimum 3 symbols');
       isError = true;
     }
     if (isError) return;
-    navigate('/controls');
+    getUsers(email, password);
   };
 
   const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
