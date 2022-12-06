@@ -125,8 +125,10 @@ export const useStore = create<Store>()(
     audios: [],
 
     getAudios: async () => {
+      set({ preloaderText: 'downloading audios' }, false, 'set preloader audios');
       const { data } = await api.getAudios(get().email, get().password);
       set({ audios: data }, false, 'set Audios');
+      set({ preloaderText: '' }, false, 'reset preloader audios');
     },
 
     chosenAudioId: '',
@@ -135,12 +137,14 @@ export const useStore = create<Store>()(
     finalVideoData: null,
 
     mergeVideos: async (files, meta, chosenAudioId) => {
-      const { body } = await api
+      set({ preloaderText: 'merging, take your time' }, false, 'set preloader merge');
+      await api
         .mergeVideos(files, meta, chosenAudioId, get().email, get().password)
         .then(({ body }) => new Response(body))
         .then(response => response.blob())
         .then(blob => URL.createObjectURL(blob))
         .then(url => set({ finalVideoData: url }, false, 'set finalVideoData'))
+        .then(() => set({ preloaderText: '' }, false, 'reset preloader merge'))
         .catch(err => console.error(err));
     },
 
