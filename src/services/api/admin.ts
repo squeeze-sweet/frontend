@@ -15,6 +15,8 @@ export interface API {
   getWhiteList: (email: string, password: string) => any;
   addWhiteListUser: (newEail: string, email: string, password: string) => any;
   deleteWhiteListUser: (id: string, email: string, password: string) => any;
+  deleteCategory: (id: string, email: string, password: string) => any;
+  deleteQuestion: (id: string, email: string, password: string) => any;
 }
 
 function authenticateUser(user: string, password: string) {
@@ -88,6 +90,20 @@ const api: API = {
   },
   deleteFile: async (id, email, password) =>
     client.delete(`/admin/files/${id}`, {
+      timeout: 10000,
+      headers: {
+        Authorization: `${authenticateUser(email, password)}`,
+      },
+    }),
+  deleteCategory: async (id, email, password) =>
+    client.delete(`/categories/${id}`, {
+      timeout: 10000,
+      headers: {
+        Authorization: `${authenticateUser(email, password)}`,
+      },
+    }),
+  deleteQuestion: async (id, email, password) =>
+    client.delete(`/questions/${id}`, {
       timeout: 10000,
       headers: {
         Authorization: `${authenticateUser(email, password)}`,

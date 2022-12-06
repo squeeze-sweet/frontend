@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import cn from 'classnames';
 import styles from './audio-controlls.module.scss';
 import deleteIcon from '../../../assets/icons/delete.svg';
-import audioApi from '../../../services/api/admin';
+import api from '../../../services/api/admin';
 import { Button } from '../../../components/ui-elements/button';
 const steps = ['users', 'questions', 'audios', 'video backgrounds'];
 import crossIcon from '../../../assets/icons/cross-white.svg';
@@ -26,7 +26,7 @@ export default function UserQuestions() {
 
   const getQuestions = async () => {
     try {
-      const { data } = await audioApi.getQuestions(email, password);
+      const { data } = await api.getQuestions(email, password);
       setQuestions(data);
     } catch (error) {}
   };
@@ -43,7 +43,16 @@ export default function UserQuestions() {
 
   const handleDelete = async (id: string) => {
     try {
-      await audioApi.deleteFile(id, email, password);
+      await api.deleteCategory(id, email, password);
+    } catch (error) {
+      console.error(error);
+    }
+    getQuestions();
+  };
+
+  const handleDeleteQuestion = async (id: string) => {
+    try {
+      await api.deleteQuestion(id, email, password);
     } catch (error) {
       console.error(error);
     }
@@ -52,7 +61,7 @@ export default function UserQuestions() {
 
   const handleAdd = async (name: string) => {
     try {
-      await audioApi.addWhiteListUser(name, email, password);
+      /*       await audioApi.addWhiteListUser(name, email, password); */
     } catch (error) {
       console.error(error);
     }
@@ -68,7 +77,13 @@ export default function UserQuestions() {
         </div>
       </Button>
       {questions?.map(({ name, id, questions }: any) => (
-        <AudioPlayer id={id} name={name} questions={questions} handleDelete={handleDelete} />
+        <AudioPlayer
+          id={id}
+          name={name}
+          questions={questions}
+          handleDelete={handleDelete}
+          handleDeleteQuestion={handleDeleteQuestion}
+        />
       ))}
       {isUploadActive && (
         <Modal
@@ -83,7 +98,14 @@ export default function UserQuestions() {
   );
 }
 
-function AudioPlayer({ id, name, questions, handleDelete, isCategory = true }: any) {
+function AudioPlayer({
+  id,
+  name,
+  questions,
+  handleDelete,
+  handleDeleteQuestion,
+  isCategory = true,
+}: any) {
   const onDelete = async () => {
     handleDelete(id);
   };
@@ -108,7 +130,12 @@ function AudioPlayer({ id, name, questions, handleDelete, isCategory = true }: a
           </div>
 
           <div className={styles.children}>
-            <AudioPlayer id={id} name={text} handleDelete={handleDelete} isCategory={false} />
+            <AudioPlayer
+              id={id}
+              name={text}
+              handleDelete={handleDeleteQuestion}
+              isCategory={false}
+            />
           </div>
         </>
       ))}

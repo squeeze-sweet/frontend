@@ -78,7 +78,7 @@ export default function AdminLogin() {
           <Input
             value={email}
             id='email'
-            placeholder="please type you'r email here"
+            placeholder='please type your email here'
             label='email'
             onChange={handleEmailChange}
             error={emailError}
@@ -86,7 +86,7 @@ export default function AdminLogin() {
           <Input
             value={password}
             id='password'
-            placeholder="please type you'r password here"
+            placeholder='please type your password here'
             label='password'
             onChange={handlePasswordChange}
             error={passwordError}

@@ -55,7 +55,7 @@ export default function Finish() {
 
   return (
     <section className={styles.container}>
-      <h1>{!Boolean(finalVideoData) ? "You're video is almost here"! : 'Done!'} </h1>
+      <h1>{!Boolean(finalVideoData) ? 'youre video is almost here'! : 'Done!'} </h1>
       {finalVideoData && (
         <>
           <video className={styles.video} src={`${finalVideoData}`} poster='poster.jpg' controls />
