@@ -43,7 +43,7 @@ export default function UserControls() {
 
   const handleDelete = async (id: string) => {
     try {
-      await audioApi.deleteFile(id, email, password);
+      await audioApi.deleteWhiteListUser(id, email, password);
     } catch (error) {
       console.error();
     }
@@ -67,8 +67,8 @@ export default function UserControls() {
           <img src={crossIcon} className={styles.cross}></img>
         </div>
       </Button>
-      {users?.map(({ email }: any) => (
-        <AudioPlayer id={email} name={email} handleDelete={handleDelete} />
+      {users?.map(({ email, id }: any) => (
+        <AudioPlayer id={id} name={email} handleDelete={handleDelete} />
       ))}
       {isUploadActive && (
         <Modal

@@ -14,6 +14,16 @@ import AdminControlls from '../pages/admin-controlls';
 
 function Router() {
   const { tr, toggleLang } = useLang();
+
+  const { email, password } = useStore(({ email, password }) => ({
+    email,
+    password,
+  }));
+
+  const isAdmin = () => {
+    if (email && password) return true;
+  };
+
   const questionsAndCategories = useStore(state => state.questionsAndCategories);
   const isCategoriesAndQuestions = () => {
     if (questionsAndCategories) return true;
@@ -97,7 +107,10 @@ function Router() {
           />
         </Route>
         <Route path='/admin' element={<AdminLogin />} />
-        <Route path='/controls' element={<AdminControlls />} />
+        <Route
+          path='/controls'
+          element={isAdmin() ? <AdminControlls /> : <Navigate to='/admin' />}
+        />
       </Routes>
     </BrowserRouter>
   );

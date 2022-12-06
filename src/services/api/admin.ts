@@ -14,6 +14,7 @@ export interface API {
   getVideos: (email: string, password: string) => Promise<{ data: any }>; //Получение доступных аудио записей
   getWhiteList: (email: string, password: string) => any; //Получение доступных аудио записей
   addWhiteListUser: (newEail: string, email: string, password: string) => any;
+  deleteWhiteListUser: (id: string, email: string, password: string) => any;
 }
 
 function authenticateUser(user: string, password: string) {
@@ -102,6 +103,13 @@ const api: API = {
         },
       },
     ),
+  deleteWhiteListUser: async (id, email, password) =>
+    client.delete(`/admin/white-list/${id}`, {
+      timeout: 10000,
+      headers: {
+        Authorization: `${authenticateUser(email, password)}`,
+      },
+    }),
 };
 
 export default api;
