@@ -13,6 +13,8 @@ export default function AddMusic() {
   const [error, setError] = useState('');
   const { audios, getAudios } = useStore(({ audios, getAudios }) => ({ audios, getAudios }));
 
+  console.log('chosenAudioId', chosenAudioId);
+
   const navigate = useNavigate();
 
   const { tr } = useLang();

@@ -55,6 +55,9 @@ interface Store {
   audios: any[];
   getAudios: () => void;
 
+  finalVideoData: any;
+  mergeVideos: (files: any, meta: any) => void;
+
   currentStepData: any;
   setCurrentStepData: any /* (stepsData: any) => void */;
   switchCurrentStep: any /* (fragmentName: any) => void */;
@@ -123,6 +126,18 @@ export const useStore = create<Store>()(
       set({ audios: data }, false, 'set Audios');
     },
 
+    finalVideoData: null,
+
+    mergeVideos: async (files, meta) => {
+      const { body } = await api
+        .mergeVideos(files, meta, get().email, get().password)
+        .then(({ body }) => new Response(body))
+        .then(response => response.blob())
+        .then(blob => URL.createObjectURL(blob))
+        .then(url => set({ finalVideoData: url }, false, 'set finalVideoData'))
+        .catch(err => console.error(err));
+    },
+
     userInfo: {
       firstName: '',
       lastName: '',
@@ -138,6 +153,7 @@ export const useStore = create<Store>()(
       fragmentStartTime: 0,
       fragmentFinishTime: 0,
       videoPreviewSrc: '',
+      length: 0,
       file: null,
     },
 
@@ -165,6 +181,7 @@ export const useStore = create<Store>()(
               fragmentStartTime: 0,
               fragmentFinishTime: 0,
               videoPreviewSrc: '',
+              length: 0,
               file: null,
             }),
         );
@@ -179,6 +196,8 @@ export const useStore = create<Store>()(
     },
 
     updateStepsData: (fragmentName, data) => {
+      console.log('updateStepsData', data);
+
       set(
         state => ({
           stepsData: {

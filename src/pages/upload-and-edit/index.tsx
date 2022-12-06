@@ -51,6 +51,10 @@ export default function UploadAndEdit() {
     setCurrentStepData({ ...currentStepData, fragmentFinishTime: time });
   };
 
+  const initFinishTime = (time: number) => {
+    setCurrentStepData({ ...currentStepData, length: time, fragmentFinishTime: time });
+  };
+
   const handleSaveData = () => {
     updateStepsData(currentFragmentName, currentStepData);
     if (currentFragmentName !== filenames[filenames.length - 1]) {
@@ -140,6 +144,7 @@ export default function UploadAndEdit() {
               setStartTime={setStartTime}
               finishTime={fragmentFinishTime}
               setFinishTime={setFinishTime}
+              initFinishTime={initFinishTime}
             />
           )}
           <p className={styles.error}>{error}</p>

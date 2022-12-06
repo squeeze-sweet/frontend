@@ -13,6 +13,7 @@ type Props = {
   finishTime: number;
   setFinishTime: (time: number) => void;
   clearValue: () => void;
+  initFinishTime: (time: number) => void;
 };
 
 export default function VideoPlayer({
@@ -24,6 +25,7 @@ export default function VideoPlayer({
   setFinishTime,
   clearValue,
   setError,
+  initFinishTime,
 }: Props) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const sliderRef = useRef<HTMLInputElement>(null);
@@ -58,10 +60,10 @@ export default function VideoPlayer({
         if (videoPreviewSrc) {
           if (element.duration === Infinity) {
             setVideoDuration(finishTime);
-            !finishTime && setFinishTime(finishTime);
+            !finishTime && initFinishTime(finishTime);
           } else {
             setVideoDuration(element.duration);
-            !finishTime && setFinishTime(element.duration);
+            !finishTime && initFinishTime(element.duration);
           }
         }
       };

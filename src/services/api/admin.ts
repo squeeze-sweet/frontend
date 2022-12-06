@@ -3,6 +3,7 @@ export interface API {
   getQuestions: (email: string, password: string) => any;
   getAudios: (email: string, password: string) => Promise<any>; //Получение доступных аудио записей
   postFile: (audio: any) => any; //Публикация новой аудио записи
+  mergeVideos: (files: any, meta: any, email: string, password: string) => any; //Публикация новой аудио записи
   deleteFile: (id: string) => any; //Удаление фала
   getVideos: () => Promise<{ data: any }>; //Получение доступных аудио записей
   getWhiteList: () => any; //Получение доступных аудио записей
@@ -47,7 +48,20 @@ const api: API = {
       headers: { Authorization: 'Basic dGVzdGVyQHRlc3QucnU6dGVzdA==' },
       body: formData,
     };
-    return fetch('1ce4-94-140-143-181.eu.ngrok.io/api/v1/admin/files', requestOptions as any);
+    return fetch('http://213.189.216.169/api/v1/admin/files', requestOptions as any);
+  },
+  mergeVideos: async (files, meta, email, password) => {
+    const formData = new FormData();
+    files.forEach(file => formData.append('files', file));
+
+    formData.append('meta', meta);
+    var requestOptions = {
+      method: 'POST',
+      headers: { Authorization: `${authenticateUser(email, password)}` },
+      body: formData,
+    };
+    console.log('meta', meta);
+    return fetch('http://213.189.216.169/api/v1/merge-final-video', requestOptions as any);
   },
   deleteFile: async id => client.delete(`/admin/files/${id}`),
   addWhiteListUser: async (email: string) => client.post(`/admin/white-list`, { email: email }),
