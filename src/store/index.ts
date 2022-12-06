@@ -55,8 +55,11 @@ interface Store {
   audios: any[];
   getAudios: () => void;
 
+  chosenAudioId: string;
+  setChosenAudioId: (id: string) => void;
+
   finalVideoData: any;
-  mergeVideos: (files: any, meta: any) => void;
+  mergeVideos: (files: any, meta: any, chosenAudioId: string) => void;
 
   currentStepData: any;
   setCurrentStepData: any /* (stepsData: any) => void */;
@@ -126,11 +129,14 @@ export const useStore = create<Store>()(
       set({ audios: data }, false, 'set Audios');
     },
 
+    chosenAudioId: '',
+    setChosenAudioId: id => set({ chosenAudioId: id }, false, 'set Audios'),
+
     finalVideoData: null,
 
-    mergeVideos: async (files, meta) => {
+    mergeVideos: async (files, meta, chosenAudioId) => {
       const { body } = await api
-        .mergeVideos(files, meta, get().email, get().password)
+        .mergeVideos(files, meta, chosenAudioId, get().email, get().password)
         .then(({ body }) => new Response(body))
         .then(response => response.blob())
         .then(blob => URL.createObjectURL(blob))

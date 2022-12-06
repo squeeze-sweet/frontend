@@ -9,11 +9,15 @@ import { useStore } from '../../store';
 
 export default function AddMusic() {
   const [playingAudioName, setPlayingAudioName] = useState('');
-  const [chosenAudioId, setChosenAudioId] = useState('');
   const [error, setError] = useState('');
-  const { audios, getAudios } = useStore(({ audios, getAudios }) => ({ audios, getAudios }));
-
-  console.log('chosenAudioId', chosenAudioId);
+  const { audios, getAudios, chosenAudioId, setChosenAudioId } = useStore(
+    ({ audios, getAudios, chosenAudioId, setChosenAudioId }) => ({
+      audios,
+      getAudios,
+      chosenAudioId,
+      setChosenAudioId,
+    }),
+  );
 
   const navigate = useNavigate();
 

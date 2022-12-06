@@ -6,11 +6,12 @@ import styles from './step-2.module.scss';
 
 export default function Finish() {
   const [finishUrl, setFinishUrl] = useState('');
-  const { fileNames, stepsData, mergeVideos, finalVideoData } = useStore(state => ({
+  const { fileNames, stepsData, mergeVideos, finalVideoData, chosenAudioId } = useStore(state => ({
     fileNames: state.filenames,
     stepsData: state.stepsData,
     mergeVideos: state.mergeVideos,
     finalVideoData: state.finalVideoData,
+    chosenAudioId: state.chosenAudioId,
   }));
 
   useEffect(() => {
@@ -19,8 +20,8 @@ export default function Finish() {
     }
   }, [finalVideoData]);
 
-  const getFinalVideo = async (data, meta) => {
-    await mergeVideos(data, JSON.stringify(meta));
+  const getFinalVideo = async (data, meta, chosenAudioId) => {
+    await mergeVideos(data, JSON.stringify(meta), chosenAudioId);
   };
   useEffect(() => {
     let currentTime = 0;
@@ -52,7 +53,7 @@ export default function Finish() {
       }
       currentTime +=
         Math.floor(stepsData[fileName].length) - Math.floor(stepsData[fileName].fragmentStartTime);
-      getFinalVideo(files, meta);
+      getFinalVideo(files, meta, chosenAudioId);
     });
   }, []);
 
