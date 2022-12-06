@@ -1,4 +1,4 @@
-import { FormEvent, ReactElement } from 'react';
+import { ReactElement } from 'react';
 import { Button } from '../../../components/ui-elements/button';
 import styles from './page.module.scss';
 

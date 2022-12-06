@@ -49,7 +49,6 @@
   right: -4px;
 }
 
-/* Removing the default appearance */
 .thumb,
 .thumb::-webkit-slider-thumb {
   -webkit-appearance: none;
@@ -76,7 +75,6 @@
   z-index: 5;
 }
 
-/* For Chrome browsers */
 .thumb::-webkit-slider-thumb {
   background-color: #f1f5f7;
   border: none;
@@ -90,7 +88,6 @@
   position: relative;
 }
 
-/* For Firefox browsers */
 .thumb::-moz-range-thumb {
   background-color: #f1f5f7;
   border: none;

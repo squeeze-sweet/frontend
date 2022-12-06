@@ -1,6 +1,4 @@
 import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Button } from '../../components/ui-elements/button';
 import { useStore } from '../../store';
 import styles from './step-2.module.scss';
 
@@ -16,12 +14,6 @@ export default function Finish() {
       userInfo: state.userInfo,
     }),
   );
-
-  useEffect(() => {
-    if (finalVideoData) {
-      console.log('finalVideoData', finalVideoData);
-    }
-  }, [finalVideoData]);
 
   const getFinalVideo = async (data, meta, chosenAudioId) => {
     await mergeVideos(data, JSON.stringify(meta), chosenAudioId);

@@ -2,7 +2,6 @@ import { useNavigate } from 'react-router-dom';
 import styles from './filenames-setting.module.scss';
 import { Button } from '../../components/ui-elements/button';
 import { useEffect, useState } from 'react';
-import audioApi from '../../services/api/admin';
 import useLang from '../../hooks/useLang';
 import AudioPlayer from '../../components/audio';
 import { useStore } from '../../store';
@@ -36,10 +35,12 @@ export default function AddMusic() {
 
   const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault(); // @ts-ignore: Unreachable code error
-    if (chosenAudioId) {
-      console.log('success');
+    if (!chosenAudioId) {
+      console.error('empty audio');
+      setError(tr('please select audio'));
+      return;
     }
-    setError(tr('please select audio'));
+    setError(tr(''));
     navigate('/ready');
   };
 

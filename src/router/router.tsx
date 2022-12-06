@@ -1,6 +1,5 @@
 import { BrowserRouter, Route, Routes, Navigate, Outlet } from 'react-router-dom';
 import Layout from '../components/layout';
-import EmaleChosing from '../pages/emale-chosing';
 import IntroduceYourself from '../pages/introduce-yourself';
 import Finish from '../pages/finish';
 import SelectQuestions from '../pages/select-questions';

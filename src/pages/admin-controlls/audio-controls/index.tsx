@@ -1,5 +1,4 @@
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import styles from './audio-controlls.module.scss';
 import audioApi from '../../../services/api/admin';
 import { Button } from '../../../components/ui-elements/button';
@@ -36,16 +35,16 @@ export default function AudioControlls() {
     try {
       await audioApi.deleteFile(id, email, password);
     } catch (error) {
-      console.error();
+      console.error(error);
     }
     getAudios();
   };
 
   const handleAdd = async (file: any) => {
     try {
-      await audioApi.postFile(file);
+      await audioApi.postFile(file, email, password);
     } catch (error) {
-      console.error();
+      console.error(error);
     }
     getAudios();
   };

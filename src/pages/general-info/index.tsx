@@ -17,8 +17,6 @@ export const GeneralInfo = ({ onSubmit }: any) => {
   let navigate = useNavigate();
 
   const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
-    console.log('event', e.target);
-
     const {
       'first name': firstNameInput,
       'last name': lastNameInput,

@@ -2,18 +2,8 @@ import styles from './audio-picker.module.scss';
 
 type Props = {
   text: string;
-  /*   onClick?: () => void;
-  htmlType?: 'button' | 'reset' | 'submit';
-  disabled?: boolean;
-  children: string; */
 };
-export const AudioPicker = ({
-  /*   htmlType = 'button',
-  disabled = false,
-  onClick,
-  children, */
-  text,
-}: Props) => {
+export const AudioPicker = ({ text }: Props) => {
   const handleClick = () => {};
 
   return (

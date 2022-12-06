@@ -22,7 +22,6 @@ function Layout() {
               {name}
             </p>
             <div className={styles.line} />
-            {/*     {index !== routes.length - 1 && <div className={styles.line} />} */}
           </div>
         ))}
       </div>

@@ -1,6 +1,5 @@
 import { useStore } from '../../store';
 import cn from 'classnames';
-import checkIcon from '../../assets/icons/check.svg';
 import styles from './navigation.module.scss';
 import { useNavigate } from 'react-router-dom';
 

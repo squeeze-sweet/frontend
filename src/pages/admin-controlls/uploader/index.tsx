@@ -1,12 +1,10 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import { Typography, Input, Button } from 'antd';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useCallback, useState } from 'react';
 import uloadIcon from '../../../assets/icons/upload.svg';
 import Dropzone from 'react-dropzone';
 import styles from './step.module.scss';
 
-export default function Uploader({ file, setFile, error, setError }: any) {
+export default function Uploader({ setFile, error, setError }: any) {
   const [name, setName] = useState('');
 
   const saveVideo = (file: any) => {
@@ -14,7 +12,6 @@ export default function Uploader({ file, setFile, error, setError }: any) {
   };
 
   const validateSize = (file: any) => {
-    let error = '';
     if (file.size > 52428800) setError('please choose the file less then 50mb');
   };
 
@@ -25,7 +22,7 @@ export default function Uploader({ file, setFile, error, setError }: any) {
   }, []);
 
   return (
-    <Dropzone onDrop={handleDrop} /* accept={{ 'audio/mp3': ['.mp3'] }} */>
+    <Dropzone onDrop={handleDrop}>
       {({ getRootProps, getInputProps }) => {
         return (
           <div

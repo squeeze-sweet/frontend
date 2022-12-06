@@ -33,7 +33,6 @@ ul {
   padding: 0;
 }
 
-// Не отображать страшный серый фон в input в Chrome
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
@@ -46,12 +45,10 @@ select:-webkit-autofill:focus {
   -webkit-box-shadow: 0 0 0px 1000px #ffffff inset !important;
 }
 
-// Не отображать страшную ссылку с token и local-time в swagger
 span.url {
   display: none;
 }
 
-//Симпатичный скроллбар
 ::-webkit-scrollbar {
   height: 12px;
   width: 12px;

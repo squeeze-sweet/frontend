@@ -1,21 +1,5 @@
 import { TITLE_VIDEO_DURATION, VIDEO_TITLEDURATION } from './constants';
 
-/* export const makePremadeVideoClip = () => {
-  return {
-    asset: {
-      type: 'html',
-      html: `<p class='name'>Pre-made video</p>`,
-      css: ".name { font-family: 'Montserrat ExtraBold'; color: #ffffff; font-size: 30px; }",
-    },
-    transition: {
-      in: 'fade',
-      out: 'fade',
-    },
-    start: 0,
-    length: PREMADE_VIDEO_DURATION,
-  };
-}; */
-
 export const makePremadeVideo = (downloadLink: string) => {
   return [
     {

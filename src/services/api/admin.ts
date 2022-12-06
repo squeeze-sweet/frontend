@@ -1,18 +1,18 @@
 import axios from 'axios';
 export interface API {
   getQuestions: (email: string, password: string) => any;
-  getAudios: (email: string, password: string) => Promise<any>; //Получение доступных аудио записей
-  postFile: (audio: any) => any; //Публикация новой аудио записи
+  getAudios: (email: string, password: string) => Promise<any>;
+  postFile: (file: any, email: string, password: string) => any;
   mergeVideos: (
     files: any,
     meta: any,
     chosenAudioId: string,
     email: string,
     password: string,
-  ) => any; //Публикация новой аудио записи
-  deleteFile: (id: string, email: string, password: string) => any; //Удаление фала
-  getVideos: (email: string, password: string) => Promise<{ data: any }>; //Получение доступных аудио записей
-  getWhiteList: (email: string, password: string) => any; //Получение доступных аудио записей
+  ) => any;
+  deleteFile: (id: string, email: string, password: string) => any;
+  getVideos: (email: string, password: string) => Promise<{ data: any }>;
+  getWhiteList: (email: string, password: string) => any;
   addWhiteListUser: (newEail: string, email: string, password: string) => any;
   deleteWhiteListUser: (id: string, email: string, password: string) => any;
 }
@@ -59,12 +59,14 @@ const api: API = {
         Authorization: `${authenticateUser(email, password)}`,
       },
     }),
-  postFile: file => {
+  postFile: (file, email, password) => {
     const formData = new FormData();
     formData.append('file', file);
     var requestOptions = {
       method: 'POST',
-      headers: { Authorization: 'Basic dGVzdGVyQHRlc3QucnU6dGVzdA==' },
+      headers: {
+        Authorization: `${authenticateUser(email, password)}`,
+      },
       body: formData,
     };
     return fetch('http://213.189.216.169/api/v1/admin/files', requestOptions as any);
@@ -82,7 +84,6 @@ const api: API = {
       headers: { Authorization: `${authenticateUser(email, password)}` },
       body: formData,
     };
-    console.log('meta', meta);
     return fetch('http://213.189.216.169/api/v1/merge-final-video', requestOptions as any);
   },
   deleteFile: async (id, email, password) =>

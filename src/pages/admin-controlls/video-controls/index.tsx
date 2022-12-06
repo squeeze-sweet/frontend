@@ -44,16 +44,16 @@ export default function VideoControlls() {
     try {
       await audioApi.deleteFile(id, email, password);
     } catch (error) {
-      console.error();
+      console.error(error);
     }
     getVideos();
   };
 
   const handleAdd = async (file: any) => {
     try {
-      await audioApi.postFile(file);
+      await audioApi.postFile(file, email, password);
     } catch (error) {
-      console.error();
+      console.error(error);
     }
     getVideos();
   };

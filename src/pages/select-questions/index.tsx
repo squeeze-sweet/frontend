@@ -4,7 +4,7 @@ import { useStore } from '../../store';
 import { Checkbox } from '../../components/ui-elements/checkbox';
 import styles from './filenames-setting.module.scss';
 import { Button } from '../../components/ui-elements/button';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import _ from 'lodash';
 
 export default function SelectQuestions() {
@@ -22,7 +22,6 @@ export default function SelectQuestions() {
         data.push(text);
       }),
     );
-    console.log('stepsData', data);
     initStepsData(data);
   }, []);
 

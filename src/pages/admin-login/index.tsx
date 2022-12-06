@@ -27,8 +27,6 @@ export default function AdminLogin() {
     try {
       setPreloaderText('authorizing');
       const { data } = await api.getWhiteList(email, password);
-      console.log('users', data);
-
       setPreloaderText('');
       navigate('/controls');
     } catch (error) {

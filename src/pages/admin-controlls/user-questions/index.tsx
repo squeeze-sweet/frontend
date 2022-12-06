@@ -45,7 +45,7 @@ export default function UserQuestions() {
     try {
       await audioApi.deleteFile(id, email, password);
     } catch (error) {
-      console.error();
+      console.error(error);
     }
     getQuestions();
   };
@@ -54,7 +54,7 @@ export default function UserQuestions() {
     try {
       await audioApi.addWhiteListUser(name, email, password);
     } catch (error) {
-      console.error();
+      console.error(error);
     }
     getQuestions();
   };

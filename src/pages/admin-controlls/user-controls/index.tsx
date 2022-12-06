@@ -45,7 +45,7 @@ export default function UserControls() {
     try {
       await audioApi.deleteWhiteListUser(id, email, password);
     } catch (error) {
-      console.error();
+      console.error(error);
     }
     getWhiteList();
   };
@@ -54,7 +54,7 @@ export default function UserControls() {
     try {
       await audioApi.addWhiteListUser(name, email, password);
     } catch (error) {
-      console.error();
+      console.error(error);
     }
     getWhiteList();
   };

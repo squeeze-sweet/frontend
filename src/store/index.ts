@@ -1,25 +1,8 @@
 import create from 'zustand';
-import { devtools, persist } from 'zustand/middleware';
+import { devtools } from 'zustand/middleware';
 import { QuestionsAndCategories } from './types';
 import api from '../services/api/admin';
-import yandexDiskApi, { uploadVideo } from '../services/api/api-yandex-disk';
-import shotStackApi, { uploadOnShotStack } from '../services/api/api-shotstack';
-import docsApi from '../services/api/api-docs';
 import { STATUSES } from '../services/types';
-import {
-  makeAudioToVideo,
-  makeAudioToVideo0,
-  makeBackground,
-  makeBackground0,
-  makeBackgroundJson,
-  makeClipJsonForTitlePage,
-  makeMusic,
-  makePremadeVideo,
-  makeVideoClip,
-  makeVideoClipVithoutText,
-} from './helpers';
-import { TITLE_VIDEO_DURATION, VIDEO_TITLEDURATION } from './constants';
-import { isEmptyObject } from '../utils/helpers';
 
 type UserInfo = {
   firstName: string;
@@ -62,8 +45,8 @@ interface Store {
   mergeVideos: (files: any, meta: any, chosenAudioId: string) => void;
 
   currentStepData: any;
-  setCurrentStepData: any /* (stepsData: any) => void */;
-  switchCurrentStep: any /* (fragmentName: any) => void */;
+  setCurrentStepData: any;
+  switchCurrentStep: any;
 
   preloaderText: string;
   setPreloaderText: (text: string) => void;
@@ -179,10 +162,7 @@ export const useStore = create<Store>()(
     },
 
     initStepsData: async questions => {
-      console.log('initStepsData');
-
       if (!get().stepsData?.length) {
-        console.log('initStepsDataIF');
         const tempData: any = {};
         questions.forEach(
           question =>
@@ -206,8 +186,6 @@ export const useStore = create<Store>()(
     },
 
     updateStepsData: (fragmentName, data) => {
-      console.log('updateStepsData', data);
-
       set(
         state => ({
           stepsData: {

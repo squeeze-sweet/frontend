@@ -28,16 +28,6 @@ export default ({
   const itemRef = useRef<any>();
   const inputRef = useRef<any>();
 
-  const handleClick = () => {
-    /*     if (isPlaying) {
-      itemRef?.current && itemRef?.current.pause();
-      itemRef?.current && (itemRef.current.currentTime = 0);
-    } else {
-      itemRef?.current && itemRef?.current.play();
-    }
-    setIsPlaying(!isPlaying); */
-  };
-
   useEffect(() => {
     if (inputRef?.current?.checked) {
       itemRef?.current && itemRef?.current.play();
@@ -51,7 +41,7 @@ export default ({
 
   return (
     <div className={styles.container}>
-      <audio ref={itemRef} /*  controls */ src={file} className={styles.player} />
+      <audio ref={itemRef} src={file} className={styles.player} />
 
       <input
         ref={inputRef}
@@ -67,11 +57,7 @@ export default ({
       />
 
       <label className={styles.label} htmlFor={id}>
-        <div
-          id='play'
-          className={cn(styles.play, { [styles.stop]: isPlaying })}
-          onClick={handleClick}
-        />
+        <div id='play' className={cn(styles.play, { [styles.stop]: isPlaying })} />
 
         {label}
       </label>

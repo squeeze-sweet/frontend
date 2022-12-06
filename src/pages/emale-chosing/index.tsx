@@ -1,10 +1,8 @@
 import { ChangeEvent, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useStore } from '../../store';
 import { Input } from '../../components/ui-elements/input';
 import { validateEmail } from './helpers';
 import LayoutPage from '../../components/templates/form-page';
-import yandexDiskApi from '../../services/api/api-yandex-disk';
 import useLang from '../../hooks/useLang';
 import styles from './emale-chosing.module.scss';
 import api from '../../services/api/admin';
