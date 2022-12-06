@@ -6,13 +6,16 @@ import styles from './step-2.module.scss';
 
 export default function Finish() {
   const [finishUrl, setFinishUrl] = useState('');
-  const { fileNames, stepsData, mergeVideos, finalVideoData, chosenAudioId } = useStore(state => ({
-    fileNames: state.filenames,
-    stepsData: state.stepsData,
-    mergeVideos: state.mergeVideos,
-    finalVideoData: state.finalVideoData,
-    chosenAudioId: state.chosenAudioId,
-  }));
+  const { fileNames, stepsData, mergeVideos, finalVideoData, chosenAudioId, userInfo } = useStore(
+    state => ({
+      fileNames: state.filenames,
+      stepsData: state.stepsData,
+      mergeVideos: state.mergeVideos,
+      finalVideoData: state.finalVideoData,
+      chosenAudioId: state.chosenAudioId,
+      userInfo: state.userInfo,
+    }),
+  );
 
   useEffect(() => {
     if (finalVideoData) {
@@ -23,6 +26,7 @@ export default function Finish() {
   const getFinalVideo = async (data, meta, chosenAudioId) => {
     await mergeVideos(data, JSON.stringify(meta), chosenAudioId);
   };
+
   useEffect(() => {
     let currentTime = 0;
     let files = [];
@@ -32,7 +36,7 @@ export default function Finish() {
       if (!index) {
         meta.push({
           start_title: 'meet the peer',
-          end_title: 'Alex Brent, Roll',
+          end_title: `${userInfo.firstName} ${userInfo.lastName}, ${userInfo.jobTitle}`,
           content_type: 'video/mp4',
           trim: Math.floor(stepsData[fileName].fragmentStartTime),
           start: currentTime,
@@ -56,18 +60,6 @@ export default function Finish() {
       getFinalVideo(files, meta, chosenAudioId);
     });
   }, []);
-
-  [
-    {
-      start_title: 'hello',
-      end_title: 'end title here',
-      content_type: 'video/mp4',
-      trim: 5,
-      start: 0,
-      length: 5,
-    },
-    { start_title: 'ты пидор', content_type: 'video/mp4', trim: 5, start: 5, length: 5 },
-  ];
 
   return (
     <section className={styles.container}>
