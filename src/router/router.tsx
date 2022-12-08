@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes, Navigate, Outlet } from 'react-router-dom';
+import { HashRouter, Route, Routes, Navigate, Outlet } from 'react-router-dom';
 import Layout from '../components/layout';
 import IntroduceYourself from '../pages/introduce-yourself';
 import Finish from '../pages/finish';
@@ -62,7 +62,7 @@ function Router() {
   };
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         <Route path='/' element={<Layout />}>
           <Route index element={<Navigate to='introduce-yourself' />} />
@@ -111,7 +111,7 @@ function Router() {
           element={isAdmin() ? <AdminControlls /> : <Navigate to='/admin' />}
         />
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 

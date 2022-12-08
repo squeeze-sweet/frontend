@@ -1,5 +1,6 @@
 {
-  "name": "api-docs-web-app",
+  "homepage": "https://alexbretlard.github.io/meet-the-peer",
+  "name": "meet-the-peer",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -45,7 +46,6 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
-  "prettier": "@sima-land/linters/prettier",
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -65,7 +65,6 @@
     ]
   },
   "devDependencies": {
-    "@sima-land/linters": "^2.1.2",
     "@types/js-yaml": "^4.0.5",
     "@types/lodash": "^4.14.182",
     "@types/react-router-dom": "^5.3.3",

@@ -8,7 +8,7 @@ export interface API {
     meta: any,
     chosenAudioId: string,
     email: string,
-    password: string,
+    password: string
   ) => any;
   deleteFile: (id: string, email: string, password: string) => any;
   getVideos: (email: string, password: string) => Promise<{ data: any }>;
@@ -26,7 +26,7 @@ function authenticateUser(user: string, password: string) {
 }
 
 const client = axios.create({
-  baseURL: 'http://213.189.216.169/api/v1',
+  baseURL: 'https://8974-213-189-216-169.eu.ngrok.io/api/v1',
   timeout: 10000,
   headers: {
     Authorization: `${authenticateUser('tester@test.ru', 'test')}`,
@@ -71,11 +71,14 @@ const api: API = {
       },
       body: formData,
     };
-    return fetch('http://213.189.216.169/api/v1/admin/files', requestOptions as any);
+    return fetch(
+      'https://8974-213-189-216-169.eu.ngrok.io/api/v1/admin/files',
+      requestOptions as any
+    );
   },
   mergeVideos: async (files, meta, chosenAudioId, email, password) => {
     const formData = new FormData();
-    files.forEach(file => formData.append('files', file));
+    files.forEach((file) => formData.append('files', file));
 
     formData.append('meta', meta);
 
@@ -86,7 +89,10 @@ const api: API = {
       headers: { Authorization: `${authenticateUser(email, password)}` },
       body: formData,
     };
-    return fetch('http://213.189.216.169/api/v1/merge-final-video', requestOptions as any);
+    return fetch(
+      'https://8974-213-189-216-169.eu.ngrok.io/api/v1/merge-final-video',
+      requestOptions as any
+    );
   },
   deleteFile: async (id, email, password) =>
     client.delete(`/admin/files/${id}`, {
@@ -118,7 +124,7 @@ const api: API = {
         headers: {
           Authorization: `${authenticateUser(email, password)}`,
         },
-      },
+      }
     ),
   deleteWhiteListUser: async (id, email, password) =>
     client.delete(`/admin/white-list/${id}`, {
