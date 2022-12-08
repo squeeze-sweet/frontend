@@ -26,7 +26,7 @@ function authenticateUser(user: string, password: string) {
 }
 
 const client = axios.create({
-  baseURL: 'http://localhost:8085/api/v1',
+  baseURL: 'http://213.189.216.169/info/api/v1',
   timeout: 10000,
   headers: {
     Authorization: `${authenticateUser('tester@test.ru', 'test')}`,
@@ -72,7 +72,7 @@ const api: API = {
       body: formData,
     };
     return fetch(
-      'http://localhost:8085/api/v1/admin/files',
+      'http://213.189.216.169/info/api/v1/admin/files',
       requestOptions as any
     );
   },
@@ -90,7 +90,7 @@ const api: API = {
       body: formData,
     };
     return fetch(
-      'http://localhost:8085/api/v1/merge-final-video',
+      'http://213.189.216.169/info/api/v1/merge-final-video',
       requestOptions as any
     );
   },
