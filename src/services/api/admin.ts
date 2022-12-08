@@ -26,7 +26,7 @@ function authenticateUser(user: string, password: string) {
 }
 
 const client = axios.create({
-  baseURL: 'https://8974-213-189-216-169.eu.ngrok.io/api/v1',
+  baseURL: 'http://localhost:8085/api/v1',
   timeout: 10000,
   headers: {
     Authorization: `${authenticateUser('tester@test.ru', 'test')}`,
@@ -72,7 +72,7 @@ const api: API = {
       body: formData,
     };
     return fetch(
-      'https://8974-213-189-216-169.eu.ngrok.io/api/v1/admin/files',
+      'http://localhost:8085/api/v1/admin/files',
       requestOptions as any
     );
   },
@@ -90,7 +90,7 @@ const api: API = {
       body: formData,
     };
     return fetch(
-      'https://8974-213-189-216-169.eu.ngrok.io/api/v1/merge-final-video',
+      'http://localhost:8085/api/v1/merge-final-video',
       requestOptions as any
     );
   },
