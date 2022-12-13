@@ -102,7 +102,7 @@ const api: API = {
       },
     }),
   deleteCategory: async (id, email, password) =>
-    client.delete(`/categories/${id}`, {
+    client.delete(`/admin/categories/${id}`, {
       timeout: 10000,
       headers: {
         Authorization: `${authenticateUser(email, password)}`,
