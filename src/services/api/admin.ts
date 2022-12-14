@@ -15,6 +15,7 @@ export interface API {
   getWhiteList: (email: string, password: string) => any;
   addWhiteListUser: (newEail: string, email: string, password: string) => any;
   deleteWhiteListUser: (id: string, email: string, password: string) => any;
+  addCategory: (name: string, email: string, password: string) => any;
   deleteCategory: (id: string, email: string, password: string) => any;
   deleteQuestion: (id: string, email: string, password: string) => any;
 }
@@ -101,6 +102,26 @@ const api: API = {
         Authorization: `${authenticateUser(email, password)}`,
       },
     }),
+  addCategory: async (name, email, password) =>
+    client.post(
+      `/admin/categories`,
+      [
+        {
+          name: name,
+          questions: [
+            {
+              text: 'empty',
+            },
+          ],
+        },
+      ],
+      {
+        timeout: 10000,
+        headers: {
+          Authorization: `${authenticateUser(email, password)}`,
+        },
+      }
+    ),
   deleteCategory: async (id, email, password) =>
     client.delete(`/admin/categories/${id}`, {
       timeout: 10000,

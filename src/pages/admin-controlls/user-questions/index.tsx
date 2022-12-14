@@ -1,16 +1,12 @@
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import cn from 'classnames';
+import { useEffect, useState } from 'react';
 import styles from './audio-controlls.module.scss';
 import deleteIcon from '../../../assets/icons/delete.svg';
 import api from '../../../services/api/admin';
 import { Button } from '../../../components/ui-elements/button';
-const steps = ['users', 'questions', 'audios', 'video backgrounds'];
 import crossIcon from '../../../assets/icons/cross-white.svg';
-import UploadAudio from '../upload-audio-controls';
 import Modal from '../../../components/ui-elements/modal/modal';
-import Input from 'antd/lib/input/Input';
-import UploadUserModal from '../upload-user-controls';
+import UploadCategoryModal from '../upload-category-controls';
+import audioApi from '../../../services/api/admin';
 import { useStore } from '../../../store';
 
 export default function UserQuestions() {
@@ -59,9 +55,11 @@ export default function UserQuestions() {
     getQuestions();
   };
 
-  const handleAdd = async (name: string) => {
+  const handleAddCategory = async (name: string) => {
     try {
-      /*       await audioApi.addWhiteListUser(name, email, password); */
+      console.log('handleAddCategory');
+
+      await audioApi.addCategory(name, email, password);
     } catch (error) {
       console.error(error);
     }
@@ -91,7 +89,10 @@ export default function UserQuestions() {
             setIsAploadActive(false);
           }}
         >
-          <UploadUserModal handleCloseModal={handleCloseModal} handleAddUser={handleAdd} />
+          <UploadCategoryModal
+            handleCloseModal={handleCloseModal}
+            handleAddCategory={handleAddCategory}
+          />
         </Modal>
       )}
     </section>
@@ -116,7 +117,11 @@ function AudioPlayer({
         <div className={styles.leftGroup}>
           {isCategory && 'Category:'} {name}
         </div>
-        <img src={deleteIcon} className={styles.deleteIcon} onClick={onDelete} />
+        <img
+          src={deleteIcon}
+          className={styles.deleteIcon}
+          onClick={onDelete}
+        />
       </section>
       {questions?.map(({ text, id }: any) => (
         <>
