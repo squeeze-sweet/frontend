@@ -1,0 +1,76 @@
+import create from 'zustand';
+import { devtools } from 'zustand/middleware';
+import API from '../services/api/api';
+import authorizationApi from '../services/api/authorization';
+import docsApi from '../services/api/api-docs';
+import { STATUSES } from '../services/types';
+
+interface Store {
+  status: STATUSES;
+  link: string;
+  files: any[];
+}
+
+export const useStore = create<Store>()(
+  devtools((set, get) => ({
+    status: STATUSES.initial,
+    link: '',
+    files: [],
+
+    //Отправляет логин и пароль, получает и сохраняет токен
+    authorize: async ({ username, password }: AuthData) => {
+      set({ status: STATUSES.fetching });
+      set({ authorizationError: '' });
+      try {
+        const response = await authorizationApi.postToken({ username, password });
+        set({ accessToken: response.data.access_token });
+        set({ refreshToken: response.data.refresh_token });
+        set({ isLoggedIn: true });
+        set({ status: STATUSES.success });
+      } catch (error: unknown) {
+        set({ status: STATUSES.failure });
+        set({ authorizationError: String(error) });
+      }
+    },
+
+    //Загружает массив данных с описанием существующих сервисов
+    getServicesData: async () => {
+      set({ status: STATUSES.fetching });
+      try {
+        const response = await docsApi.getDocs(get().accessToken);
+        set({ servicesData: await response.data });
+        set({ status: STATUSES.success });
+      } catch (error: unknown) {
+        set({ status: STATUSES.failure });
+      }
+    },
+
+    //Добавляет новый документ в список документов
+    createNewDocument: async (token: any, data: any) => {
+      set({ status: STATUSES.fetching });
+      try {
+        const response = await docsApi.postDocs(token, data);
+        set({ status: STATUSES.success });
+        set({ newDocumentId: response.data.id });
+      } catch (error: unknown) {
+        set({ status: STATUSES.failure });
+      }
+    },
+
+    //Добавляет новый документ в список документов
+    updateDocument: async (data: any) => {
+      set({ status: STATUSES.fetching });
+      try {
+        await docsApi.putDoc(get().accessToken, get().newDocumentId, data);
+        set({ status: STATUSES.success });
+        set({ swaggerReRenderToggle: !get().swaggerReRenderToggle });
+      } catch (error: unknown) {
+        set({ status: STATUSES.failure });
+      }
+    },
+
+    resetNewDocumentId: () => {
+      set({ newDocumentId: '' });
+    },
+  })),
+);
