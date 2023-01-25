@@ -27,14 +27,24 @@ export default function UserQuestions() {
     } catch (error) {}
   };
 
-  const [isUploadActive, setIsAploadActive] = useState(false);
+  const [isCategoryUploadActive, setIsCategoryUploadActive] = useState(false);
+  const [questionUploadActiveState, setQuestionUploadActiveState] =
+    useState(null);
 
-  const handleOpenModal = () => {
-    setIsAploadActive(true);
+  const handleOpenCategoryModal = () => {
+    setIsCategoryUploadActive(true);
   };
 
-  const handleCloseModal = () => {
-    setIsAploadActive(false);
+  const handleCloseCategoryModal = () => {
+    setIsCategoryUploadActive(false);
+  };
+
+  const handleOpenQuestionModal = (parentId) => {
+    setQuestionUploadActiveState(parentId);
+  };
+
+  const handleCloseQuestionModal = () => {
+    setQuestionUploadActiveState(null);
   };
 
   const handleDelete = async (id: string) => {
@@ -57,9 +67,16 @@ export default function UserQuestions() {
 
   const handleAddCategory = async (name: string) => {
     try {
-      console.log('handleAddCategory');
-
       await audioApi.addCategory(name, email, password);
+    } catch (error) {
+      console.error(error);
+    }
+    getQuestions();
+  };
+
+  const handleAddQuestion = async (name: string, parentId: string) => {
+    try {
+      await audioApi.addQuestion(parentId, name, email, password);
     } catch (error) {
       console.error(error);
     }
@@ -68,30 +85,49 @@ export default function UserQuestions() {
 
   return (
     <section className={styles.audios}>
-      <Button onClick={handleOpenModal} className={styles.button}>
+      <Button onClick={handleOpenCategoryModal} className={styles.button}>
         <div className={styles.adderContent}>
           <p>add category</p>
           <img src={crossIcon} className={styles.cross}></img>
         </div>
       </Button>
       {questions?.map(({ name, id, questions }: any) => (
-        <AudioPlayer
-          id={id}
+        <Category
+          handleOpenQuestionModal={handleOpenQuestionModal}
+          email={email}
+          password={password}
+          getQuestions={getQuestions}
+          categoryId={id}
           name={name}
           questions={questions}
           handleDelete={handleDelete}
           handleDeleteQuestion={handleDeleteQuestion}
         />
       ))}
-      {isUploadActive && (
+      {isCategoryUploadActive && (
         <Modal
           handleModalClose={() => {
-            setIsAploadActive(false);
+            setIsCategoryUploadActive(false);
           }}
         >
           <UploadCategoryModal
-            handleCloseModal={handleCloseModal}
+            type="category"
+            handleCloseModal={handleCloseCategoryModal}
             handleAddCategory={handleAddCategory}
+          />
+        </Modal>
+      )}
+      {questionUploadActiveState && (
+        <Modal
+          handleModalClose={() => {
+            setQuestionUploadActiveState(null);
+          }}
+        >
+          <UploadCategoryModal
+            type="question"
+            handleCloseModal={handleCloseQuestionModal}
+            handleAddCategory={handleAddQuestion}
+            parentId={questionUploadActiveState}
           />
         </Modal>
       )}
@@ -99,7 +135,67 @@ export default function UserQuestions() {
   );
 }
 
-function AudioPlayer({
+function Category({
+  handleOpenQuestionModal,
+  email,
+  password,
+  getQuestions,
+  categoryId,
+  name,
+  questions,
+  handleDelete,
+  handleDeleteQuestion,
+  isCategory = true,
+}: any) {
+  const onCategoryDelete = async () => {
+    handleDelete(categoryId);
+  };
+  return (
+    <>
+      <section className={styles.audioPlayer}>
+        <div className={styles.leftGroup}>
+          {isCategory && 'Category:'} {name}
+        </div>
+        <img
+          src={deleteIcon}
+          className={styles.deleteIcon}
+          onClick={onCategoryDelete}
+        />
+      </section>
+      <div className={styles.children}>
+        <Button
+          onClick={() => {
+            handleOpenQuestionModal(categoryId);
+          }}
+          className={styles.button}
+        >
+          <div className={styles.adderContent}>
+            <p>add question</p>
+            <img src={crossIcon} className={styles.cross}></img>
+          </div>
+        </Button>
+      </div>
+      {questions?.map(({ text, id }: any) => (
+        <>
+          <div className={styles.children}>
+            <Question
+              email={email}
+              password={password}
+              getQuestions={getQuestions}
+              categoryId={categoryId}
+              id={id}
+              name={text}
+              handleDelete={handleDeleteQuestion}
+              isCategory={false}
+            />
+          </div>
+        </>
+      ))}
+    </>
+  );
+}
+
+function Question({
   id,
   name,
   questions,
@@ -126,16 +222,7 @@ function AudioPlayer({
       {questions?.map(({ text, id }: any) => (
         <>
           <div className={styles.children}>
-            <Button onClick={() => {}} className={styles.button}>
-              <div className={styles.adderContent}>
-                <p>add question</p>
-                <img src={crossIcon} className={styles.cross}></img>
-              </div>
-            </Button>
-          </div>
-
-          <div className={styles.children}>
-            <AudioPlayer
+            <Category
               id={id}
               name={text}
               handleDelete={handleDeleteQuestion}

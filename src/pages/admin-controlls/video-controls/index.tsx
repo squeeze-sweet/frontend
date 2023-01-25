@@ -30,14 +30,14 @@ export default function VideoControlls() {
   };
   //audios
   const [playingAudioName, setPlayingAudioName] = useState('');
-  const [isUploadActive, setIsAploadActive] = useState(false);
+  const [isUploadActive, setIsUploadActive] = useState(false);
 
   const handleOpenModal = () => {
-    setIsAploadActive(true);
+    setIsUploadActive(true);
   };
 
   const handleCloseModal = () => {
-    setIsAploadActive(false);
+    setIsUploadActive(false);
   };
 
   const handleDelete = async (id: string) => {
@@ -79,17 +79,27 @@ export default function VideoControlls() {
       {isUploadActive && (
         <Modal
           handleModalClose={() => {
-            setIsAploadActive(false);
+            setIsUploadActive(false);
           }}
         >
-          <UploadAudio handleCloseModal={handleCloseModal} handleAddAudio={handleAdd} />
+          <UploadAudio
+            handleCloseModal={handleCloseModal}
+            handleAddAudio={handleAdd}
+          />
         </Modal>
       )}
     </section>
   );
 }
 
-function VideoPlayer({ id, link, name, currentName, setCurrentName, handleDelete }: any) {
+function VideoPlayer({
+  id,
+  link,
+  name,
+  currentName,
+  setCurrentName,
+  handleDelete,
+}: any) {
   const audioRef = useRef<any>();
   const handleClick = () => {
     if (currentName === name) {
@@ -118,13 +128,17 @@ function VideoPlayer({ id, link, name, currentName, setCurrentName, handleDelete
       <div className={styles.controlls}>
         <div className={styles.leftGroup}>
           <div
-            id='play'
+            id="play"
             className={cn(styles.play, { [styles.stop]: currentName === name })}
             onClick={handleClick}
           />
           {name}
         </div>
-        <img src={deleteIcon} className={styles.deleteIcon} onClick={onDelete} />
+        <img
+          src={deleteIcon}
+          className={styles.deleteIcon}
+          onClick={onDelete}
+        />
       </div>
     </section>
   );

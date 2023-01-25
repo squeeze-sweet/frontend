@@ -9,7 +9,10 @@ import AudioPlayer from '../../../components/audio';
 import { useStore } from '../../../store';
 
 export default function AudioControlls() {
-  const { audios, getAudios } = useStore(({ audios, getAudios }) => ({ audios, getAudios }));
+  const { audios, getAudios } = useStore(({ audios, getAudios }) => ({
+    audios,
+    getAudios,
+  }));
   const { email, password } = useStore(({ email, password }) => ({
     email,
     password,
@@ -21,14 +24,14 @@ export default function AudioControlls() {
 
   //audios
   const [playingAudioName, setPlayingAudioName] = useState('');
-  const [isUploadActive, setIsAploadActive] = useState(false);
+  const [isUploadActive, setIsUploadActive] = useState(false);
 
   const handleOpenModal = () => {
-    setIsAploadActive(true);
+    setIsUploadActive(true);
   };
 
   const handleCloseModal = () => {
-    setIsAploadActive(false);
+    setIsUploadActive(false);
   };
 
   const handleDelete = async (id: string) => {
@@ -70,10 +73,13 @@ export default function AudioControlls() {
       {isUploadActive && (
         <Modal
           handleModalClose={() => {
-            setIsAploadActive(false);
+            setIsUploadActive(false);
           }}
         >
-          <UploadAudio handleCloseModal={handleCloseModal} handleAddAudio={handleAdd} />
+          <UploadAudio
+            handleCloseModal={handleCloseModal}
+            handleAddAudio={handleAdd}
+          />
         </Modal>
       )}
     </section>

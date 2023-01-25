@@ -31,14 +31,14 @@ export default function UserControls() {
     } catch (error) {}
   };
 
-  const [isUploadActive, setIsAploadActive] = useState(false);
+  const [isUploadActive, setIsUploadActive] = useState(false);
 
   const handleOpenModal = () => {
-    setIsAploadActive(true);
+    setIsUploadActive(true);
   };
 
   const handleCloseModal = () => {
-    setIsAploadActive(false);
+    setIsUploadActive(false);
   };
 
   const handleDelete = async (id: string) => {
@@ -73,10 +73,13 @@ export default function UserControls() {
       {isUploadActive && (
         <Modal
           handleModalClose={() => {
-            setIsAploadActive(false);
+            setIsUploadActive(false);
           }}
         >
-          <UploadUserModal handleCloseModal={handleCloseModal} handleAddUser={handleAdd} />
+          <UploadUserModal
+            handleCloseModal={handleCloseModal}
+            handleAddUser={handleAdd}
+          />
         </Modal>
       )}
     </section>

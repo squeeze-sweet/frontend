@@ -4,8 +4,10 @@ import { Button } from '../../../components/ui-elements/button';
 import styles from './upload-audio.module.scss';
 
 export default function UploadUserModal({
+  type,
   handleCloseModal,
   handleAddCategory,
+  parentId,
 }: any) {
   const [categoryName, setCategoryName] = useState('');
   const [categoryNameError, setCategorynameError] = useState('');
@@ -20,12 +22,12 @@ export default function UploadUserModal({
   const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     if (!categoryName) {
-      setCategorynameError('name can not be empty!');
-      console.error('name can not be empty!');
+      setCategorynameError(`${type} can not be empty!`);
+      console.error(`${type}name can not be empty!`);
       return;
     }
     if (!categoryNameError) {
-      await handleAddCategory(categoryName);
+      await handleAddCategory(categoryName, parentId);
       handleCloseModal();
     }
   };
@@ -35,8 +37,8 @@ export default function UploadUserModal({
       <Input
         value={categoryName}
         id="categoryName"
-        placeholder="type new category name"
-        label="category name"
+        placeholder={`type new ${type} name`}
+        label={`${type} name`}
         onChange={hanleFileNameChange}
         error={categoryNameError}
       />
