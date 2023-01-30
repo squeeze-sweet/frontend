@@ -1,10 +1,10 @@
-import { useRef, useState, useCallback, useEffect } from 'react';
-import cn from 'classnames';
-import Webcam from 'react-webcam';
-import { VideoButton } from '../../components/ui-elements/video-button';
-import { useStore } from '../../store';
+import { useRef, useState, useCallback, useEffect } from "react";
+import cn from "classnames";
+import Webcam from "react-webcam";
+import { VideoButton } from "../../components/ui-elements/video-button";
+import { useStore } from "../../store";
 
-import styles from './recorder.module.scss';
+import styles from "./recorder.module.scss";
 
 export const Recorder = () => {
   const webcamRef = useRef<any>(null);
@@ -12,7 +12,7 @@ export const Recorder = () => {
   const [capturing, setCapturing] = useState<any>(false);
   const [recordedChunks, setRecordedChunks] = useState<any>([]);
   const [count, setCount] = useState<any>(0);
-  const { currentStepData, setCurrentStepData } = useStore(state => ({
+  const { currentStepData, setCurrentStepData } = useStore((state) => ({
     currentStepData: state.currentStepData,
     setCurrentStepData: state.setCurrentStepData,
   }));
@@ -22,7 +22,7 @@ export const Recorder = () => {
 
   const startCount = () => {
     recordingCounter = setInterval(() => {
-      setRecordingCount(prev => {
+      setRecordingCount((prev) => {
         if (prev > 30) {
           handleStopCaptureClick();
         }
@@ -52,9 +52,12 @@ export const Recorder = () => {
   const startCapturing = () => {
     setCapturing(true);
     mediaRecorderRef.current = new MediaRecorder(webcamRef?.current?.stream, {
-      mimeType: 'video/webm',
+      mimeType: "video/webm",
     });
-    mediaRecorderRef.current.addEventListener('dataavailable', handleDataAvailable);
+    mediaRecorderRef.current.addEventListener(
+      "dataavailable",
+      handleDataAvailable
+    );
     mediaRecorderRef.current.start();
   };
   const handleDataAvailable = useCallback(
@@ -63,7 +66,7 @@ export const Recorder = () => {
         setRecordedChunks((prev: any) => prev.concat(data));
       }
     },
-    [setRecordedChunks],
+    [setRecordedChunks]
   );
 
   const handleStopCaptureClick = useCallback(() => {
@@ -75,19 +78,23 @@ export const Recorder = () => {
   const handleDownload = useCallback(() => {
     if (recordedChunks.length) {
       const blob = new Blob(recordedChunks, {
-        type: 'video/webm',
+        type: "video/webm",
       });
       const url = URL.createObjectURL(blob);
 
       const reader = new FileReader();
       reader.readAsArrayBuffer(blob);
       reader.onload = function (e: any) {
+        console.log("recordingCount", recordingCount);
+
         setCurrentStepData({
           ...currentStepData,
           videoPreviewSrc: url,
           fragmentData: e.target.result,
           fragmentStartTime: 0,
           fragmentFinishTime: recordingCount,
+          length: recordingCount,
+          file: blob,
         });
       };
       reader.onerror = function (error: any) {
@@ -121,12 +128,12 @@ export const Recorder = () => {
         <VideoButton
           onClick={capturing ? handleStopCaptureClick : handleStartCaptureClick}
           isCapturing={capturing}
-          className={styles['record-button']}
+          className={styles["record-button"]}
         />
       </div>
       {Boolean(recordingCount !== 0) && (
         <>
-          {' '}
+          {" "}
           <p className={styles.red}>recording</p>
           <p className={cn(styles.count)}>time left: {30 - recordingCount}</p>
         </>
