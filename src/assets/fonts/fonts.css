@@ -1,26 +1,25 @@
 @font-face {
   font-family: 'Inter';
-  src: url('Inter-Regular.eot');
-  src: local('☺'), url('Inter-Regular.woff') format('woff'),
-    url('Inter-Regular.ttf') format('truetype'), url('Inter-Regular.svg') format('svg');
+  src: url('HelveticaNeueCyr-Roman.eot');
+  src: local('☺'), url('HelveticaNeueCyr-Roman.woff') format('woff'),
+    url('HelveticaNeueCyr-Roman.ttf') format('truetype'), url('HelveticaNeueCyr-Roman.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Inter-Medium';
-  src: url('Inter-Medium.eot');
-  src: local('☺'), url('Inter-Medium.woff') format('woff'),
-    url('Inter-Medium.ttf') format('truetype'), url('Inter-Medium.svg') format('svg');
+  src: url('HelveticaNeueCyr-Medium.eot');
+  src: local('☺'), url('HelveticaNeueCyr-Medium.woff') format('woff') ,url('HelveticaNeueCyr-Medium.woff2') format('woff2');;
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Inter-Bold';
-  src: url('Inter-Bold.eot');
-  src: local('☺'), url('Inter-Bold.woff') format('woff'), url('Inter-Bold.ttf') format('truetype'),
-    url('Inter-Bold.svg') format('svg');
+  src: url('HelveticaNeueCyr-Bold.eot');
+  src: local('☺'), url('HelveticaNeueCyr-Bold.woff') format('woff'), url('HelveticaNeueCyr-Bold.ttf') format('truetype'),
+    url('HelveticaNeueCyr-Bold.woff2') format('woff2');
   font-weight: normal;
   font-style: normal;
 }
