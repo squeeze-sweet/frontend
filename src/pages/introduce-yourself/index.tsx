@@ -22,7 +22,7 @@ export default function IntroduceYourself() {
 
   const stepsData = [
     {
-      heading: tr("welcome to the ''meet the peer'' tool!"),
+      heading: tr("welcome to the ''meet the peers'' tool!"),
       text: tr('the tool that will help you make a more personal introduction to the team'),
       component: <EmaleChosing onSubmit={handleChangeStep} />,
     },

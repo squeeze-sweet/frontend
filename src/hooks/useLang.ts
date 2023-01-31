@@ -1,7 +1,7 @@
 import { useStore } from '../store';
 
 const dictionary: any = {
-  "welcome to the ''meet the peer'' tool!": "Bienvenu dans l'outil ''Rencontre tes pairs''",
+  "welcome to the ''meet the peers'' tool!": "Bienvenu dans l'outil ''Rencontre tes pairs''",
   'the tool that will help you make a more personal introduction to the team':
     "l'outil qui t'aidera à te présenter à l'équipe de façon plus personnelle",
   English: 'Français',
