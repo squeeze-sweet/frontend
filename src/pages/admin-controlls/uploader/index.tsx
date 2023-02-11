@@ -39,7 +39,7 @@ export default function Uploader({ setFile, error, setError }: any) {
               ) : (
                 <>
                   <p>Upload file</p>
-                  <p>Click to upload or drag and</p>
+                  <p>click here or drag and drop</p>
                 </>
               )}
               {error && error}
