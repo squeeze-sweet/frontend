@@ -22,7 +22,7 @@ const dictionary: any = {
   'Introduce yourself': 'Présentation',
   'How it works': 'Comment ça fonctionne',
   'Select questions': 'Sélectionner des questions',
-  'Upload and edit': 'Téléchargement et xxx',
+  'Upload and edit': 'Téléchargement et éditer',
   Ready: 'Prêt',
   'We felt a little disconnected while working remotely and found it hard to meet new people through emails.':
     'Avec le travail à distance, nous trouvons difficile de rencontrer nos nouveaux collègues par courriels.',
