@@ -33,7 +33,7 @@ function authenticateUser(user: string, password: string) {
 }
 
 const client = axios.create({
-  baseURL: 'http://vm-9dc5608b.na4u.ru/info/api/v1',
+  baseURL: 'https://vm-9dc5608b.na4u.ru/info/api/v1',
   timeout: 10000,
   headers: {
     Authorization: `${authenticateUser('tester@test.ru', 'test')}`,
@@ -79,7 +79,7 @@ const api: API = {
       body: formData,
     };
     return fetch(
-      'http://vm-9dc5608b.na4u.ru/info/api/v1/admin/files',
+      'https://vm-9dc5608b.na4u.ru/info/api/v1/admin/files',
       requestOptions as any
     );
   },
@@ -97,7 +97,7 @@ const api: API = {
       body: formData,
     };
     return fetch(
-      'http://vm-9dc5608b.na4u.ru/info/api/v1/merge-final-video',
+      'https://vm-9dc5608b.na4u.ru/info/api/v1/merge-final-video',
       requestOptions as any
     );
   },
