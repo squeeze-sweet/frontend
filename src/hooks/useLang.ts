@@ -7,6 +7,7 @@ const dictionary: any = {
   English: 'Français',
   'and what’s your name?': 'et quel est ton nom?',
   'type your e-mail': 'tapez votre e-mail',
+  'type your password': 'tapez votre mot de passe',
   'e-mail format is invalid!': "le format de l'e-mail n'est pas valide !",
   Next: 'Suivant',
   Back: 'Retour',

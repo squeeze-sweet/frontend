@@ -75,7 +75,7 @@ export default function EmaleChosing({ onSubmit }: any) {
       <Input
         value={password}
         id='password'
-        placeholder='type your password'
+        placeholder={tr('type your password')}
         label='password'
         onChange={handlePasswordChange}
         error={passwordError}
