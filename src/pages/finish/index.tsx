@@ -32,7 +32,7 @@ export default function Finish() {
       files.push(stepsData[fileName].file);
       if (!index) {
         meta.push({
-          start_title: 'meet the peers',
+          start_title: 'meet your peer',
           end_title: `${userInfo.firstName} ${userInfo.lastName}, ${userInfo.jobTitle}`,
           content_type: 'video/mp4',
           trim: Math.floor(stepsData[fileName].fragmentStartTime),
