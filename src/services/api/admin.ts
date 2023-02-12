@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 export interface API {
   getQuestions: (email: string, password: string) => any;
   getAudios: (email: string, password: string) => Promise<any>;
@@ -19,6 +19,7 @@ export interface API {
   addQuestion: (
     categoryId: string,
     question: string,
+    questionFr: string,
     email: string,
     password: string
   ) => any;
@@ -27,29 +28,29 @@ export interface API {
 }
 
 function authenticateUser(user: string, password: string) {
-  var token = user + ':' + password;
+  var token = user + ":" + password;
   var hash = btoa(token);
-  return 'Basic ' + hash;
+  return "Basic " + hash;
 }
 
 const client = axios.create({
-  baseURL: 'https://vm-9dc5608b.na4u.ru/info/api/v1',
+  baseURL: "https://vm-9dc5608b.na4u.ru/info/api/v1",
   timeout: 10000,
   headers: {
-    Authorization: `${authenticateUser('tester@test.ru', 'test')}`,
+    Authorization: `${authenticateUser("tester@test.ru", "test")}`,
   },
 });
 
 const api: API = {
   getQuestions: async (email, password) =>
-    client.get('/categories', {
+    client.get("/categories", {
       timeout: 10000,
       headers: {
         Authorization: `${authenticateUser(email, password)}`,
       },
     }),
   getAudios: async (email, password) =>
-    client.get('/files?content-type=audio', {
+    client.get("/files?content-type=audio", {
       headers: {
         Authorization: `${authenticateUser(email, password)}`,
       },
@@ -62,7 +63,7 @@ const api: API = {
       },
     }),
   getVideos: async (email, password) =>
-    client.get('/files?content-type=video', {
+    client.get("/files?content-type=video", {
       timeout: 10000,
       headers: {
         Authorization: `${authenticateUser(email, password)}`,
@@ -70,34 +71,34 @@ const api: API = {
     }),
   postFile: (file, email, password) => {
     const formData = new FormData();
-    formData.append('file', file);
+    formData.append("file", file);
     var requestOptions = {
-      method: 'POST',
+      method: "POST",
       headers: {
         Authorization: `${authenticateUser(email, password)}`,
       },
       body: formData,
     };
     return fetch(
-      'https://vm-9dc5608b.na4u.ru/info/api/v1/admin/files',
+      "https://vm-9dc5608b.na4u.ru/info/api/v1/admin/files",
       requestOptions as any
     );
   },
   mergeVideos: async (files, meta, chosenAudioId, email, password) => {
     const formData = new FormData();
-    files.forEach((file) => formData.append('files', file));
+    files.forEach((file) => formData.append("files", file));
 
-    formData.append('meta', meta);
+    formData.append("meta", meta);
 
-    formData.append('soundtrack_id', chosenAudioId);
+    formData.append("soundtrack_id", chosenAudioId);
     chosenAudioId;
     var requestOptions = {
-      method: 'POST',
+      method: "POST",
       headers: { Authorization: `${authenticateUser(email, password)}` },
       body: formData,
     };
     return fetch(
-      'https://vm-9dc5608b.na4u.ru/info/api/v1/merge-final-video',
+      "https://vm-9dc5608b.na4u.ru/info/api/v1/merge-final-video",
       requestOptions as any
     );
   },
@@ -123,7 +124,7 @@ const api: API = {
         },
       }
     ),
-  addQuestion: async (categoryId, question, email, password) =>
+  addQuestion: async (categoryId, question, questionFr, email, password) =>
     client.post(
       `/admin/categories`,
       [
@@ -132,6 +133,7 @@ const api: API = {
           questions: [
             {
               text: question,
+              text_fr: questionFr,
             },
           ],
         },

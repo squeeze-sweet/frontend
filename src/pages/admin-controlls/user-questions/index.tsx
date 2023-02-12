@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react';
-import styles from './audio-controlls.module.scss';
-import deleteIcon from '../../../assets/icons/delete.svg';
-import api from '../../../services/api/admin';
-import { Button } from '../../../components/ui-elements/button';
-import crossIcon from '../../../assets/icons/cross-white.svg';
-import Modal from '../../../components/ui-elements/modal/modal';
-import UploadCategoryModal from '../upload-category-controls';
-import audioApi from '../../../services/api/admin';
-import { useStore } from '../../../store';
+import { useEffect, useState } from "react";
+import styles from "./audio-controlls.module.scss";
+import deleteIcon from "../../../assets/icons/delete.svg";
+import api from "../../../services/api/admin";
+import { Button } from "../../../components/ui-elements/button";
+import crossIcon from "../../../assets/icons/cross-white.svg";
+import Modal from "../../../components/ui-elements/modal/modal";
+import UploadCategoryModal from "../upload-category-controls";
+import audioApi from "../../../services/api/admin";
+import { useStore } from "../../../store";
 
 export default function UserQuestions() {
   const [questions, setQuestions] = useState<any>([]);
@@ -74,9 +74,13 @@ export default function UserQuestions() {
     getQuestions();
   };
 
-  const handleAddQuestion = async (name: string, parentId: string) => {
+  const handleAddQuestion = async (
+    name: string,
+    name_fr: string,
+    parentId: string
+  ) => {
     try {
-      await audioApi.addQuestion(parentId, name, email, password);
+      await audioApi.addQuestion(parentId, name, name_fr, email, password);
     } catch (error) {
       console.error(error);
     }
@@ -154,7 +158,7 @@ function Category({
     <>
       <section className={styles.audioPlayer}>
         <div className={styles.leftGroup}>
-          {isCategory && 'Category:'} {name}
+          {isCategory && "Category:"} {name}
         </div>
         <img
           src={deleteIcon}
@@ -175,7 +179,7 @@ function Category({
           </div>
         </Button>
       </div>
-      {questions?.map(({ text, id }: any) => (
+      {questions?.map(({ text, text_fr, id }: any) => (
         <>
           <div className={styles.children}>
             <Question
@@ -184,7 +188,7 @@ function Category({
               getQuestions={getQuestions}
               categoryId={categoryId}
               id={id}
-              name={text}
+              name={`${text} / ${text_fr}`}
               handleDelete={handleDeleteQuestion}
               isCategory={false}
             />
@@ -211,7 +215,7 @@ function Question({
     <>
       <section className={styles.audioPlayer}>
         <div className={styles.leftGroup}>
-          {isCategory && 'Category:'} {name}
+          {isCategory && "Category:"} {name}
         </div>
         <img
           src={deleteIcon}
