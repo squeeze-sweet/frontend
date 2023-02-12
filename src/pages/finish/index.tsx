@@ -4,6 +4,7 @@ import useLang from "../../hooks/useLang";
 
 import styles from "./step-2.module.scss";
 import Preloader from "../../components/ui-elements/preloader";
+import { Button } from "../../components/ui-elements/button";
 
 export default function Finish() {
   const [finishUrl, setFinishUrl] = useState("");
@@ -31,6 +32,14 @@ export default function Finish() {
     await mergeVideos(data, JSON.stringify(meta), chosenAudioId);
   };
 
+  const handleDownload = () => {
+    const link = document.createElement("a");
+    link.href = finalVideoData;
+    link.setAttribute("download", "result.mp4");
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+  };
   useEffect(() => {
     let currentTime = 0;
     let files = [];
@@ -80,6 +89,7 @@ export default function Finish() {
             poster="poster.jpg"
             controls
           />
+          <Button onClick={handleDownload}>Download</Button>
         </>
       )}
     </section>
