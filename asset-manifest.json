@@ -1,0 +1,31 @@
+{
+  "files": {
+    "main.css": "/meet-the-peer/static/css/main.92f2011f.css",
+    "main.js": "/meet-the-peer/static/js/main.e8c66245.js",
+    "static/js/787.532d1a27.chunk.js": "/meet-the-peer/static/js/787.532d1a27.chunk.js",
+    "static/media/questions.png": "/meet-the-peer/static/media/questions.fafc9cfb4cf74ad1fc8f.png",
+    "static/media/HelveticaNeueCyr-Roman.eot": "/meet-the-peer/static/media/HelveticaNeueCyr-Roman.9d7c3316bda88462d707.eot",
+    "static/media/HelveticaNeueCyr-Roman.ttf": "/meet-the-peer/static/media/HelveticaNeueCyr-Roman.0ca719c710b1fbd7e02f.ttf",
+    "static/media/HelveticaNeueCyr-Medium.eot": "/meet-the-peer/static/media/HelveticaNeueCyr-Medium.6053588ab977fb8f7880.eot",
+    "static/media/HelveticaNeueCyr-Bold.eot": "/meet-the-peer/static/media/HelveticaNeueCyr-Bold.83527cf0de2e28b5579b.eot",
+    "static/media/HelveticaNeueCyr-Bold.ttf": "/meet-the-peer/static/media/HelveticaNeueCyr-Bold.613e930355ab0b59fc48.ttf",
+    "static/media/HelveticaNeueCyr-Roman.woff": "/meet-the-peer/static/media/HelveticaNeueCyr-Roman.0247694e510ebe67cce1.woff",
+    "static/media/HelveticaNeueCyr-Medium.woff": "/meet-the-peer/static/media/HelveticaNeueCyr-Medium.1c5a4d413294b14b36e0.woff",
+    "static/media/HelveticaNeueCyr-Bold.woff": "/meet-the-peer/static/media/HelveticaNeueCyr-Bold.e8ac3e02953308d54ad6.woff",
+    "static/media/HelveticaNeueCyr-Roman.woff2": "/meet-the-peer/static/media/HelveticaNeueCyr-Roman.d59df5a538d671a54c79.woff2",
+    "static/media/HelveticaNeueCyr-Medium.woff2": "/meet-the-peer/static/media/HelveticaNeueCyr-Medium.751c19bd96c1fdbe6c88.woff2",
+    "static/media/HelveticaNeueCyr-Bold.woff2": "/meet-the-peer/static/media/HelveticaNeueCyr-Bold.a737902275e936eaf242.woff2",
+    "static/media/upload.svg": "/meet-the-peer/static/media/upload.b5f9181339845a90bed76a5d9a914ea7.svg",
+    "static/media/close-icon.svg": "/meet-the-peer/static/media/close-icon.c6d9cfb9c0ed608bef61f9b8c475e002.svg",
+    "index.html": "/meet-the-peer/index.html",
+    "static/media/delete.svg": "/meet-the-peer/static/media/delete.7bab022a365fe9d381410597fa903c5e.svg",
+    "static/media/cross-white.svg": "/meet-the-peer/static/media/cross-white.0328da8986307a11ec9dfc99ff41e72e.svg",
+    "main.92f2011f.css.map": "/meet-the-peer/static/css/main.92f2011f.css.map",
+    "main.e8c66245.js.map": "/meet-the-peer/static/js/main.e8c66245.js.map",
+    "787.532d1a27.chunk.js.map": "/meet-the-peer/static/js/787.532d1a27.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.92f2011f.css",
+    "static/js/main.e8c66245.js"
+  ]
+}
