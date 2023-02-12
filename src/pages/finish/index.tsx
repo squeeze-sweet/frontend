@@ -1,9 +1,13 @@
-import { useEffect, useState } from 'react';
-import { useStore } from '../../store';
-import styles from './step-2.module.scss';
+import { useEffect, useState } from "react";
+import { useStore } from "../../store";
+import useLang from "../../hooks/useLang";
+
+import styles from "./step-2.module.scss";
 
 export default function Finish() {
-  const [finishUrl, setFinishUrl] = useState('');
+  const [finishUrl, setFinishUrl] = useState("");
+
+  const { lang } = useLang();
   const {
     fileNames,
     stepsData,
@@ -32,9 +36,9 @@ export default function Finish() {
       files.push(stepsData[fileName].file);
       if (!index) {
         meta.push({
-          start_title: 'meet your peer',
+          start_title: lang === "en" ? "meet your peer" : "Rencontre tes pairs",
           end_title: `${userInfo.firstName} ${userInfo.lastName}, ${userInfo.jobTitle}`,
-          content_type: 'video/mp4',
+          content_type: "video/mp4",
           trim: Math.floor(stepsData[fileName].fragmentStartTime),
           start: currentTime,
           length:
@@ -44,7 +48,7 @@ export default function Finish() {
       } else {
         meta.push({
           start_title: fileName,
-          content_type: 'video/mp4',
+          content_type: "video/mp4",
           trim: Math.floor(stepsData[fileName].fragmentStartTime),
           start: currentTime,
           length:
@@ -62,7 +66,7 @@ export default function Finish() {
   return (
     <section className={styles.container}>
       <h1>
-        {!Boolean(finalVideoData) ? 'your video is almost here'! : 'Done!'}{' '}
+        {!Boolean(finalVideoData) ? "your video is almost here"! : "Done!"}{" "}
       </h1>
       {finalVideoData && (
         <>
