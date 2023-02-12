@@ -33,7 +33,7 @@ export default function UploadUserModal({ handleCloseModal, handleAddUser }: any
         value={fileName}
         id='user email'
         placeholder='type new user email'
-        label='file name'
+        label='user email'
         onChange={hanleFileNameChange}
         error={fileNameError}
       />
