@@ -4,5 +4,6 @@ export type QuestionsAndCategories = {
   questions: {
     id: string;
     text: string;
+    text_fr: string;
   }[];
 }[];

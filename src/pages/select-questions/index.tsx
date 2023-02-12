@@ -8,7 +8,7 @@ import { useEffect } from "react";
 import _ from "lodash";
 
 export default function SelectQuestions() {
-  const { tr } = useLang();
+  const { tr, lang } = useLang();
   let navigate = useNavigate();
   const filenames = useStore((state) => state.filenames);
   const setFilenames = useStore((state) => state.setFilenames);
@@ -21,19 +21,35 @@ export default function SelectQuestions() {
     const data: string[] = [];
     questionsAndCategories?.forEach((category) =>
       category?.questions?.map((question) => {
-        if (question?.text) {
-          data.push(question?.text);
-        }
+        if (lang === "en")
+          if (question?.text) {
+            data.push(question?.text);
+          }
+        if (lang === "fr")
+          if (question?.text_fr) {
+            data.push(question?.text_fr);
+          }
       })
     );
+
+    if (lang === "fr") {
+      setFilenames([questionsAndCategories[0].questions[0].text_fr]);
+    } else {
+      setFilenames([questionsAndCategories[0].questions[0].text]);
+    }
+
     initStepsData(data);
   }, []);
 
   useEffect(() => {
     if (!filenames?.length && questionsAndCategories) {
-      setFilenames([questionsAndCategories[0].questions[0].text]);
+      if (lang === "fr") {
+        setFilenames([questionsAndCategories[0].questions[0].text_fr]);
+      } else {
+        setFilenames([questionsAndCategories[0].questions[0].text]);
+      }
     }
-  }, [filenames, questionsAndCategories]);
+  }, []);
 
   const handleSubmit = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -69,20 +85,23 @@ export default function SelectQuestions() {
           {questionsAndCategories?.map((category, categoryIndex) => (
             <>
               <p>{category.name}</p>
-              {category?.questions?.map(({ text }, questionIndex) => (
-                <Checkbox
-                  id={`${categoryIndex}${questionIndex}`}
-                  name={`${categoryIndex}${questionIndex}`}
-                  label={`${text}`}
-                  isDefaultChecked={
-                    (categoryIndex === 0 && questionIndex === 0) ||
-                    filenames.find((filename: string) => filename === text)
-                  }
-                  isDisabled={categoryIndex === 0 && questionIndex === 0}
-                  key={`${categoryIndex}${questionIndex}`}
-                  onChange={() => handleChange(text)}
-                />
-              ))}
+              {category?.questions?.map((question, questionIndex) => {
+                const text = lang === "fr" ? question.text_fr : question.text;
+                return (
+                  <Checkbox
+                    id={`${categoryIndex}${questionIndex}`}
+                    name={`${categoryIndex}${questionIndex}`}
+                    label={`${text}`}
+                    isDefaultChecked={
+                      (categoryIndex === 0 && questionIndex === 0) ||
+                      filenames.find((filename: string) => filename === text)
+                    }
+                    isDisabled={categoryIndex === 0 && questionIndex === 0}
+                    key={`${categoryIndex}${questionIndex}`}
+                    onChange={() => handleChange(text)}
+                  />
+                );
+              })}
             </>
           ))}
         </div>
