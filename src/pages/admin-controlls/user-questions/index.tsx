@@ -65,9 +65,9 @@ export default function UserQuestions() {
     getQuestions();
   };
 
-  const handleAddCategory = async (name: string) => {
+  const handleAddCategory = async (name: string, nameFr: string) => {
     try {
-      await audioApi.addCategory(name, email, password);
+      await audioApi.addCategory(name, nameFr, email, password);
     } catch (error) {
       console.error(error);
     }
@@ -95,7 +95,7 @@ export default function UserQuestions() {
           <img src={crossIcon} className={styles.cross}></img>
         </div>
       </Button>
-      {questions?.map(({ name, id, questions }: any) => (
+      {questions?.map(({ name, name_fr, id, questions }: any) => (
         <Category
           handleOpenQuestionModal={handleOpenQuestionModal}
           email={email}
@@ -103,6 +103,7 @@ export default function UserQuestions() {
           getQuestions={getQuestions}
           categoryId={id}
           name={name}
+          name_fr={name_fr}
           questions={questions}
           handleDelete={handleDelete}
           handleDeleteQuestion={handleDeleteQuestion}
@@ -146,6 +147,7 @@ function Category({
   getQuestions,
   categoryId,
   name,
+  name_fr,
   questions,
   handleDelete,
   handleDeleteQuestion,
@@ -158,7 +160,7 @@ function Category({
     <>
       <section className={styles.audioPlayer}>
         <div className={styles.leftGroup}>
-          {isCategory && "Category:"} {name}
+          {isCategory && "Category:"} {name} / {name_fr}
         </div>
         <img
           src={deleteIcon}

@@ -15,7 +15,12 @@ export interface API {
   getWhiteList: (email: string, password: string) => any;
   addWhiteListUser: (newEail: string, email: string, password: string) => any;
   deleteWhiteListUser: (id: string, email: string, password: string) => any;
-  addCategory: (name: string, email: string, password: string) => any;
+  addCategory: (
+    name: string,
+    nameFr: string,
+    email: string,
+    password: string
+  ) => any;
   addQuestion: (
     categoryId: string,
     question: string,
@@ -109,12 +114,13 @@ const api: API = {
         Authorization: `${authenticateUser(email, password)}`,
       },
     }),
-  addCategory: async (name, email, password) =>
+  addCategory: async (name, nameFr, email, password) =>
     client.post(
       `/admin/categories`,
       [
         {
           name: name,
+          name_fr: nameFr,
         },
       ],
       {
