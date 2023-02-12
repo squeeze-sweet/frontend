@@ -84,7 +84,7 @@ export default function SelectQuestions() {
         <div className={styles.checkboxes}>
           {questionsAndCategories?.map((category, categoryIndex) => (
             <>
-              <p>{category.name}</p>
+              <p>{lang === "en" ? category.name : category.name_fr}</p>
               {category?.questions?.map((question, questionIndex) => {
                 const text = lang === "fr" ? question.text_fr : question.text;
                 return (
