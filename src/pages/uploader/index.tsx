@@ -72,8 +72,14 @@ export default function Uploader({ children }: Props) {
             <input {...getInputProps()} accept="video/mp4, video/mov" />
             <div className={styles.description}>
               <img src={uloadIcon} alt="upload" />
-              <p>{tr("Upload video")}</p>
-              <p>{tr(".mp4 of .mov format, less than 10 mb")}</p>
+              <br />
+              <p>{tr("Upload a video")}</p>
+              <br />
+              <p>
+                {tr(
+                  "On your phone or camera, record a HORIZONTAL video. It needs to be in.mov or.mp4 format and be under 10 megabytes."
+                )}
+              </p>
             </div>
             {<div className={styles.errorMsg}>{errorMsg}</div>}
           </div>

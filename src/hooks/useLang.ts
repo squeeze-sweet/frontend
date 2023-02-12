@@ -42,12 +42,13 @@ const dictionary: any = {
     "Visionnement d'une vidéo produite à titre d'exemple",
   "to answer them, we recommend about 10-20 sec per question.":
     "pour y répondre, nous recommandons environ 10 à 20 secondes par question.",
-  "upload video": "télécharger une vidéo",
+  "Upload a video": "Télécharger une vidéo",
   "upload another video": "télécharger une autre vidéo",
   "record with a web camera": "enregistrer avec une camera web",
   "record another video with a web camera":
     "enregistrer une autre vidéo avec une camera web",
-  ".mp4 of .mov format, less than 10 mb": "format mp4 ou mov, moins de 10 mb",
+  "On your phone or camera, record a HORIZONTAL video. It needs to be in.mov or.mp4 format and be under 10 megabytes.":
+    "Sur votre téléphone ou votre appareil photo, enregistrez une vidéo HORIZONTALE.  Il doit être au format in.mov ou .mp4 et être inférieur à 10 mégaoctets.",
   "Select the mood": "Choisis ton ambiance",
   "this music will be in the background of your video":
     "cette musique sera le fond sonore de ta vidéo",
