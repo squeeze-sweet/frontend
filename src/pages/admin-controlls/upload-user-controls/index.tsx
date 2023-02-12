@@ -31,8 +31,8 @@ export default function UploadUserModal({ handleCloseModal, handleAddUser }: any
     <form className={styles.container} onSubmit={handleSubmit}>
       <Input
         value={fileName}
-        id='fileName'
-        placeholder='type new white user name'
+        id='user email'
+        placeholder='type new user email'
         label='file name'
         onChange={hanleFileNameChange}
         error={fileNameError}
