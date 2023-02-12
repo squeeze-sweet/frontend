@@ -2,7 +2,6 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import cn from 'classnames';
 import useRouter from '../../router/useRouter';
 import styles from './layout.module.scss';
-import Preloader from '../ui-elements/preloader';
 
 function Layout() {
   const { routes } = useRouter();
@@ -27,9 +26,7 @@ function Layout() {
       </div>
       <div className={styles.outlet}>
         <Outlet />
-        <div className={styles.preloader}>
-          <Preloader />
-        </div>
+
       </div>
     </div>
   );
