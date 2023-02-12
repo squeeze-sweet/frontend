@@ -62,7 +62,7 @@ export default function Finish() {
   return (
     <section className={styles.container}>
       <h1>
-        {!Boolean(finalVideoData) ? 'youre video is almost here'! : 'Done!'}{' '}
+        {!Boolean(finalVideoData) ? 'your video is almost here'! : 'Done!'}{' '}
       </h1>
       {finalVideoData && (
         <>
