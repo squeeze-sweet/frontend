@@ -26,7 +26,6 @@ function Layout() {
       </div>
       <div className={styles.outlet}>
         <Outlet />
-
       </div>
     </div>
   );

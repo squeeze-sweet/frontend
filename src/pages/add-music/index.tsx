@@ -50,7 +50,6 @@ export default function AddMusic() {
         <div></div>
         <div className={styles.text}>
           <h1>{tr('Select the mood')}</h1>
-
           <p className={styles.description}>
             {tr('this music will be in the background of your video')}
           </p>

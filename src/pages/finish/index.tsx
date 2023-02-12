@@ -3,12 +3,14 @@ import { useStore } from "../../store";
 import useLang from "../../hooks/useLang";
 
 import styles from "./step-2.module.scss";
+import Preloader from "../../components/ui-elements/preloader";
 
 export default function Finish() {
   const [finishUrl, setFinishUrl] = useState("");
 
   const { lang } = useLang();
   const {
+    preloaderText,
     fileNames,
     stepsData,
     mergeVideos,
@@ -16,6 +18,7 @@ export default function Finish() {
     chosenAudioId,
     userInfo,
   } = useStore((state) => ({
+    preloaderText: state.preloaderText,
     fileNames: state.filenames,
     stepsData: state.stepsData,
     mergeVideos: state.mergeVideos,
@@ -68,6 +71,7 @@ export default function Finish() {
       <h1>
         {!Boolean(finalVideoData) ? "your video is almost here"! : "Done!"}{" "}
       </h1>
+      {!Boolean(finalVideoData) && preloaderText && <Preloader />}
       {finalVideoData && (
         <>
           <video
