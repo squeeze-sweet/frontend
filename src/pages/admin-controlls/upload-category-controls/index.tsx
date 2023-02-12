@@ -50,7 +50,7 @@ export default function UploadUserModal({
         value={categoryName}
         id="categoryName"
         placeholder={`type new ${type} name`}
-        label={`${type} name`}
+        label={`${type}`}
         onChange={hanleNameChange}
         error={categoryNameError}
       />
@@ -58,7 +58,7 @@ export default function UploadUserModal({
         value={categoryNameFr}
         id="categoryNameFr"
         placeholder={`type new ${type} name (French)`}
-        label={`${type} name (French)`}
+        label={`${type} (French)`}
         onChange={hanleNameFrChange}
         error={categoryNameFrError}
       />
