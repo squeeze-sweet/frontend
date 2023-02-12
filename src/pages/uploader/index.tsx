@@ -10,6 +10,7 @@ interface Props {
   children?: string;
 }
 export default function Uploader({ children }: Props) {
+  const [errorMsg, setErrorMsg] = useState("");
   const { tr } = useLang();
   const { currentStepData, setCurrentStepData } = useStore((state) => ({
     currentStepData: state.currentStepData,
@@ -33,7 +34,14 @@ export default function Uploader({ children }: Props) {
     };
   };
 
+  const validateTimeAndSize = (file: any) => {
+    /*     if (file.type !== "video/mp4" && file.type !== "video/mov") {
+      setErrorMsg("unsupported file type!");
+    }
+    if (file.size > 52428800) error += "please choose the file less then 50mb"; */
+  };
   const handleDrop = useCallback((acceptedFiles: any) => {
+    validateTimeAndSize(acceptedFiles[0]);
     saveVideo(acceptedFiles[0]);
   }, []);
 
@@ -43,7 +51,13 @@ export default function Uploader({ children }: Props) {
       accept={{ "video/mp4": [".mp4"], "video/mov": [".mov"] }}
       maxSize={52428800}
     >
-      {({ getRootProps, getInputProps, isDragAccept, isDragReject }) => {
+      {({
+        getRootProps,
+        getInputProps,
+        fileRejections,
+        isDragAccept,
+        isDragReject,
+      }) => {
         const additionalClass = isDragAccept
           ? "accept"
           : isDragReject
@@ -61,6 +75,7 @@ export default function Uploader({ children }: Props) {
               <p>{tr("Upload video")}</p>
               <p>{tr(".mp4 of .mov format, less than 10 mb")}</p>
             </div>
+            {<div className={styles.errorMsg}>{errorMsg}</div>}
           </div>
         );
       }}

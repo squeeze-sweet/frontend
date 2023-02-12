@@ -54,6 +54,8 @@ const dictionary: any = {
   "select the mood": "Choisis ton ambiance",
   "video length is too big, please upload video less then 30s.":
     "la longueur de la vidéo est trop grande, veuillez télécharger la vidéo moins de 30s.",
+  "Please use a video with an aspect ratio of 16:9 or 4:3 (or simply any horizontal video from your phone or computer)":
+    "Veuillez utiliser une vidéo avec un format d'image de 16:9 ou 4:3 (ou simplement n'importe quelle vidéo horizontale de votre téléphone ou ordinateur)",
 };
 
 const useLang = () => {

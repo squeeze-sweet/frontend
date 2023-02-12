@@ -1,13 +1,13 @@
-import { Button } from '../../components/ui-elements/button';
-import { useNavigate } from 'react-router-dom';
-import UploadNavigation from '../../components/navigation';
-import { useStore } from '../../store';
-import styles from './step.module.scss';
-import Uploader from '../uploader';
-import { Recorder } from '../recorder';
-import VideoPlayer from '../../components/video-player';
-import useLang from '../../hooks/useLang';
-import { useState } from 'react';
+import { Button } from "../../components/ui-elements/button";
+import { useNavigate } from "react-router-dom";
+import UploadNavigation from "../../components/navigation";
+import { useStore } from "../../store";
+import styles from "./step.module.scss";
+import Uploader from "../uploader";
+import { Recorder } from "../recorder";
+import VideoPlayer from "../../components/video-player";
+import useLang from "../../hooks/useLang";
+import { useState } from "react";
 
 export default function UploadAndEdit() {
   const { tr } = useLang();
@@ -23,7 +23,7 @@ export default function UploadAndEdit() {
     setCurrentFragmentName,
     switchCurrentStep,
     stepsData,
-  } = useStore(state => ({
+  } = useStore((state) => ({
     currentFragmentName: state.currentFragmentName,
     filenames: state.filenames,
     currentStepData: state.currentStepData,
@@ -35,11 +35,11 @@ export default function UploadAndEdit() {
     stepsData: state.stepsData,
   }));
 
-  const [inputType, setInputType] = useState<'upload' | 'record'>('upload');
-  const [error, setError] = useState('');
+  const [inputType, setInputType] = useState<"upload" | "record">("upload");
+  const [error, setError] = useState("");
 
   const resetVideoPreviewSrs = () => {
-    setCurrentStepData({ ...currentStepData, videoPreviewSrc: '' });
+    setCurrentStepData({ ...currentStepData, videoPreviewSrc: "" });
     resetStepData(currentFragmentName, currentStepData);
   };
 
@@ -52,7 +52,11 @@ export default function UploadAndEdit() {
   };
 
   const initFinishTime = (time: number) => {
-    setCurrentStepData({ ...currentStepData, length: time, fragmentFinishTime: time });
+    setCurrentStepData({
+      ...currentStepData,
+      length: time,
+      fragmentFinishTime: time,
+    });
   };
 
   const handleSaveData = () => {
@@ -63,9 +67,10 @@ export default function UploadAndEdit() {
   };
 
   const clearValue = () => {
+    setError("");
     setCurrentStepData({
-      videoPreviewSrc: '',
-      fragmentData: '',
+      videoPreviewSrc: "",
+      fragmentData: "",
       fragmentStartTime: 0,
       fragmentFinishTime: 0,
       file: null,
@@ -73,12 +78,15 @@ export default function UploadAndEdit() {
   };
 
   const isFragmentReady = () => {
-    const { videoPreviewSrc, fragmentData, fragmentFinishTime } = currentStepData;
+    const { videoPreviewSrc, fragmentData, fragmentFinishTime } =
+      currentStepData;
     return videoPreviewSrc && fragmentData && fragmentFinishTime && !error;
   };
 
   const navigateToNextStep = () => {
-    setCurrentFragmentName(filenames[filenames.indexOf(currentFragmentName) + 1]);
+    setCurrentFragmentName(
+      filenames[filenames.indexOf(currentFragmentName) + 1]
+    );
     switchCurrentStep(filenames[filenames.indexOf(currentFragmentName) + 1]);
   };
 
@@ -98,7 +106,7 @@ export default function UploadAndEdit() {
       }
     });
     if (isValid) {
-      navitage('../add-music');
+      navitage("../add-music");
     }
   };
   return (
@@ -111,47 +119,55 @@ export default function UploadAndEdit() {
             <Button
               className={styles.button}
               onClick={() => {
-                setInputType('record');
+                setInputType("record");
                 clearValue();
               }}
             >
               {Boolean(videoPreviewSrc)
-                ? tr('record another video with a web camera')
-                : tr('record with a web camera')}
+                ? tr("record another video with a web camera")
+                : tr("record with a web camera")}
             </Button>
             <Button
               className={styles.button}
               onClick={() => {
-                setInputType('upload');
+                setInputType("upload");
                 clearValue();
               }}
             >
-              {Boolean(videoPreviewSrc) ? tr('upload another video') : tr('upload video')}
+              {Boolean(videoPreviewSrc)
+                ? tr("upload another video")
+                : tr("upload video")}
             </Button>
           </div>
         </div>
         <div className={styles.content}>
-          {inputType === 'upload' && !videoPreviewSrc && <Uploader />}
-          {inputType === 'record' && !videoPreviewSrc && <Recorder />}
+          <div className={styles.videoContainer}>
+            {inputType === "upload" && !videoPreviewSrc && <Uploader />}
+            {inputType === "record" && !videoPreviewSrc && <Recorder />}
 
-          {videoPreviewSrc && (
-            <VideoPlayer
-              setError={setError}
-              clearValue={clearValue}
-              videoPreviewSrc={videoPreviewSrc}
-              resetVideoPreviewSrs={resetVideoPreviewSrs}
-              startTime={fragmentStartTime}
-              setStartTime={setStartTime}
-              finishTime={fragmentFinishTime}
-              setFinishTime={setFinishTime}
-              initFinishTime={initFinishTime}
-            />
-          )}
-          <p className={styles.error}>{error}</p>
+            {videoPreviewSrc && (
+              <VideoPlayer
+                setError={setError}
+                clearValue={clearValue}
+                videoPreviewSrc={videoPreviewSrc}
+                resetVideoPreviewSrs={resetVideoPreviewSrs}
+                startTime={fragmentStartTime}
+                setStartTime={setStartTime}
+                finishTime={fragmentFinishTime}
+                setFinishTime={setFinishTime}
+                initFinishTime={initFinishTime}
+              />
+            )}
+            <p className={styles.error}>{error}</p>
+          </div>
         </div>
         <div className={styles.bottomButtons}>
-          <Button className={styles.submit} onClick={handleSaveData} disabled={!isFragmentReady()}>
-            {tr('Next')}
+          <Button
+            className={styles.submit}
+            onClick={handleSaveData}
+            disabled={!isFragmentReady()}
+          >
+            {tr("Next")}
           </Button>
         </div>
       </section>

@@ -1,8 +1,8 @@
-import { ReactEventHandler, useEffect, useRef, useState } from 'react';
-import Slider from 'rc-slider';
-import styles from './video-player.module.scss';
-import { useStore } from '../../store';
-import useLang from '../../hooks/useLang';
+import { ReactEventHandler, useEffect, useRef, useState } from "react";
+import Slider from "rc-slider";
+import styles from "./video-player.module.scss";
+import { useStore } from "../../store";
+import useLang from "../../hooks/useLang";
 
 type Props = {
   videoPreviewSrc: string;
@@ -41,11 +41,37 @@ export default function VideoPlayer({
   };
 
   useEffect(() => {
+    console.log(
+      "dimensions",
+      videoRef.current.clientWidth,
+      videoRef.current.clientHeight
+    );
+    console.log(
+      "videoRef.current.clientWidth / videoRef.current.clientHeight",
+      videoRef.current.clientWidth / videoRef.current.clientHeight
+    );
+    console.log(
+      videoRef.current.clientWidth / videoRef.current.clientHeight < 1.2
+    );
+    console.log(
+      videoRef.current.clientWidth / videoRef.current.clientHeight > 1.87
+    );
     if (finishTime - startTime > 30) {
       clearValue;
-      setError(tr('video length is too big, please upload video less then 30s.'));
+      setError(
+        tr("video length is too big, please upload video less then 30s.")
+      );
+    } else if (
+      videoRef.current.clientWidth / videoRef.current.clientHeight < 1.2 ||
+      videoRef.current.clientWidth / videoRef.current.clientHeight > 1.87
+    ) {
+      setError(
+        tr(
+          "Please use a video with an aspect ratio of 16:9 or 4:3 (or simply any horizontal video from your phone or computer)"
+        )
+      );
     } else {
-      setError('');
+      setError("");
     }
   }, [finishTime, startTime]);
 
@@ -76,9 +102,12 @@ export default function VideoPlayer({
     }
   }, [startTime, finishTime]);
 
-  const handleTimeUpdate: ReactEventHandler<HTMLVideoElement> = e => {
+  const handleTimeUpdate: ReactEventHandler<HTMLVideoElement> = (e) => {
     if (e.currentTarget) {
-      if (e.currentTarget.currentTime < startTime || e.currentTarget.currentTime > finishTime) {
+      if (
+        e.currentTarget.currentTime < startTime ||
+        e.currentTarget.currentTime > finishTime
+      ) {
         e.currentTarget.pause();
         e.currentTarget.currentTime = startTime;
       }
@@ -94,7 +123,7 @@ export default function VideoPlayer({
     <section className={styles.container}>
       <video
         ref={videoRef}
-        className={styles['video-player']}
+        className={styles["video-player"]}
         src={videoPreviewSrc}
         onError={handleError}
         onTimeUpdate={handleTimeUpdate}

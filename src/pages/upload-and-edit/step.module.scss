@@ -1,4 +1,4 @@
-@import '/src/styles/mixins.scss';
+@import "/src/styles/mixins.scss";
 
 .page {
   height: 100%;
@@ -48,6 +48,17 @@
 }
 
 .error {
+  text-align: center;
+  max-width: 300px;
   font-size: 16px;
   color: red;
+}
+
+.videoContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  flex-grow: 1;
 }
