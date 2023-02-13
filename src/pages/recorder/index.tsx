@@ -85,8 +85,6 @@ export const Recorder = () => {
       const reader = new FileReader();
       reader.readAsArrayBuffer(blob);
       reader.onload = function (e: any) {
-        console.log("recordingCount", recordingCount);
-
         setCurrentStepData({
           ...currentStepData,
           videoPreviewSrc: url,

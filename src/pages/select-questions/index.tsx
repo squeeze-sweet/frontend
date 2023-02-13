@@ -64,8 +64,6 @@ export default function SelectQuestions() {
     }
   };
 
-  console.log("questionsAndCategories", questionsAndCategories);
-
   return (
     <form onSubmit={handleSubmit} className={styles["page-container"]}>
       <div className={styles["header-container"]}>
