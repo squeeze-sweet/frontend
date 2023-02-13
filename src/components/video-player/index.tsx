@@ -41,21 +41,6 @@ export default function VideoPlayer({
   };
 
   useEffect(() => {
-    console.log(
-      "dimensions",
-      videoRef.current.clientWidth,
-      videoRef.current.clientHeight
-    );
-    console.log(
-      "videoRef.current.clientWidth / videoRef.current.clientHeight",
-      videoRef.current.clientWidth / videoRef.current.clientHeight
-    );
-    console.log(
-      videoRef.current.clientWidth / videoRef.current.clientHeight < 1.2
-    );
-    console.log(
-      videoRef.current.clientWidth / videoRef.current.clientHeight > 1.87
-    );
     if (finishTime - startTime > 30) {
       clearValue;
       setError(
