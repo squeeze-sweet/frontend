@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/meet-the-peer/static/css/main.92f2011f.css",
-    "main.js": "/meet-the-peer/static/js/main.e8c66245.js",
+    "main.js": "/meet-the-peer/static/js/main.a547fe2e.js",
     "static/js/787.532d1a27.chunk.js": "/meet-the-peer/static/js/787.532d1a27.chunk.js",
     "static/media/questions.png": "/meet-the-peer/static/media/questions.fafc9cfb4cf74ad1fc8f.png",
     "static/media/HelveticaNeueCyr-Roman.eot": "/meet-the-peer/static/media/HelveticaNeueCyr-Roman.9d7c3316bda88462d707.eot",
@@ -21,11 +21,11 @@
     "static/media/delete.svg": "/meet-the-peer/static/media/delete.7bab022a365fe9d381410597fa903c5e.svg",
     "static/media/cross-white.svg": "/meet-the-peer/static/media/cross-white.0328da8986307a11ec9dfc99ff41e72e.svg",
     "main.92f2011f.css.map": "/meet-the-peer/static/css/main.92f2011f.css.map",
-    "main.e8c66245.js.map": "/meet-the-peer/static/js/main.e8c66245.js.map",
+    "main.a547fe2e.js.map": "/meet-the-peer/static/js/main.a547fe2e.js.map",
     "787.532d1a27.chunk.js.map": "/meet-the-peer/static/js/787.532d1a27.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.92f2011f.css",
-    "static/js/main.e8c66245.js"
+    "static/js/main.a547fe2e.js"
   ]
 }
