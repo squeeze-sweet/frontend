@@ -7,8 +7,6 @@ import Preloader from "../../components/ui-elements/preloader";
 import { Button } from "../../components/ui-elements/button";
 
 export default function Finish() {
-  const [finishUrl, setFinishUrl] = useState("");
-
   const { lang } = useLang();
   const {
     preloaderText,
@@ -16,6 +14,7 @@ export default function Finish() {
     stepsData,
     mergeVideos,
     finalVideoData,
+    resetFinalVideoData,
     chosenAudioId,
     userInfo,
   } = useStore((state) => ({
@@ -24,6 +23,7 @@ export default function Finish() {
     stepsData: state.stepsData,
     mergeVideos: state.mergeVideos,
     finalVideoData: state.finalVideoData,
+    resetFinalVideoData: state.resetFinalVideoData,
     chosenAudioId: state.chosenAudioId,
     userInfo: state.userInfo,
   }));
@@ -48,8 +48,9 @@ export default function Finish() {
       files.push(stepsData[fileName].file);
       if (!index) {
         meta.push({
-          start_title: lang === "en" ? "meet your peer" : "Rencontre tes pairs",
-          end_title: `${userInfo.firstName} ${userInfo.lastName}, ${userInfo.jobTitle}`,
+          start_title:
+            lang === "en" ? "meet your <br> peer" : "Rencontre tes <br> pairs",
+          user_name: `${userInfo.firstName} ${userInfo.lastName}, <br> ${userInfo.jobTitle}`,
           content_type: "video/mp4",
           trim: Math.floor(stepsData[fileName].fragmentStartTime),
           start: currentTime,
@@ -72,7 +73,10 @@ export default function Finish() {
         Math.floor(stepsData[fileName].length) -
         Math.floor(stepsData[fileName].fragmentStartTime);
     });
+    console.log(meta);
+
     getFinalVideo(files, meta, chosenAudioId);
+    return resetFinalVideoData();
   }, []);
 
   return (

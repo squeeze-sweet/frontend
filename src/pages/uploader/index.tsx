@@ -77,7 +77,12 @@ export default function Uploader({ children }: Props) {
               <br />
               <p>
                 {tr(
-                  "On your phone or camera, record a HORIZONTAL video. It needs to be in.mov or.mp4 format and be under 10 megabytes."
+                  "On your phone or camera, record a HORIZONTAL video."
+                )}
+              </p>
+              <p>
+                {tr(
+                  "It needs to be in.mov or.mp4 format and be under 10 megabytes."
                 )}
               </p>
             </div>

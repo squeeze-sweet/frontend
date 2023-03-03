@@ -1,8 +1,8 @@
-import create from 'zustand';
-import { devtools } from 'zustand/middleware';
-import { QuestionsAndCategories } from './types';
-import api from '../services/api/admin';
-import { STATUSES } from '../services/types';
+import create from "zustand";
+import { devtools } from "zustand/middleware";
+import { QuestionsAndCategories } from "./types";
+import api from "../services/api/admin";
+import { STATUSES } from "../services/types";
 
 type UserInfo = {
   firstName: string;
@@ -22,8 +22,8 @@ interface StepData {
 
 interface Store {
   //language controll
-  lang: 'en' | 'fr';
-  setLang: (lang: 'en' | 'fr') => void;
+  lang: "en" | "fr";
+  setLang: (lang: "en" | "fr") => void;
   //-------------------------------------
 
   questionsAndCategories: QuestionsAndCategories | null;
@@ -42,6 +42,8 @@ interface Store {
   setChosenAudioId: (id: string) => void;
 
   finalVideoData: any;
+  resetFinalVideoData: () => void;
+
   mergeVideos: (files: any, meta: any, chosenAudioId: string) => void;
 
   currentStepData: any;
@@ -79,168 +81,191 @@ interface Store {
 
 export const useStore = create<Store>()(
   devtools((set, get) => ({
-    lang: 'en',
-    setLang: lang => {
+    lang: "en",
+    setLang: (lang) => {
       set({ lang: lang }, false, `setLang to ${lang}`);
     },
 
     questionsAndCategories: null,
 
     setQuestionsAndCategories: (data: any) =>
-      set({ questionsAndCategories: data }, false, `setting questions and categories`),
+      set(
+        { questionsAndCategories: data },
+        false,
+        `setting questions and categories`
+      ),
 
     blobToDownload: null,
-    preloaderText: '',
+    preloaderText: "",
 
     setPreloaderText: (text: string) =>
       set({ preloaderText: text }, false, `setPreloader to ${text}`),
 
-    email: '',
-    setEmail: async email => {
-      set({ email: email }, false, 'setEmail');
+    email: "",
+    setEmail: async (email) => {
+      set({ email: email }, false, "setEmail");
     },
 
-    password: '',
-    setPassword: async password => {
-      set({ password: password }, false, 'setPassword');
+    password: "",
+    setPassword: async (password) => {
+      set({ password: password }, false, "setPassword");
     },
 
     audios: [],
 
     getAudios: async () => {
-      set({ preloaderText: 'downloading audios' }, false, 'set preloader audios');
+      set(
+        { preloaderText: "downloading audios" },
+        false,
+        "set preloader audios"
+      );
       const { data } = await api.getAudios(get().email, get().password);
-      set({ audios: data }, false, 'set Audios');
-      set({ preloaderText: '' }, false, 'reset preloader audios');
+      set({ audios: data }, false, "set Audios");
+      set({ preloaderText: "" }, false, "reset preloader audios");
     },
 
-    chosenAudioId: '',
-    setChosenAudioId: id => set({ chosenAudioId: id }, false, 'set Audios'),
+    chosenAudioId: "",
+    setChosenAudioId: (id) => set({ chosenAudioId: id }, false, "set Audios"),
 
     finalVideoData: null,
 
+    resetFinalVideoData: () => {
+      set({ finalVideoData: null }, false, "reset final video");
+    },
+
     mergeVideos: async (files, meta, chosenAudioId) => {
-      set({ preloaderText: 'merging, take your time' }, false, 'set preloader merge');
+      set(
+        { preloaderText: "Give us a few minutes" },
+        false,
+        "set preloader merge"
+      );
       await api
         .mergeVideos(files, meta, chosenAudioId, get().email, get().password)
         .then(({ body }) => new Response(body))
-        .then(response => response.blob())
-        .then(blob => URL.createObjectURL(blob))
-        .then(url => set({ finalVideoData: url }, false, 'set finalVideoData'))
-        .then(() => set({ preloaderText: '' }, false, 'reset preloader merge'))
-        .catch(err => console.error(err));
+        .then((response) => response.blob())
+        .then((blob) => URL.createObjectURL(blob))
+        .then((url) =>
+          set({ finalVideoData: url }, false, "set finalVideoData")
+        )
+        .then(() => set({ preloaderText: "" }, false, "reset preloader merge"))
+        .catch((err) => console.error(err));
     },
 
     userInfo: {
-      firstName: '',
-      lastName: '',
-      jobTitle: '',
+      firstName: "",
+      lastName: "",
+      jobTitle: "",
     },
 
-    setUserInfo: userInfo => set({ userInfo: userInfo }, false, 'setUserInfo'),
+    setUserInfo: (userInfo) =>
+      set({ userInfo: userInfo }, false, "setUserInfo"),
 
     stepsData: {},
 
     currentStepData: {
-      fragmentData: '',
+      fragmentData: "",
       fragmentStartTime: 0,
       fragmentFinishTime: 0,
-      videoPreviewSrc: '',
+      videoPreviewSrc: "",
       length: 0,
       file: null,
     },
 
     setCurrentStepData: (stepData: any) =>
-      set({ currentStepData: stepData }, false, 'setCurrentStepData'),
+      set({ currentStepData: stepData }, false, "setCurrentStepData"),
 
     switchCurrentStep: (fragmentName: any) => {
       set(
-        state => ({ currentStepData: { ...state.stepsData[fragmentName] } }),
+        (state) => ({ currentStepData: { ...state.stepsData[fragmentName] } }),
         false,
-        'switchCurrentStep',
+        "switchCurrentStep"
       );
     },
 
-    initStepsData: async questions => {
+    initStepsData: async (questions) => {
       if (!get().stepsData?.length) {
         const tempData: any = {};
         questions.forEach(
-          question =>
+          (question) =>
             (tempData[question] = {
-              fragmentData: '',
+              fragmentData: "",
               fragmentStartTime: 0,
               fragmentFinishTime: 0,
-              videoPreviewSrc: '',
+              videoPreviewSrc: "",
               length: 0,
               file: null,
-            }),
+            })
         );
         set(
           {
             stepsData: tempData,
           },
           false,
-          'init steps data',
+          "init steps data"
         );
       }
     },
 
     updateStepsData: (fragmentName, data) => {
       set(
-        state => ({
+        (state) => ({
           stepsData: {
             ...state.stepsData,
             [fragmentName]: data,
           },
         }),
         false,
-        'update steps data',
+        "update steps data"
       );
     },
 
     resetStepData: (fragmentName, data) => {
       set(
-        state => ({
+        (state) => ({
           stepsData: {
             ...state.stepsData,
             [fragmentName]: {
-              fragmentData: '',
+              fragmentData: "",
               fragmentStartTime: 0,
               fragmentFinishTime: 0,
-              videoPreviewSrc: '',
+              videoPreviewSrc: "",
             },
           },
         }),
         false,
-        'reset step data',
+        "reset step data"
       );
     },
 
-    setStepsData: stepsData => {},
+    setStepsData: (stepsData) => {},
 
     filenames: [],
     setFilenames: (filenames: any) => {
-      set({ filenames: filenames }, false, 'set filenames');
-      set({ currentFragmentName: filenames[0] }, false, 'set chosen filenames');
+      set({ filenames: filenames }, false, "set filenames");
+      set({ currentFragmentName: filenames[0] }, false, "set chosen filenames");
     },
 
-    currentFragmentName: '',
-    currentFragmentDescription: '',
+    currentFragmentName: "",
+    currentFragmentDescription: "",
 
     setCurrentFragmentName: (currentFragmentName: any) =>
-      set({ currentFragmentName: currentFragmentName }, false, 'setCurrentFragmentName'),
+      set(
+        { currentFragmentName: currentFragmentName },
+        false,
+        "setCurrentFragmentName"
+      ),
 
     setCurrentFragmentDescription: (currentFragmentDescription: any) =>
       set(
         { currentFragmentDescription: currentFragmentDescription },
         false,
-        'setCurrentFragmentDescription',
+        "setCurrentFragmentDescription"
       ),
 
     filesInfo: [],
 
     status: STATUSES.initial,
 
-    setStatus: status => set({ status: status }),
-  })),
+    setStatus: (status) => set({ status: status }),
+  }))
 );
