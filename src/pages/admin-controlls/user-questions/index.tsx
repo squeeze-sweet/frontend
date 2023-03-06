@@ -67,6 +67,9 @@ export default function UserQuestions() {
 
   const handleAddCategory = async (name: string, nameFr: string) => {
     try {
+      if (name.length > 50 || nameFr.length > 50) {
+        return;
+      }
       await audioApi.addCategory(name, nameFr, email, password);
     } catch (error) {
       console.error(error);
@@ -80,6 +83,9 @@ export default function UserQuestions() {
     parentId: string
   ) => {
     try {
+      if (name.length || name_fr.length > 50) {
+        return;
+      }
       await audioApi.addQuestion(parentId, name, name_fr, email, password);
     } catch (error) {
       console.error(error);
