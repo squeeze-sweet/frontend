@@ -48,7 +48,7 @@ export default function Finish() {
       files.push(stepsData[fileName].file);
       if (!index) {
         meta.push({
-          start_title:
+          application_title:
             lang === "en" ? "meet your <br> peer" : "Rencontre tes <br> pairs",
           user_name: `${userInfo.firstName} ${userInfo.lastName}, <br> ${userInfo.jobTitle}`,
           content_type: "video/mp4",
