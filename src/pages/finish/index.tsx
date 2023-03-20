@@ -82,7 +82,13 @@ export default function Finish() {
   return (
     <section className={styles.container}>
       <h1>
-        {!Boolean(finalVideoData) ? 'your video is almost here'! : 'Done!'}{' '}
+        {!Boolean(finalVideoData)
+          ? lang === 'en'
+            ? 'your video is almost here!'
+            : 'Votre vidéo est presque prête!'
+          : lang === 'en'
+          ? 'Done!'
+          : 'Fini!'}
       </h1>
       {!Boolean(finalVideoData) && preloaderText && <Preloader />}
       {finalVideoData && (
