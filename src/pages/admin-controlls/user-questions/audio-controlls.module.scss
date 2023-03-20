@@ -19,7 +19,9 @@
   padding: 14px;
 }
 .leftGroup {
-  display: flex;
+  flex-grow: 1;
+  min-width: 0;
+  word-wrap: break-word;
 }
 .play {
   margin-right: 20px;
