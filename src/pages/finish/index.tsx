@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
-import { useStore } from "../../store";
-import useLang from "../../hooks/useLang";
+import { useEffect, useState } from 'react';
+import { useStore } from '../../store';
+import useLang from '../../hooks/useLang';
 
-import styles from "./step-2.module.scss";
-import Preloader from "../../components/ui-elements/preloader";
-import { Button } from "../../components/ui-elements/button";
+import styles from './step-2.module.scss';
+import Preloader from '../../components/ui-elements/preloader';
+import { Button } from '../../components/ui-elements/button';
 
 export default function Finish() {
   const { lang } = useLang();
@@ -33,9 +33,9 @@ export default function Finish() {
   };
 
   const handleDownload = () => {
-    const link = document.createElement("a");
+    const link = document.createElement('a');
     link.href = finalVideoData;
-    link.setAttribute("download", "result.mp4");
+    link.setAttribute('download', 'result.mp4');
     document.body.appendChild(link);
     link.click();
     link.remove();
@@ -48,10 +48,10 @@ export default function Finish() {
       files.push(stepsData[fileName].file);
       if (!index) {
         meta.push({
-          start_title:
-            lang === "en" ? "meet your <br> peer" : "Rencontre tes <br> pairs",
+          application_title:
+            lang === 'en' ? 'meet your <br> peer' : 'rencontre tes <br> pairs',
           user_name: `${userInfo.firstName} ${userInfo.lastName}, <br> ${userInfo.jobTitle}`,
-          content_type: "video/mp4",
+          content_type: 'video/mp4',
           trim: Math.floor(stepsData[fileName].fragmentStartTime),
           start: currentTime,
           length:
@@ -61,7 +61,7 @@ export default function Finish() {
       } else {
         meta.push({
           start_title: fileName,
-          content_type: "video/mp4",
+          content_type: 'video/mp4',
           trim: Math.floor(stepsData[fileName].fragmentStartTime),
           start: currentTime,
           length:
@@ -82,7 +82,7 @@ export default function Finish() {
   return (
     <section className={styles.container}>
       <h1>
-        {!Boolean(finalVideoData) ? "your video is almost here"! : "Done!"}{" "}
+        {!Boolean(finalVideoData) ? 'your video is almost here'! : 'Done!'}{' '}
       </h1>
       {!Boolean(finalVideoData) && preloaderText && <Preloader />}
       {finalVideoData && (

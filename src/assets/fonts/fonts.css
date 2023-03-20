@@ -1,8 +1,7 @@
 @font-face {
   font-family: 'Inter';
   src: url('HelveticaNeueCyr-Roman.eot');
-  src: local('☺'), url('HelveticaNeueCyr-Roman.woff') format('woff'),
-    url('HelveticaNeueCyr-Roman.ttf') format('truetype'), url('HelveticaNeueCyr-Roman.woff2') format('woff2');
+  src: local('☺'), url('HelveticaEU.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
@@ -10,16 +9,14 @@
 @font-face {
   font-family: 'Inter-Medium';
   src: url('HelveticaNeueCyr-Medium.eot');
-  src: local('☺'), url('HelveticaNeueCyr-Medium.woff') format('woff') ,url('HelveticaNeueCyr-Medium.woff2') format('woff2');;
+  src: local('☺'), url('HelveticaEU.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Inter-Bold';
-  src: url('HelveticaNeueCyr-Bold.eot');
-  src: local('☺'), url('HelveticaNeueCyr-Bold.woff') format('woff'), url('HelveticaNeueCyr-Bold.ttf') format('truetype'),
-    url('HelveticaNeueCyr-Bold.woff2') format('woff2');
+  src: local('☺'), url('HelveticaEU.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
