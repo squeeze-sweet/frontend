@@ -83,7 +83,7 @@ export default function UserQuestions() {
     parentId: string
   ) => {
     try {
-      if (name.length || name_fr.length > 50) {
+      if (!name.length || !name_fr.length) {
         return;
       }
       await audioApi.addQuestion(parentId, name, name_fr, email, password);
