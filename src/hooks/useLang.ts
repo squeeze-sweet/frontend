@@ -49,7 +49,7 @@ const dictionary: any = {
     "enregistrer une autre vidéo avec une camera web",
   "On your phone or camera, record a HORIZONTAL video.":
     "Sur votre téléphone ou votre appareil photo, enregistrez une vidéo HORIZONTALE.",
-    "It needs to be in.mov or.mp4 format and be under 10 megabytes.":
+  "It needs to be in.mov or.mp4 format and be under 10 megabytes.":
     "Il doit être au format in.mov ou .mp4 et être inférieur à 10 mégaoctets.",
   "Select the mood": "Choisis ton ambiance",
   "this music will be in the background of your video":
@@ -59,6 +59,8 @@ const dictionary: any = {
     "la longueur de la vidéo est trop grande, veuillez télécharger la vidéo moins de 30s.",
   "Please use a video with an aspect ratio of 16:9 or 4:3 (or simply any horizontal video from your phone or computer)":
     "Veuillez utiliser une vidéo avec un format d'image de 16:9 ou 4:3 (ou simplement n'importe quelle vidéo horizontale de votre téléphone ou ordinateur)",
+  recording: "enregistrement",
+  "time left: ": "le temps restant est de: ",
 };
 
 const useLang = () => {

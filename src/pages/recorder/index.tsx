@@ -5,8 +5,10 @@ import { VideoButton } from "../../components/ui-elements/video-button";
 import { useStore } from "../../store";
 
 import styles from "./recorder.module.scss";
+import useLang from "../../hooks/useLang";
 
 export const Recorder = () => {
+  const { tr } = useLang();
   const webcamRef = useRef<any>(null);
   const mediaRecorderRef = useRef<any>(null);
   const [capturing, setCapturing] = useState<any>(false);
@@ -85,8 +87,6 @@ export const Recorder = () => {
       const reader = new FileReader();
       reader.readAsArrayBuffer(blob);
       reader.onload = function (e: any) {
-        console.log("recordingCount", recordingCount);
-
         setCurrentStepData({
           ...currentStepData,
           videoPreviewSrc: url,
@@ -133,9 +133,10 @@ export const Recorder = () => {
       </div>
       {Boolean(recordingCount !== 0) && (
         <>
-          {" "}
-          <p className={styles.red}>recording</p>
-          <p className={cn(styles.count)}>time left: {30 - recordingCount}</p>
+          <p className={styles.red}>{tr("recording")}</p>
+          <p className={cn(styles.count)}>{`${tr("time left: ")}${
+            30 - recordingCount
+          }`}</p>
         </>
       )}
     </>
