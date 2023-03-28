@@ -135,7 +135,12 @@ export const useStore = create<Store>()(
 
     mergeVideos: async (files, meta, chosenAudioId) => {
       set(
-        { preloaderText: "Give us a few minutes" },
+        {
+          preloaderText:
+            get().lang === "en"
+              ? "Give us a few minutes"
+              : "Donnez-nous quelques minutes",
+        },
         false,
         "set preloader merge"
       );
